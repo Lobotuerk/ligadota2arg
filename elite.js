@@ -143,23 +143,23 @@ bot4.on('connected', function() {
 bot1.on('error', function() {
   logger.error('Bot1 has been logged off of the Steam network.');
 //  cluster.worker.kill()
-//shutdown()
+shutdown()
 
 });
 bot2.on('error', function() {
   logger.error('Bot2 has been logged off of the Steam network.');
 //  cluster.worker.kill()
-//shutdown()
+shutdown()
 });
 bot3.on('error', function() {
   logger.error('Bot3 has been logged off of the Steam network.');
 //  cluster.worker.kill()
-//shutdown()
+shutdown()
 });
 bot4.on('error', function() {
   logger.error('Bot4 has been logged off of the Steam network.');
   //cluster.worker.kill()
-//shutdown()
+shutdown()
 });
 
 
@@ -1607,7 +1607,9 @@ if (indexn > -1) {
   let ref2 = db.ref('usersE/'+ top[indexn].id)
   let nmmr = top[indexn].mmr + 25
   ref2.update({
-  mmr: nmmr
+  mmr: nmmr,
+  matchs: top[indexn].matchs + 1,
+  wins: top[indexn].wins + 1
   });
 
 channel.sendMessage('El usuario ' + top[indexn].nick + ' gano 25 puntos, ahora tiene ' + nmmr +
@@ -1650,7 +1652,8 @@ if (indexn > -1) {
   let ref2 = db.ref('usersE/'+ top[indexn].id)
   let nmmr = top[indexn].mmr - 25
   ref2.update({
-  mmr: nmmr
+    mmr: nmmr,
+    matchs: top[indexn].matchs + 1
   });
 
 channel.sendMessage('El usuario ' + top[indexn].nick + ' perdio 25 puntos, ahora tiene ' + nmmr +
