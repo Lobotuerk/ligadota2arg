@@ -1,0 +1,85 @@
+{
+  "SYSTEM" : {
+    "system_loggedin" : "Steam logeado",
+    "system_msg_received" : "Recivido de {user}: {message}",
+    "system_added_friend" : "Amigo agregado: {userid}",
+    "system_blacklist_attempt" : "El id baneado {userid} trato de hacerse amigo."
+  },
+
+  "ERRORS" : {
+    "err_not_admin" : "That requires admin privileges",
+    "err_cant_broadcast": "Solo puedes emitir cada 10 minutos."
+  },
+
+  "CMDS" : {
+    "lfg" : "lfg",
+    "inhouse" : "inhouse",
+    "help" : "help",
+    "mute" : "mute",
+    "unmute" : "unmute",
+    "ping" : "ping",
+    "whois": "whois"
+  },
+
+  "help_message" : "I am lobobot, Dota 2 Sud American League's Bot\nThe commands you can use are:\n.inq / inqueue: Shows the people in queue for a game.\n.sign / .q: Gets you into the queue.\n.leave: Gets you out of the queue.\n.me: Shows how much points you have.\n.reg steamID: registers you into the Sudamerican Dota 2 League.\n.top: Shows the TOP 10 of the league\n.check nick: Shows you someone else points in the league.\n.games: Shows the games that are being played.\n.challenge opponentnick: Challenges someone.\n.accept: Accepts a challenge made by someone else to you.\n.pool / .join : Adds you to the challenge's pool of players or shows you the pool of players if you are a captain.\n.pick nick: Chooses someone of the pool for playing in your team.\n.cancel: Cancels a challenge in progress. It can be use by the captains or an admin.",
+
+  "CMD_HELP" : {
+    "lfg" : "Avisarle a mis amigos que quiero jugar.",
+    "inhouse" : "Avisarle a mis amigos que quiero jugar un cerrado, se debe agregar una password al comando.",
+    "help" : "Muestra este mensaje.",
+    "mute" : "Blockea todos los avisos.",
+    "unmute" : "Desbloquea los avisos.",
+    "ping" : "Te digo tu ID",
+    "whois": "Busca un usuario por su ID."
+  },
+
+  "LFG_RESPONSES" : {
+    "lfg_response_sender" : "Le avise a todos que queres jugar.",
+    "lfg_broadcast" : "{user} esta con ganas de jugar.\n{url}"
+  },
+
+  "INHOUSE_RESPONSES" : {
+    "inhouse_response_sender" : "Le avise a todos que queres jugar un cerrado.",
+    "inhouse_broadcast" : "{host} esta organizando un cerrado.\n{url}",
+    "inhouse_broadcast_password" : "{host} esta organizando un cerrado, pass: {pass}\n{url}"
+  },
+
+  "mute_response" : "No te van a llegar mas avisos.",
+  "unmute_response" : "Te van a volver a llegar avisos.",
+
+  "ping_response" : "Tu ID es {userid}",
+
+  "greeting_response" : "Hola {user}!",
+
+  "ADMIN" : {
+    "quit" : "Saliendo....",
+    "dump_friends" : "Poniendo amigos a la consola...",
+    "dump_users" : "Poniendo usuarios en la consola...",
+    "broadcast_log" : "Mensaje del admin: {message}",
+    "broadcast_sent" : "Tu aviso fue enviado.",
+    "remove_friend_success" : "Elimiando amigo {id}",
+    "remove_friend_error" : "No hay un amigo {id}",
+    "lookup_success" : "El nombre solicidato es {name}",
+    "lookup_error" : "No hay amigo con ese ID.",
+    "no_inactive_users": "No hay usuarios inactivos",
+    "blacklist_add" : "Usuario baneado",
+    "blacklist_remove" : "Usuario desbaneado"
+  },
+
+  "random_responses" : [
+    "Ah?",
+    "Que?",
+    "Wtf",
+    "Da fuq",
+    "Mira vos.....",
+    "Ni idea de que decis.",
+    "Chan.",
+    "Proba .help porque no te entiendo"
+  ],
+
+  "greetings" : [
+    "Hola",
+    "Que onda",
+    "Que tal"
+  ]
+}
