@@ -7,14 +7,14 @@
 	"files":[
 		"lib"
 	],
-	"main":"lobobot2.js",
+	"main":"elite.js",
 	"keywords":[
 		"discord bot",
 		"scheduling",
 		"schedule"
 	],
 	"scripts":{
-		"bot":"node lobobot2.js"
+		"bot":"node elite.js"
 	},
 	"devDependencies":{
 		"gulp":"^3.9.0",

@@ -1,1 +1,1 @@
-bot: node ./lib/index.js
+bot: node elite.js
