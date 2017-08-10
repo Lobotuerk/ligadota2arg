@@ -204,7 +204,7 @@ ref.on("value", function(snapshot) {
 base = snapshot.val();
 ready = true;
 toplist = false;
-account = Object.keys(base.usersE).length;
+account = Object.keys(base.users).length;
 }, function (errorObject) {
   console.log("The read failed: " + errorObject.code);
 });
@@ -516,8 +516,8 @@ let ref2 = db.ref('users/'+ playersbot1.radiant[o].id)
 let nmmr = playersbot1.radiant[o].mmr + (Math.floor(((playersbot1.radiant[o].xp)*k)) + points)
 ref2.update({
   mmr: nmmr,
-  wins: base.usersE[playersbot1.radiant[o].id].wins + 1,
-  matchs: base.usersE[playersbot1.radiant[o].id].matchs + 1
+  wins: base.users[playersbot1.radiant[o].id].wins + 1,
+  matchs: base.users[playersbot1.radiant[o].id].matchs + 1
 });
 };
 for (var o = 0; o < 5; o++){
@@ -525,7 +525,7 @@ let ref2 = db.ref('users/'+ playersbot1.dire[o].id)
 let nmmr = playersbot1.dire[o].mmr - (Math.floor(((playersbot1.dire[o].xp)*k)) + points)
 ref2.update({
   mmr: nmmr,
-  matchs: base.usersE[playersbot1.dire[o].id].matchs + 1
+  matchs: base.users[playersbot1.dire[o].id].matchs + 1
 });
         };
         let ref3 = db.ref('matchs/'+ match1.number)
@@ -547,8 +547,8 @@ ref2.update({
   let nmmr = playersbot1.dire[o].mmr + (Math.floor(((playersbot1.dire[o].xp)*k)) + points)
   ref2.update({
     mmr: nmmr,
-    wins: base.usersE[playersbot1.dire[o].id].wins + 1,
-    matchs: base.usersE[playersbot1.dire[o].id].matchs + 1
+    wins: base.users[playersbot1.dire[o].id].wins + 1,
+    matchs: base.users[playersbot1.dire[o].id].matchs + 1
 });
 }
   for (var o = 0; o < 5; o++){
@@ -556,7 +556,7 @@ let ref2 = db.ref('users/'+ playersbot1.radiant[o].id)
 let nmmr = playersbot1.radiant[o].mmr - (Math.floor(((playersbot1.radiant[o].xp)*k)) + points)
 ref2.update({
   mmr: nmmr,
-  matchs: base.usersE[playersbot1.radiant[o].id].matchs + 1
+  matchs: base.users[playersbot1.radiant[o].id].matchs + 1
 });
       }
 let ref3 = db.ref('matchs/'+ match1.number)
@@ -662,8 +662,8 @@ let ref2 = db.ref('users/'+ playersbot2.radiant[o].id)
 let nmmr = playersbot2.radiant[o].mmr + (Math.floor(((playersbot2.radiant[o].xp)*k)) + points)
 ref2.update({
 mmr: nmmr,
-wins: base.usersE[playersbot2.radiant[o].id].wins + 1,
-matchs: base.usersE[playersbot2.radiant[o].id].matchs + 1
+wins: base.users[playersbot2.radiant[o].id].wins + 1,
+matchs: base.users[playersbot2.radiant[o].id].matchs + 1
 });
 };
 for (var o = 0; o < 5; o++){
@@ -671,7 +671,7 @@ let ref2 = db.ref('users/'+ playersbot2.dire[o].id)
 let nmmr = playersbot2.dire[o].mmr - (Math.floor(((playersbot2.dire[o].xp)*k)) + points)
 ref2.update({
 mmr: nmmr,
-matchs: base.usersE[playersbot2.dire[o].id].matchs + 1
+matchs: base.users[playersbot2.dire[o].id].matchs + 1
 });
       };
       let ref3 = db.ref('matchs/'+ match2.number)
@@ -693,8 +693,8 @@ let ref2 = db.ref('users/'+ playersbot2.dire[o].id)
 let nmmr = playersbot2.dire[o].mmr + (Math.floor(((playersbot2.dire[o].xp)*k)) + points)
 ref2.update({
   mmr: nmmr,
-  wins: base.usersE[playersbot2.dire[o].id].wins + 1,
-  matchs: base.usersE[playersbot2.dire[o].id].matchs + 1
+  wins: base.users[playersbot2.dire[o].id].wins + 1,
+  matchs: base.users[playersbot2.dire[o].id].matchs + 1
 });
 }
 for (var o = 0; o < 5; o++){
@@ -702,7 +702,7 @@ let ref2 = db.ref('users/'+ playersbot2.radiant[o].id)
 let nmmr = playersbot2.radiant[o].mmr - (Math.floor(((playersbot2.radiant[o].xp+1)*k)) + points)
 ref2.update({
 mmr: nmmr,
-matchs: base.usersE[playersbot2.radiant[o].id].matchs + 1
+matchs: base.users[playersbot2.radiant[o].id].matchs + 1
 });
     }
     let ref3 = db.ref('matchs/'+ match2.number)
@@ -807,20 +807,20 @@ else {
     if (lobby.match_outcome == 2){
       //radiant wins
       for (var o = 0; o < 5; o++){
-let ref2 = db.ref('usersE/'+ playersbot3.radiant[o].id)
+let ref2 = db.ref('users/'+ playersbot3.radiant[o].id)
 let nmmr = playersbot3.radiant[o].mmr + (Math.floor(((playersbot3.radiant[o].xp)*k)) + points)
 ref2.update({
 mmr: nmmr,
-wins: base.usersE[playersbot3.radiant[o].id].wins + 1,
-matchs: base.usersE[playersbot3.radiant[o].id].matchs + 1
+wins: base.users[playersbot3.radiant[o].id].wins + 1,
+matchs: base.users[playersbot3.radiant[o].id].matchs + 1
 });
 };
 for (var o = 0; o < 5; o++){
-let ref2 = db.ref('usersE/'+ playersbot3.dire[o].id)
+let ref2 = db.ref('users/'+ playersbot3.dire[o].id)
 let nmmr = playersbot3.dire[o].mmr - (Math.floor(((playersbot3.dire[o].xp)*k)) + points)
 ref2.update({
 mmr: nmmr,
-matchs: base.usersE[playersbot3.dire[o].id].matchs + 1
+matchs: base.users[playersbot3.dire[o].id].matchs + 1
 });
       };
       let ref3 = db.ref('matchs/'+ match3.number)
@@ -838,20 +838,20 @@ matchs: base.usersE[playersbot3.dire[o].id].matchs + 1
   else if (lobby.match_outcome == 3){
       //dire wins
       for (var o = 0; o < 5; o++){
-let ref2 = db.ref('usersE/'+ playersbot3.dire[o].id)
+let ref2 = db.ref('users/'+ playersbot3.dire[o].id)
 let nmmr = playersbot3.dire[o].mmr + (Math.floor(((playersbot3.dire[o].xp)*k)) + points)
 ref2.update({
   mmr: nmmr,
-  wins: base.usersE[playersbot3.dire[o].id].wins + 1,
-  matchs: base.usersE[playersbot3.dire[o].id].matchs + 1
+  wins: base.users[playersbot3.dire[o].id].wins + 1,
+  matchs: base.users[playersbot3.dire[o].id].matchs + 1
 });
 }
 for (var o = 0; o < 5; o++){
-let ref2 = db.ref('usersE/'+ playersbot3.radiant[o].id)
+let ref2 = db.ref('users/'+ playersbot3.radiant[o].id)
 let nmmr = playersbot3.radiant[o].mmr - (Math.floor(((playersbot3.radiant[o].xp)*k)) + points)
 ref2.update({
 mmr: nmmr,
-matchs: base.usersE[playersbot3.radiant[o].id].matchs + 1
+matchs: base.users[playersbot3.radiant[o].id].matchs + 1
 });
     }
     let ref3 = db.ref('matchs/'+ match3.number)
@@ -958,20 +958,20 @@ else {
     if (lobby.match_outcome == 2){
       //radiant wins
       for (var o = 0; o < 5; o++){
-let ref2 = db.ref('usersE/'+ playersbot4.radiant[o].id)
+let ref2 = db.ref('users/'+ playersbot4.radiant[o].id)
 let nmmr = playersbot4.radiant[o].mmr + (Math.floor(((playersbot4.radiant[o].xp)*k)) + points)
 ref2.update({
 mmr: nmmr,
-wins: base.usersE[playersbot4.radiant[o].id].wins + 1,
-matchs: base.usersE[playersbot4.radiant[o].id].matchs + 1
+wins: base.users[playersbot4.radiant[o].id].wins + 1,
+matchs: base.users[playersbot4.radiant[o].id].matchs + 1
 });
 };
 for (var o = 0; o < 5; o++){
-let ref2 = db.ref('usersE/'+ playersbot4.dire[o].id)
+let ref2 = db.ref('users/'+ playersbot4.dire[o].id)
 let nmmr = playersbot4.dire[o].mmr - (Math.floor(((playersbot4.dire[o].xp)*k)) + points)
 ref2.update({
 mmr: nmmr,
-matchs: base.usersE[playersbot4.dire[o].id].matchs + 1
+matchs: base.users[playersbot4.dire[o].id].matchs + 1
 });
       };
       let ref3 = db.ref('matchs/'+ match4.number)
@@ -989,20 +989,20 @@ matchs: base.usersE[playersbot4.dire[o].id].matchs + 1
   else if (lobby.match_outcome == 3){
       //dire wins
       for (var o = 0; o < 5; o++){
-let ref2 = db.ref('usersE/'+ playersbot4.dire[o].id)
+let ref2 = db.ref('users/'+ playersbot4.dire[o].id)
 let nmmr = playersbot4.dire[o].mmr + (Math.floor(((playersbot4.dire[o].xp)*k)) + points)
 ref2.update({
   mmr: nmmr,
-  wins: base.usersE[playersbot4.dire[o].id].wins + 1,
-  matchs: base.usersE[playersbot4.dire[o].id].matchs + 1
+  wins: base.users[playersbot4.dire[o].id].wins + 1,
+  matchs: base.users[playersbot4.dire[o].id].matchs + 1
 });
 }
 for (var o = 0; o < 5; o++){
-let ref2 = db.ref('usersE/'+ playersbot4.radiant[o].id)
+let ref2 = db.ref('users/'+ playersbot4.radiant[o].id)
 let nmmr = playersbot4.radiant[o].mmr - (Math.floor(((playersbot4.radiant[o].xp)*k)) + points)
 ref2.update({
 mmr: nmmr,
-matchs: base.usersE[playersbot4.radiant[o].id].matchs + 1
+matchs: base.users[playersbot4.radiant[o].id].matchs + 1
 });
     }
 let ref3 = db.ref('matchs/'+ match4.number)
@@ -1104,20 +1104,20 @@ else {
     if (lobby.match_outcome == 2){
       //radiant wins
       for (var o = 0; o < 5; o++){
-let ref2 = db.ref('usersE/'+ playersbot5.radiant[o].id)
+let ref2 = db.ref('users/'+ playersbot5.radiant[o].id)
 let nmmr = playersbot5.radiant[o].mmr + (Math.floor(((playersbot5.radiant[o].xp)*k)) + points)
 ref2.update({
 mmr: nmmr,
-wins: base.usersE[playersbot5.radiant[o].id].wins + 1,
-matchs: base.usersE[playersbot5.radiant[o].id].matchs + 1
+wins: base.users[playersbot5.radiant[o].id].wins + 1,
+matchs: base.users[playersbot5.radiant[o].id].matchs + 1
 });
 };
 for (var o = 0; o < 5; o++){
-let ref2 = db.ref('usersE/'+ playersbot5.dire[o].id)
+let ref2 = db.ref('users/'+ playersbot5.dire[o].id)
 let nmmr = playersbot5.dire[o].mmr - (Math.floor(((playersbot5.dire[o].xp)*k)) + points)
 ref2.update({
 mmr: nmmr,
-matchs: base.usersE[playersbot5.dire[o].id].matchs + 1
+matchs: base.users[playersbot5.dire[o].id].matchs + 1
 });
       };
       let ref3 = db.ref('matchs/'+ match5.number)
@@ -1135,20 +1135,20 @@ matchs: base.usersE[playersbot5.dire[o].id].matchs + 1
   else if (lobby.match_outcome == 3){
       //dire wins
       for (var o = 0; o < 5; o++){
-let ref2 = db.ref('usersE/'+ playersbot5.dire[o].id)
+let ref2 = db.ref('users/'+ playersbot5.dire[o].id)
 let nmmr = playersbot5.dire[o].mmr + (Math.floor(((playersbot5.dire[o].xp)*k)) + points)
 ref2.update({
   mmr: nmmr,
-  wins: base.usersE[playersbot5.dire[o].id].wins + 1,
-  matchs: base.usersE[playersbot5.dire[o].id].matchs + 1
+  wins: base.users[playersbot5.dire[o].id].wins + 1,
+  matchs: base.users[playersbot5.dire[o].id].matchs + 1
 });
 }
 for (var o = 0; o < 5; o++){
-let ref2 = db.ref('usersE/'+ playersbot5.radiant[o].id)
+let ref2 = db.ref('users/'+ playersbot5.radiant[o].id)
 let nmmr = playersbot5.radiant[o].mmr - (Math.floor(((playersbot5.radiant[o].xp)*k)) + points)
 ref2.update({
 mmr: nmmr,
-matchs: base.usersE[playersbot5.radiant[o].id].matchs + 1
+matchs: base.users[playersbot5.radiant[o].id].matchs + 1
 });
     }
 let ref3 = db.ref('matchs/'+ match5.number)
@@ -1250,20 +1250,20 @@ else {
     if (lobby.match_outcome == 2){
       //radiant wins
       for (var o = 0; o < 5; o++){
-let ref2 = db.ref('usersE/'+ playersbot6.radiant[o].id)
+let ref2 = db.ref('users/'+ playersbot6.radiant[o].id)
 let nmmr = playersbot6.radiant[o].mmr + (Math.floor(((playersbot6.radiant[o].xp)*k)) + points)
 ref2.update({
 mmr: nmmr,
-wins: base.usersE[playersbot6.radiant[o].id].wins + 1,
-matchs: base.usersE[playersbot6.radiant[o].id].matchs + 1
+wins: base.users[playersbot6.radiant[o].id].wins + 1,
+matchs: base.users[playersbot6.radiant[o].id].matchs + 1
 });
 };
 for (var o = 0; o < 5; o++){
-let ref2 = db.ref('usersE/'+ playersbot6.dire[o].id)
+let ref2 = db.ref('users/'+ playersbot6.dire[o].id)
 let nmmr = playersbot6.dire[o].mmr - (Math.floor(((playersbot6.dire[o].xp)*k)) + points)
 ref2.update({
 mmr: nmmr,
-matchs: base.usersE[playersbot6.dire[o].id].matchs + 1
+matchs: base.users[playersbot6.dire[o].id].matchs + 1
 });
       };
       let ref3 = db.ref('matchs/'+ match6.number)
@@ -1281,20 +1281,20 @@ matchs: base.usersE[playersbot6.dire[o].id].matchs + 1
   else if (lobby.match_outcome == 3){
       //dire wins
       for (var o = 0; o < 5; o++){
-let ref2 = db.ref('usersE/'+ playersbot6.dire[o].id)
+let ref2 = db.ref('users/'+ playersbot6.dire[o].id)
 let nmmr = playersbot6.dire[o].mmr + (Math.floor(((playersbot6.dire[o].xp)*k)) + points)
 ref2.update({
   mmr: nmmr,
-  wins: base.usersE[playersbot6.dire[o].id].wins + 1,
-  matchs: base.usersE[playersbot6.dire[o].id].matchs + 1
+  wins: base.users[playersbot6.dire[o].id].wins + 1,
+  matchs: base.users[playersbot6.dire[o].id].matchs + 1
 });
 }
 for (var o = 0; o < 5; o++){
-let ref2 = db.ref('usersE/'+ playersbot6.radiant[o].id)
+let ref2 = db.ref('users/'+ playersbot6.radiant[o].id)
 let nmmr = playersbot6.radiant[o].mmr - (Math.floor(((playersbot6.radiant[o].xp)*k)) + points)
 ref2.update({
 mmr: nmmr,
-matchs: base.usersE[playersbot6.radiant[o].id].matchs + 1
+matchs: base.users[playersbot6.radiant[o].id].matchs + 1
 });
     }
 let ref3 = db.ref('matchs/'+ match6.number)
@@ -1396,20 +1396,20 @@ else {
     if (lobby.match_outcome == 2){
       //radiant wins
       for (var o = 0; o < 5; o++){
-let ref2 = db.ref('usersE/'+ playersbot7.radiant[o].id)
+let ref2 = db.ref('users/'+ playersbot7.radiant[o].id)
 let nmmr = playersbot7.radiant[o].mmr + (Math.floor(((playersbot7.radiant[o].xp)*k)) + points)
 ref2.update({
 mmr: nmmr,
-wins: base.usersE[playersbot7.radiant[o].id].wins + 1,
-matchs: base.usersE[playersbot7.radiant[o].id].matchs + 1
+wins: base.users[playersbot7.radiant[o].id].wins + 1,
+matchs: base.users[playersbot7.radiant[o].id].matchs + 1
 });
 };
 for (var o = 0; o < 5; o++){
-let ref2 = db.ref('usersE/'+ playersbot7.dire[o].id)
+let ref2 = db.ref('users/'+ playersbot7.dire[o].id)
 let nmmr = playersbot7.dire[o].mmr - (Math.floor(((playersbot7.dire[o].xp)*k)) + points)
 ref2.update({
 mmr: nmmr,
-matchs: base.usersE[playersbot7.dire[o].id].matchs + 1
+matchs: base.users[playersbot7.dire[o].id].matchs + 1
 });
       };
       let ref3 = db.ref('matchs/'+ match7.number)
@@ -1427,20 +1427,20 @@ matchs: base.usersE[playersbot7.dire[o].id].matchs + 1
   else if (lobby.match_outcome == 3){
       //dire wins
       for (var o = 0; o < 5; o++){
-let ref2 = db.ref('usersE/'+ playersbot7.dire[o].id)
+let ref2 = db.ref('users/'+ playersbot7.dire[o].id)
 let nmmr = playersbot7.dire[o].mmr + (Math.floor(((playersbot7.dire[o].xp)*k)) + points)
 ref2.update({
   mmr: nmmr,
-  wins: base.usersE[playersbot7.dire[o].id].wins + 1,
-  matchs: base.usersE[playersbot7.dire[o].id].matchs + 1
+  wins: base.users[playersbot7.dire[o].id].wins + 1,
+  matchs: base.users[playersbot7.dire[o].id].matchs + 1
 });
 }
 for (var o = 0; o < 5; o++){
-let ref2 = db.ref('usersE/'+ playersbot7.radiant[o].id)
+let ref2 = db.ref('users/'+ playersbot7.radiant[o].id)
 let nmmr = playersbot7.radiant[o].mmr - (Math.floor(((playersbot7.radiant[o].xp)*k)) + points)
 ref2.update({
 mmr: nmmr,
-matchs: base.usersE[playersbot7.radiant[o].id].matchs + 1
+matchs: base.users[playersbot7.radiant[o].id].matchs + 1
 });
     }
 let ref3 = db.ref('matchs/'+ match7.number)
@@ -1625,8 +1625,8 @@ disc.on("message", function(msg) {
   break
   }
   else{
-    msg.reply('Tenes actualmente ' + base.usersE[fromUser].mmr + ' puntos de mmr y ' + ((base.usersE[fromUser].wins / base.usersE[fromUser].matchs) * 100 ) +
-     '% de winrate en ' + base.usersE[fromUser].matchs + ' partidas.')
+    msg.reply('Tenes actualmente ' + base.users[fromUser].mmr + ' puntos de mmr y ' + ((base.users[fromUser].wins / base.users[fromUser].matchs) * 100 ) +
+     '% de winrate en ' + base.users[fromUser].matchs + ' partidas.')
     break
   }
 
@@ -1665,16 +1665,16 @@ else
 case 'noobs':
 if (toplist != true){
 top = [];
-for (var key in base.usersE) {
-    if (typeof(base.usersE[key].mmr) != 'undefined'){
-      top.push({mmr: base.usersE[key].mmr, nick: base.usersE[key].nick, id: key, wins: base.usersE[key].wins, matchs: base.usersE[key].matchs});
+for (var key in base.users) {
+    if (typeof(base.users[key].mmr) != 'undefined'){
+      top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs});
 }
     }
     top.sort(function(a, b){return b.mmr - a.mmr});
     toplist = true;
 
 }
-account = Object.keys(base.usersE).length - 2
+account = Object.keys(base.users).length - 2
 channel.sendMessage('Tabla de posiciones Dota 2 In-House League: \n'+
 'Pos. ' + (account-9) +': ' + top[account-9].nick + ' ' + '(' + top[account-9].mmr + ')\n' +
 'Pos. ' + (account-8) +': ' + top[account-8].nick + ' ' + '(' + top[account-8].mmr + ')\n' +
@@ -1692,9 +1692,9 @@ break
 case 'top':
 if (toplist != true){
 top = [];
-for (var key in base.usersE) {
-    if (typeof(base.usersE[key].mmr) != 'undefined'){
-      top.push({mmr: base.usersE[key].mmr, nick: base.usersE[key].nick, id: key, wins: base.usersE[key].wins, matchs: base.usersE[key].matchs});
+for (var key in base.users) {
+    if (typeof(base.users[key].mmr) != 'undefined'){
+      top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs});
 }
     }
     top.sort(function(a, b){return b.mmr - a.mmr});
@@ -1770,7 +1770,7 @@ break;
 };
 
 case 'server':
-if (base.usersE[fromUser].level >= 3) {
+if (base.users[fromUser].level >= 3) {
   if (input[1] == 'sa'){
     server = 10
     channel.sendMessage('Servidor configurado en South America')
@@ -1788,7 +1788,7 @@ break;
 };
 
 case 'cancel':
-if (base.usersE[fromUser].level >= 2){
+if (base.users[fromUser].level >= 2){
   challenge = false
   challengep = [];
   radiantchallenge = [];
@@ -1796,7 +1796,7 @@ if (base.usersE[fromUser].level >= 2){
   break
 }
 if (typeof(challengep[0]) != 'undefined' && typeof(challengep[1]) != 'undefined'){
-if (base.usersE[fromUser].nick == challengep[0].nick || base.usersE[fromUser].nick == challengep[1].nick){
+if (base.users[fromUser].nick == challengep[0].nick || base.users[fromUser].nick == challengep[1].nick){
   challenge = false
   challengep = [];
   direchallenge = []
@@ -1810,22 +1810,22 @@ break
 case 'challenge':
 if (challenge == false){
   if (input[1]){
-    if (input[1].toLowerCase() == base.usersE[fromUser].nick.toLowerCase()){
+    if (input[1].toLowerCase() == base.users[fromUser].nick.toLowerCase()){
       break
     }
     activa.splice(0,11)
       let nickname = activa.join('')
       let i = iob(top,nickname)
       if (i >= 0){
-        let acen = new BigNumber(base.usersE[fromUser].name).minus('76561197960265728')
+        let acen = new BigNumber(base.users[fromUser].name).minus('76561197960265728')
         acen = acen.toNumber()
         acen = acen + ''
-        challengep.push({id: fromUser, mmr: base.usersE[fromUser].mmr,
-           nick: base.usersE[fromUser].nick, name: acen, invite: base.usersE[fromUser].name, xp: 1})
+        challengep.push({id: fromUser, mmr: base.users[fromUser].mmr,
+           nick: base.users[fromUser].nick, name: acen, invite: base.users[fromUser].name, xp: 1})
         challengep.push({nick: nickname})
         challenge = true
         ctime()
-        channel.sendMessage('El usuario ' + base.usersE[fromUser].nick + ' ha retado a ' +
+        channel.sendMessage('El usuario ' + base.users[fromUser].nick + ' ha retado a ' +
       nickname + ' a un challenge')
       break
       }
@@ -1848,11 +1848,11 @@ else{
 
 case 'accept':
 if (challenge == true){
-  if (challengep[1].nick.toLowerCase() == base.usersE[fromUser].nick.toLowerCase() && typeof(challengep[1].mmr) == 'undefined'){
+  if (challengep[1].nick.toLowerCase() == base.users[fromUser].nick.toLowerCase() && typeof(challengep[1].mmr) == 'undefined'){
           clearTimeout(timerc);
           ctime();
     flip =   Math.floor((Math.random() * 1.99) + 1);
-    let acen = new BigNumber(base.usersE[fromUser].name).minus('76561197960265728')
+    let acen = new BigNumber(base.users[fromUser].name).minus('76561197960265728')
     acen = acen.toNumber()
     acen = acen + ''
     channel.sendMessage('El usuario ' + challengep[1].nick + ' acepto el challenge de ' +
@@ -1864,9 +1864,9 @@ if (flip == 2){
   channel.sendMessage('Empieza pickeando players el jugador ' + challengep[1].nick )
 }
   challengep[1].id = fromUser
-  challengep[1].mmr =  base.usersE[fromUser].mmr
+  challengep[1].mmr =  base.users[fromUser].mmr
   challengep[1].name =  acen
-  challengep[1].invite = base.usersE[fromUser].name
+  challengep[1].invite = base.users[fromUser].name
   challengep[1].xp = 1
   radiantchallenge.push(challengep[0])
   direchallenge.push(challengep[1])
@@ -1886,7 +1886,7 @@ else {
 case 'join':
 case 'pool':
 if (challenge == true){
-  if (base.usersE[fromUser].nick == challengep[0].nick){
+  if (base.users[fromUser].nick == challengep[0].nick){
     if (challengep.length >= 2){
       channel.sendMessage('Pool : \n' + poolp(challengep))
       break
@@ -1897,7 +1897,7 @@ if (challenge == true){
     }
   }
 
-  else if (base.usersE[fromUser].nick == challengep[1].nick){
+  else if (base.users[fromUser].nick == challengep[1].nick){
     if (challengep.length >= 2){
       channel.sendMessage('Pool : \n' + poolp(challengep))
       break
@@ -1913,11 +1913,11 @@ if (challenge == true){
       //msg.reply('Vos ya estas en cola')
       break
     }
-    let acen = new BigNumber(base.usersE[fromUser].name).minus('76561197960265728')
+    let acen = new BigNumber(base.users[fromUser].name).minus('76561197960265728')
     acen = acen.toNumber()
     acen = acen + ''
-    challengep.push({id: fromUser, mmr: base.usersE[fromUser].mmr,
-       nick: base.usersE[fromUser].nick, name: acen, invite: base.usersE[fromUser].name, xp: 1})
+    challengep.push({id: fromUser, mmr: base.users[fromUser].mmr,
+       nick: base.users[fromUser].nick, name: acen, invite: base.users[fromUser].name, xp: 1})
        break
   }
 }
@@ -1962,7 +1962,7 @@ if (radiantchallenge.length > (direchallenge.length)){
 else {
       let index = iob(challengep, nickname)
     if (index >= 0){
-      channel.sendMessage('El jugador ' + challengep[index].nick + ' fue elegido por ' + base.usersE[fromUser].nick)
+      channel.sendMessage('El jugador ' + challengep[index].nick + ' fue elegido por ' + base.users[fromUser].nick)
 
       radiantchallenge.push(challengep[index])
       let index2 = contains(challengep, challengep[index].name)
@@ -1986,7 +1986,7 @@ if (radiantchallenge.length == (direchallenge.length)){
 else {
       let index = iob(challengep, nickname)
     if (index >= 0){
-      channel.sendMessage('El jugador ' + challengep[index].nick + ' fue elegido por ' + base.usersE[fromUser].nick)
+      channel.sendMessage('El jugador ' + challengep[index].nick + ' fue elegido por ' + base.users[fromUser].nick)
 
       radiantchallenge.push(challengep[index])
       let index2 = contains(challengep, challengep[index].name)
@@ -2020,7 +2020,7 @@ if (radiantchallenge.length == (direchallenge.length)){
 else {
   let index = iob(challengep, nickname)
   if (index >= 0){
-    channel.sendMessage('El jugador ' + challengep[index].nick + ' fue elegido por ' + base.usersE[fromUser].nick)
+    channel.sendMessage('El jugador ' + challengep[index].nick + ' fue elegido por ' + base.users[fromUser].nick)
     direchallenge.push(challengep[index])
     let index2 = contains(challengep, challengep[index].name)
     challengep.splice(index2,1)
@@ -2043,7 +2043,7 @@ else {
   let index = iob(challengep, nickname)
   if (index >= 0){
     channel.sendMessage('El jugador ' + challengep[index].nick + ' fue elegido por '
-    + base.usersE[fromUser].nick)
+    + base.users[fromUser].nick)
     direchallenge.push(challengep[index])
     let index2 = contains(challengep, challengep[index].name)
     challengep.splice(index2,1)
@@ -2276,12 +2276,12 @@ else{
 }
 
 case 'up':
-if (base.usersE[fromUser].level >= 2) {
+if (base.users[fromUser].level >= 2) {
 if (toplist != true){
 top = [];
-for (var key in base.usersE) {
-    if (typeof(base.usersE[key].mmr) != 'undefined'){
-      top.push({mmr: base.usersE[key].mmr, nick: base.usersE[key].nick, id: key, wins: base.usersE[key].wins, matchs: base.usersE[key].matchs});
+for (var key in base.users) {
+    if (typeof(base.users[key].mmr) != 'undefined'){
+      top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs});
 }
     }
     top.sort(function(a, b){return b.mmr - a.mmr});
@@ -2291,7 +2291,7 @@ activa.splice(0,4)
 let nickname = activa.join('')
 let indexn = iob(top, nickname)
 if (indexn > -1) {
-  let ref2 = db.ref('usersE/'+ top[indexn].id)
+  let ref2 = db.ref('users/'+ top[indexn].id)
   let nmmr = top[indexn].mmr + 25
   ref2.update({
   mmr: nmmr,
@@ -2321,12 +2321,12 @@ break;
 }
 
 case 'down':
-if (base.usersE[fromUser].level >= 3) {
+if (base.users[fromUser].level >= 3) {
 if (toplist != true){
 top = [];
-for (var key in base.usersE) {
-    if (typeof(base.usersE[key].mmr) != 'undefined'){
-      top.push({mmr: base.usersE[key].mmr, nick: base.usersE[key].nick, id: key, wins: base.usersE[key].wins, matchs: base.usersE[key].matchs});
+for (var key in base.users) {
+    if (typeof(base.users[key].mmr) != 'undefined'){
+      top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs});
 }
     }
     top.sort(function(a, b){return b.mmr - a.mmr});
@@ -2336,7 +2336,7 @@ activa.splice(0,6)
 let nickname = activa.join('')
 let indexn = iob(top, nickname)
 if (indexn > -1) {
-  let ref2 = db.ref('usersE/'+ top[indexn].id)
+  let ref2 = db.ref('users/'+ top[indexn].id)
   let nmmr = top[indexn].mmr - 25
   ref2.update({
     mmr: nmmr,
@@ -2367,9 +2367,9 @@ break;
 case 'check':
 if (toplist != true){
 top = [];
-for (var key in base.usersE) {
-    if (typeof(base.usersE[key].mmr) != 'undefined'){
-      top.push({mmr: base.usersE[key].mmr, nick: base.usersE[key].nick, id: key, wins: base.usersE[key].wins, matchs: base.usersE[key].matchs});
+for (var key in base.users) {
+    if (typeof(base.users[key].mmr) != 'undefined'){
+      top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs});
 }
     }
     top.sort(function(a, b){return b.mmr - a.mmr});
@@ -2395,13 +2395,13 @@ break
 }
 
 case 'unreg':
-if (base.usersE[fromUser].level >= 3) {
+if (base.users[fromUser].level >= 3) {
   let ref3 = db.ref('matchs/0')
   ref3.set({matchid: "inicio"})
 
-  for (var key in base.usersE) {
-    if (typeof(base.usersE[key].mmr) != 2000){
-      let refx = db.ref('usersE/'+ key)
+  for (var key in base.users) {
+    if (typeof(base.users[key].mmr) != 2000){
+      let refx = db.ref('users/'+ key)
       refx.update({mmr: 2000})
     }
     else {
@@ -2422,7 +2422,7 @@ break;
 };
 
 case 'reg':
-if (typeof(base.usersE[fromUser]) != 'undefined') {
+if (typeof(base.users[fromUser]) != 'undefined') {
 msg.reply('Vos ya estas registrado picaron')
 break
 }
@@ -2431,7 +2431,7 @@ else{
   if (input[1]){
     if (input[1].length == 17){
 
-  let ref = db.ref('usersE/'+ fromUser)
+  let ref = db.ref('users/'+ fromUser)
 activa.splice(0,23)
   let nickname = activa.join('')
   ref.set({mmr: 2000,
