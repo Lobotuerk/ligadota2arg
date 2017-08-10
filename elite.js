@@ -1090,7 +1090,6 @@ channel.sendMessage('Tabla de posiciones Dota 2 In-House League: \n'+
 'Pos. ' + (account-1) +': ' + top[account-1].nick + ' ' + '(' + top[account-1].mmr + ')\n' +
 'Pos. ' + (account) +': ' + top[account].nick + ' ' + '(' + top[account].mmr + ')')
 break
-Object.keys(base.usersE).length
 
 case 'top':
 if (toplist != true){
@@ -1589,7 +1588,7 @@ else{
 }
 
 case 'up':
-if (base.usersE[fromUser].level >= 3) {
+if (base.usersE[fromUser].level >= 2) {
 if (toplist != true){
 top = [];
 for (var key in base.usersE) {
