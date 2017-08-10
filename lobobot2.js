@@ -1948,7 +1948,7 @@ if (challengep[0].id == fromUser){
 
 
   if (radiantchallenge.length == 5){
-    msg.reply('Vos ya elegiste 6 jugadores')
+    msg.reply('Vos ya elegiste 4 jugadores')
     break
   }
 
@@ -2942,7 +2942,7 @@ function ioa(a, obj) {
 
 function iob(a, obj) {
     for (var i = 0; i < a.length; i++) {
-        if (a[i].nick === obj) {
+        if (a[i].nick.toLowerCase() === obj) {
             return i;
         }
     }
