@@ -90,7 +90,7 @@ if (cluster.isWorker) {
 
 let disc = new Discord.Client();
 
-disc.login(CONFIG.token);
+disc.login(CONFIG.token3);
 
 disc.on("ready", function(msg) {
 channel = disc.channels.get(CONFIG.chid1)
