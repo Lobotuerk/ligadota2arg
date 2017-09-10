@@ -1,52 +1,53 @@
 {
-	"name":"schedulebot",
-	"version":"1.0.0",
-	"description":"A Discord bot that makes scheduling easy",
-  "homepage": "https://bitbucket.org/Lobotuerk/bot-lae#readme",
-	"author":"Lobo",
-	"files":[
+	"name": "schedulebot",
+	"version": "1.0.0",
+	"description": "A Discord bot that makes scheduling easy",
+	"homepage": "https://bitbucket.org/Lobotuerk/bot-lae#readme",
+	"author": "Lobo",
+	"files": [
 		"lib"
 	],
-	"main":"elite.js",
-	"keywords":[
+	"main": "elite.js",
+	"keywords": [
 		"discord bot",
 		"scheduling",
 		"schedule"
 	],
-	"scripts":{
-		"bot":"node elite.js"
+	"scripts": {
+		"bot": "node elite.js"
 	},
-	"devDependencies":{
-		"gulp":"^3.9.0",
-		"gulp-plumber":"^1.0.0",
-		"gulp-nsp":"^2.1.0"
+	"devDependencies": {
+		"gulp": "^3.9.0",
+		"gulp-plumber": "^1.0.0",
+		"gulp-nsp": "^2.1.0"
 	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://Lobotuerk@bitbucket.org/Lobotuerk/bot-lae.git"
 	},
-	"license":"Apache-2.0",
-	"dependencies":{
-		"readline":"^1.3.0",
-		"cluster":"^0.7.7",
-		"dota2":"^5.1.0",
-		"steam":"^1.4.0",
-		"bignumber.js":"^4.0.2",
-		"fs":"^0.0.1-security",
-		"discord.js":"11.0.0",
-		"bufferutil":"^3.0.0",
-		"erlpack":"hammerandchisel/erlpack",
-		"libsodium-wrappers":"^0.5.1",
-		"node-opus":"^0.2.6",
-		"opusscript":"^0.0.3",
-		"uws":"^0.14.1",
-		"firebase":"3.6.9",
-		"mockery":"^1.4.1",
-		"mocha":"^2.4.5",
-		"sinon":"^1.17.3",
-		"urllib":"^2.19.0"
+	"license": "Apache-2.0",
+	"dependencies": {
+		"bignumber.js": "^4.0.2",
+		"bufferutil": "^3.0.0",
+		"cluster": "^0.7.7",
+		"discord.js": "11.0.0",
+		"dota2": "^5.1.0",
+		"erlpack": "hammerandchisel/erlpack",
+		"firebase": "3.6.9",
+		"fs": "^0.0.1-security",
+		"libsodium-wrappers": "^0.5.1",
+		"mocha": "^2.4.5",
+		"mockery": "^1.4.1",
+		"node-dota2": "^0.1.2",
+		"node-opus": "^0.2.6",
+		"opusscript": "^0.0.3",
+		"readline": "^1.3.0",
+		"sinon": "^1.17.3",
+		"steam": "^1.4.0",
+		"urllib": "^2.19.0",
+		"uws": "^0.14.1"
 	},
-	"engines":{
+	"engines": {
 		"node": "6.9.5"
 	}
 }

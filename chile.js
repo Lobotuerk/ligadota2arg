@@ -388,6 +388,7 @@ ref2.update({
         'Resultado: Radiant Wins\n'+
          'Replay ID ' + match1.id )
         dota1.leavePracticeLobby();
+        dota1.abandonCurrentGame()
                botInUse1 = false
       }
 
@@ -419,6 +420,7 @@ ref3.set({matchid: match1.id,
       'Resultado: Dire Wins\n'+
        'Replay ID ' + match1.id)
        dota1.leavePracticeLobby();
+       dota2.abandonCurrentGame()
              botInUse1 = false
     }
     for (var x = 0; x < 5; x++){
@@ -532,6 +534,7 @@ ref2.update({
         'Resultado: Radiant Wins\n'+
          'Replay ID ' + match2.id)
          dota2.leavePracticeLobby();
+         dota2.abandonCurrentGame()
                botInUse2 = false
       }
 
@@ -563,6 +566,7 @@ ref2.update({
       'Resultado: Dire Wins\n'+
        'Replay ID ' + match2.id)
       dota2.leavePracticeLobby();
+      dota2.abandonCurrentGame()
              botInUse2 = false
     }
     else {
@@ -681,6 +685,7 @@ ref2.update({
         'Resultado: Radiant Wins\n'+
          'Replay ID ' + match3.id)
         dota3.leavePracticeLobby();
+        dota3.abandonCurrentGame()
                botInUse3 = false
       }
 
@@ -712,6 +717,7 @@ ref2.update({
       'Resultado: Dire Wins\n'+
        'Replay ID ' + match3.id)
       dota3.leavePracticeLobby();
+      dota3.abandonCurrentGame()
              botInUse3 = false
     }
     else {
@@ -832,6 +838,7 @@ ref2.update({
         'Resultado: Radiant Wins\n'+
          'Replay ID ' + match4.id )
         dota4.leavePracticeLobby();
+        dota4.abandonCurrentGame()
                botInUse4 = false
       }
 
@@ -863,6 +870,7 @@ ref3.set({matchid: match4.id,
       'Resultado: Dire Wins\n'+
        'Replay ID ' + match4.id)
        dota4.leavePracticeLobby();
+       dota4.abandonCurrentGame()
              botInUse4 = false
     }
     for (var x = 0; x < 5; x++){
@@ -1014,6 +1022,9 @@ disc.on("message", function(msg) {
       dota2.leavePracticeLobby();
       dota3.leavePracticeLobby();
       dota4.leavePracticeLobby();
+      dota1.abandonCurrentGame()
+      dota2.abandonCurrentGame()
+      dota3.abandonCurrentGame()
       dota4.abandonCurrentGame()
       break;
 
@@ -1048,6 +1059,7 @@ disc.on("message", function(msg) {
              nick: base.usersC[fromUser].nick, name: acen, invite: base.usersC[fromUser].name});
     dota4.createPracticeLobby('',
                                 {"game_name": input[1],
+                                "game_mode": 2,
                               "server_region": server,
                                 "allow_cheats": false,
                                 "fill_with_bots": false,
@@ -1467,8 +1479,10 @@ if (direchallenge.length == 5 && radiantchallenge.length == 5){
      clearTimeout(timerc);
   if (botInUse1 == false){
     dota1.leavePracticeLobby();
+    dota1.abandonCurrentGame()
 let gamename = 'In-HouseChallenge' + number
     dota1.createPracticeLobby('',{"game_name": gamename,
+                                "game_mode": 2,
                               "server_region": server,
                                 "allow_cheats": false,
                                 "fill_with_bots": false,
@@ -1496,8 +1510,10 @@ for (var o = 0; o < radiantchallenge.length; o++){
 
 if (botInUse2 == false){
   dota2.leavePracticeLobby();
+  dota2.abandonCurrentGame()
 let gamename = 'In-HouseLeague' + number
     dota2.createPracticeLobby('',{"game_name": gamename,
+                          "game_mode": 2,
                           "server_region": server,
                             "allow_cheats": false,
                             "fill_with_bots": false,
@@ -1525,8 +1541,10 @@ break;
 
 if (botInUse3 == false){
   dota3.leavePracticeLobby();
+  dota3.abandonCurrentGame()
 let gamename = 'In-HouseLeague' + number
     dota3.createPracticeLobby('',{"game_name": gamename,
+                          "game_mode": 2,
                           "server_region": server,
                             "allow_cheats": false,
                             "fill_with_bots": false,
@@ -1555,8 +1573,10 @@ break;
 
 if (botInUse4 == false){
   dota4.leavePracticeLobby();
+  dota4.abandonCurrentGame()
 let gamename = 'In-HouseChallenge' + number
   dota4.createPracticeLobby('',{"game_name": gamename,
+                            "game_mode": 2,
                             "server_region": server,
                               "allow_cheats": false,
                               "fill_with_bots": false,
@@ -1929,6 +1949,7 @@ channel.sendMessage('@here Lobby creado\n' + 'Team radiant = (C) ' + get(radiant
     if (botInUse1 == false){
   let gamename = 'In-HouseLeague' + number
       dota1.createPracticeLobby('',{"game_name": gamename,
+                                  "game_mode": 2,
                                 "server_region": server,
                                   "allow_cheats": false,
                                   "fill_with_bots": false,
@@ -1960,6 +1981,7 @@ channel.sendMessage('@here Lobby creado\n' + 'Team radiant = (C) ' + get(radiant
 if (botInUse2 == false){
   let gamename = 'In-HouseLeague' + number
       dota2.createPracticeLobby('',{"game_name": gamename,
+                            "game_mode": 2,
                             "server_region": server,
                               "allow_cheats": false,
                               "fill_with_bots": false,
@@ -1991,6 +2013,7 @@ break;
 if (botInUse3 == false){
   let gamename = 'In-HouseLeague' + number
       dota3.createPracticeLobby('',{"game_name": gamename,
+                              "game_mode": 2,
                             "server_region": server,
                               "allow_cheats": false,
                               "fill_with_bots": false,
@@ -2022,6 +2045,7 @@ break;
 if (botInUse4 == false){
 let gamename = 'In-HouseLeague' + number
   dota4.createPracticeLobby('',{"game_name": gamename,
+                              "game_mode": 2,
                             "server_region": server,
                               "allow_cheats": false,
                               "fill_with_bots": false,
@@ -2123,6 +2147,7 @@ players.push(playerslobby[x])
   }
 
     b.leavePracticeLobby();
+    b.abandonCurrentGame()
     queue = players.length
     channel.sendMessage('El lobby se cancelo porque alguien fallo en aceptar, volviendo a la cola de emparejamiento')
     qtime()
