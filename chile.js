@@ -1014,6 +1014,7 @@ disc.on("message", function(msg) {
       dota2.leavePracticeLobby();
       dota3.leavePracticeLobby();
       dota4.leavePracticeLobby();
+      dota4.abandonCurrentGame()
       break;
 
   }
