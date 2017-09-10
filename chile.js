@@ -108,8 +108,8 @@ bot1.connect();
 console.log('Bot1 Iniciado')
 bot1.on('connected', function() {
   botUser1.logOn({
-    account_name: CONFIG.username5,
-    password: CONFIG.password5
+    account_name: CONFIG.username4,
+    password: CONFIG.password4
   });
 });
 
@@ -117,8 +117,8 @@ bot2.connect();
 console.log('Bot2 Iniciado')
 bot2.on('connected', function() {
   botUser2.logOn({
-    account_name: CONFIG.username6,
-    password: CONFIG.password6
+    account_name: CONFIG.username5,
+    password: CONFIG.password5
   });
 });
 
@@ -1092,7 +1092,8 @@ channel.sendMessage('Tabla de posiciones Dota 2 In-House League: \n'+
 break
 
 case 'top':
-if (toplist != true){
+if (account >= 11){
+  if (toplist != true){
 top = [];
 for (var key in base.usersC) {
     if (typeof(base.usersC[key].mmr) != 'undefined'){
@@ -1114,6 +1115,10 @@ channel.sendMessage('Tabla de posiciones Dota 2 In-House League: \n'+
 'Pos. 8: ' + top[7].nick + ' ' + '(' + top[7].mmr + ')\n' +
 'Pos. 9: ' + top[8].nick + ' ' + '(' + top[8].mmr + ')\n' +
 'Pos. 10: ' + top[9].nick + ' ' + '(' + top[9].mmr + ')')
+}
+else{
+  channel.sendMessage('Todavia no hay 10 personas para el top capo')
+}
 break
 
 case 'obs':
@@ -1706,8 +1711,8 @@ else {
 break
 }
 
-case 'unreg':
-/*if (base.usersC[fromUser].level >= 3) {
+/*case 'unreg':
+if (base.usersC[fromUser].level >= 3) {
   let ref3 = db.ref('matchs/0')
   ref3.set({matchid: "inicio"})
 
@@ -1721,8 +1726,9 @@ case 'unreg':
     }
 
   }
-  channel.sendMessage('Se resetearon los mmr')*/
-  let ref = db.ref('usersC/'+ fromUser)
+  channel.sendMessage('Se resetearon los mmr')
+
+if(true){  let ref = db.ref('usersC/'+ fromUser)
 activa.splice(0,23)
   let nickname = activa.join('')
   ref.set({mmr: 2000,
@@ -1732,9 +1738,9 @@ activa.splice(0,23)
           matchs: 0,
           wins: 0})
           channel.sendMessage( nickname +
-            ' Acaba de ser registrado en la Dota 2 In-House League')
-break
+            ' Acaba de ser registrado en la Dota 2 In-House League')}
 
+break
 
 
 }
@@ -1742,7 +1748,7 @@ else
 {
   channel.sendMessage(DICT.ERRORS.err_not_admin);
 break;
-};
+};*/
 
 case 'vouch':
 if (base.usersC[fromUser].level >= 2) {
@@ -2192,7 +2198,7 @@ function ioa(a, obj) {
 
 function iob(a, obj) {
     for (var i = 0; i < a.length; i++) {
-        if (a[i].nick.toLowerCase() === obj) {
+        if (a[i].nick.toLowerCase() === obj.toLowerCase()) {
             return i;
         }
     }
