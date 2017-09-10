@@ -1057,7 +1057,7 @@ disc.on("message", function(msg) {
           queue = queue + 1
           playersbot4.push({id: fromUser, mmr: base.usersC[fromUser].mmr,
              nick: base.usersC[fromUser].nick, name: acen, invite: base.usersC[fromUser].name});
-    dota4.createPracticeLobby('',
+    dota4.createPracticeLobby(
                                 {"game_name": input[1],
                                 "game_mode": 2,
                               "server_region": server,
@@ -1481,7 +1481,7 @@ if (direchallenge.length == 5 && radiantchallenge.length == 5){
     dota1.leavePracticeLobby();
     dota1.abandonCurrentGame()
 let gamename = 'In-HouseChallenge' + number
-    dota1.createPracticeLobby('',{"game_name": gamename,
+    dota1.createPracticeLobby({"game_name": gamename,
                                 "game_mode": 2,
                               "server_region": server,
                                 "allow_cheats": false,
@@ -1512,7 +1512,7 @@ if (botInUse2 == false){
   dota2.leavePracticeLobby();
   dota2.abandonCurrentGame()
 let gamename = 'In-HouseLeague' + number
-    dota2.createPracticeLobby('',{"game_name": gamename,
+    dota2.createPracticeLobby({"game_name": gamename,
                           "game_mode": 2,
                           "server_region": server,
                             "allow_cheats": false,
@@ -1543,7 +1543,7 @@ if (botInUse3 == false){
   dota3.leavePracticeLobby();
   dota3.abandonCurrentGame()
 let gamename = 'In-HouseLeague' + number
-    dota3.createPracticeLobby('',{"game_name": gamename,
+    dota3.createPracticeLobby({"game_name": gamename,
                           "game_mode": 2,
                           "server_region": server,
                             "allow_cheats": false,
@@ -1575,7 +1575,7 @@ if (botInUse4 == false){
   dota4.leavePracticeLobby();
   dota4.abandonCurrentGame()
 let gamename = 'In-HouseChallenge' + number
-  dota4.createPracticeLobby('',{"game_name": gamename,
+  dota4.createPracticeLobby({"game_name": gamename,
                             "game_mode": 2,
                             "server_region": server,
                               "allow_cheats": false,
@@ -1948,7 +1948,7 @@ channel.sendMessage('@here Lobby creado\n' + 'Team radiant = (C) ' + get(radiant
 
     if (botInUse1 == false){
   let gamename = 'In-HouseLeague' + number
-      dota1.createPracticeLobby('',{"game_name": gamename,
+      dota1.createPracticeLobby({"game_name": gamename,
                                   "game_mode": 2,
                                 "server_region": server,
                                   "allow_cheats": false,
@@ -1980,7 +1980,7 @@ channel.sendMessage('@here Lobby creado\n' + 'Team radiant = (C) ' + get(radiant
 
 if (botInUse2 == false){
   let gamename = 'In-HouseLeague' + number
-      dota2.createPracticeLobby('',{"game_name": gamename,
+      dota2.createPracticeLobby({"game_name": gamename,
                             "game_mode": 2,
                             "server_region": server,
                               "allow_cheats": false,
@@ -2012,7 +2012,7 @@ break;
 
 if (botInUse3 == false){
   let gamename = 'In-HouseLeague' + number
-      dota3.createPracticeLobby('',{"game_name": gamename,
+      dota3.createPracticeLobby({"game_name": gamename,
                               "game_mode": 2,
                             "server_region": server,
                               "allow_cheats": false,
@@ -2044,7 +2044,7 @@ break;
 
 if (botInUse4 == false){
 let gamename = 'In-HouseLeague' + number
-  dota4.createPracticeLobby('',{"game_name": gamename,
+  dota4.createPracticeLobby({"game_name": gamename,
                               "game_mode": 2,
                             "server_region": server,
                               "allow_cheats": false,
