@@ -79,10 +79,10 @@ if (cluster.isWorker) {
 
 let disc = new Discord.Client();
 
-disc.login(CONFIG.token2);
+disc.login(CONFIG.token4);
 
 disc.on("ready", function(msg) {
-channel = disc.channels.get(CONFIG.chid3)
+channel = disc.channels.get(CONFIG.chid4)
 })
 
 let bot1 = new Steam.SteamClient();
