@@ -135,8 +135,8 @@ bot4.connect();
 console.log('Bot4 Iniciado')
 bot4.on('connected', function() {
   botUser4.logOn({
-    account_name: CONFIG.username7,
-    password: CONFIG.password7
+    account_name: CONFIG.username3,
+    password: CONFIG.password3
   });
 });
 
@@ -1035,13 +1035,19 @@ disc.on("message", function(msg) {
   break
   }
 
-  /*case 'clobby':
+  case 'clobby':
   if (base.usersC[fromUser].level >= 3) {
-    if (input[0]/* && input[1] && input[2]) {
+    if (input[0] && input[1] && input[2]) {
+
+      let acen = new BigNumber(base.usersC[fromUser].name).minus('76561197960265728')
+      acen = acen.toNumber()
+      acen = acen + ''
+          queue = queue + 1
+          playersbot4.push({id: fromUser, mmr: base.usersC[fromUser].mmr,
+             nick: base.usersC[fromUser].nick, name: acen, invite: base.usersC[fromUser].name});
     dota4.createPracticeLobby('',
                                 {"game_name": input[1],
                               "server_region": server,
-                               DOTA_GameMode.DOTA_GAMEMODE_CM,
                                 "allow_cheats": false,
                                 "fill_with_bots": false,
                                 "allow_spectating": true,
@@ -1049,9 +1055,6 @@ disc.on("message", function(msg) {
                              });
     logger.log("Lobby Creado");
     dota4.joinPracticeLobbyTeam(2, 4);
-    dota1.launchPracticeLobby()
-    dota2.launchPracticeLobby()
-    dota3.launchPracticeLobby()
     break;
     }
     else {
@@ -1063,7 +1066,7 @@ else
 {
     msg.reply(DICT.ERRORS.err_not_admin);
   break;
-}*/
+}
 
 case 'noobs':
 if (toplist != true){
@@ -1466,7 +1469,6 @@ if (direchallenge.length == 5 && radiantchallenge.length == 5){
 let gamename = 'In-HouseChallenge' + number
     dota1.createPracticeLobby('',{"game_name": gamename,
                               "server_region": server,
-                               DOTA_GameMode.DOTA_GAMEMODE_CM,
                                 "allow_cheats": false,
                                 "fill_with_bots": false,
                                 "allow_spectating": true,
@@ -1496,7 +1498,6 @@ if (botInUse2 == false){
 let gamename = 'In-HouseLeague' + number
     dota2.createPracticeLobby('',{"game_name": gamename,
                           "server_region": server,
-                           DOTA_GameMode.DOTA_GAMEMODE_CM,
                             "allow_cheats": false,
                             "fill_with_bots": false,
                             "allow_spectating": true,
@@ -1526,7 +1527,6 @@ if (botInUse3 == false){
 let gamename = 'In-HouseLeague' + number
     dota3.createPracticeLobby('',{"game_name": gamename,
                           "server_region": server,
-                           DOTA_GameMode.DOTA_GAMEMODE_CM,
                             "allow_cheats": false,
                             "fill_with_bots": false,
                             "allow_spectating": true,
@@ -1557,7 +1557,6 @@ if (botInUse4 == false){
 let gamename = 'In-HouseChallenge' + number
   dota4.createPracticeLobby('',{"game_name": gamename,
                             "server_region": server,
-                             DOTA_GameMode.DOTA_GAMEMODE_CM,
                               "allow_cheats": false,
                               "fill_with_bots": false,
                               "allow_spectating": true,
@@ -1930,7 +1929,6 @@ channel.sendMessage('@here Lobby creado\n' + 'Team radiant = (C) ' + get(radiant
   let gamename = 'In-HouseLeague' + number
       dota1.createPracticeLobby('',{"game_name": gamename,
                                 "server_region": server,
-                                 DOTA_GameMode.DOTA_GAMEMODE_CM,
                                   "allow_cheats": false,
                                   "fill_with_bots": false,
                                   "allow_spectating": true,
@@ -1962,7 +1960,6 @@ if (botInUse2 == false){
   let gamename = 'In-HouseLeague' + number
       dota2.createPracticeLobby('',{"game_name": gamename,
                             "server_region": server,
-                             DOTA_GameMode.DOTA_GAMEMODE_CM,
                               "allow_cheats": false,
                               "fill_with_bots": false,
                               "allow_spectating": true,
@@ -1994,7 +1991,6 @@ if (botInUse3 == false){
   let gamename = 'In-HouseLeague' + number
       dota3.createPracticeLobby('',{"game_name": gamename,
                             "server_region": server,
-
                               "allow_cheats": false,
                               "fill_with_bots": false,
                               "allow_spectating": true,
@@ -2026,7 +2022,6 @@ if (botInUse4 == false){
 let gamename = 'In-HouseLeague' + number
   dota4.createPracticeLobby('',{"game_name": gamename,
                             "server_region": server,
-                             DOTA_GameMode.DOTA_GAMEMODE_CM,
                               "allow_cheats": false,
                               "fill_with_bots": false,
                               "allow_spectating": true,
