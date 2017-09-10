@@ -911,7 +911,7 @@ disc.on("message", function(msg) {
 
     if (input[0] == 'reg'){
       if (typeof(base.usersC[fromUser]) != 'undefined') {
-      msg.reply('Vos ya estas registrado picaron')
+      msg.reply('Tu ya te encuentras registrado')
       return
     }
       else{
@@ -944,12 +944,12 @@ disc.on("message", function(msg) {
               }
             }
             else {
-              msg.reply('No estas voucheado, habla con los admins y pedi un vouch.')
+              msg.reply('Tu no estas voucheado, habla con los admins y pide un vouch.')
               return
             }
         }
         else{
-          msg.reply('Te falto algo, acordate que es .reg SteamID')
+          msg.reply('Te falto algo, recuerda que el comando es .reg SteamID')
           return
         }
 
@@ -957,7 +957,7 @@ disc.on("message", function(msg) {
     }
 
         if (typeof(base.usersC[fromUser]) == 'undefined') {
-        msg.reply('No estas registrado en la Dota 2 In-House League')
+        msg.reply('Tu no estas registrado en la Dota 2 In-House League')
       return
       }
 
@@ -1026,19 +1026,19 @@ disc.on("message", function(msg) {
 
   case 'me':
   if (typeof(base.usersC[fromUser]) == 'undefined') {
-    msg.reply('No estas registrado en la Dota 2 In-House League')
+    msg.reply('Tu no estas registrado en la Dota 2 In-House League')
   break
   }
   else{
-  msg.reply('Tenes actualmente ' + base.usersC[fromUser].mmr + ' puntos de mmr y ' + ((base.usersC[fromUser].wins / base.usersC[fromUser].matchs) * 100 ) +
+  msg.reply('Tienes actualmente ' + base.usersC[fromUser].mmr + ' puntos de mmr y ' + ((base.usersC[fromUser].wins / base.usersC[fromUser].matchs) * 100 ) +
    '% de winrate en ' + base.usersC[fromUser].matchs + ' partidas.')
   break
   }
 
-  case 'clobby':
+  /*case 'clobby':
   if (base.usersC[fromUser].level >= 3) {
-    if (input[0]/* && input[1] && input[2]*/) {
-    /*dota4.createPracticeLobby('',
+    if (input[0]/* && input[1] && input[2]) {
+    dota4.createPracticeLobby('',
                                 {"game_name": input[1],
                               "server_region": server,
                                "game_mode": 2,
@@ -1048,7 +1048,7 @@ disc.on("message", function(msg) {
                                "allchat": false
                              });
     logger.log("Lobby Creado");
-    dota4.joinPracticeLobbyTeam(2, 4);*/
+    dota4.joinPracticeLobbyTeam(2, 4);
     dota1.launchPracticeLobby()
     dota2.launchPracticeLobby()
     dota3.launchPracticeLobby()
@@ -1063,7 +1063,7 @@ else
 {
     msg.reply(DICT.ERRORS.err_not_admin);
   break;
-}
+}*/
 
 case 'noobs':
 if (toplist != true){
@@ -1078,7 +1078,7 @@ for (var key in base.usersC) {
 
 }
 account = Object.keys(base.usersC).length - 2
-channel.sendMessage('Tabla de posiciones Dota 2 In-House League: \n'+
+channel.sendMessage('Tabla de noobs Dota 2 In-House League: \n'+
 'Pos. ' + (account-9) +': ' + top[account-9].nick + ' ' + '(' + top[account-9].mmr + ')\n' +
 'Pos. ' + (account-8) +': ' + top[account-8].nick + ' ' + '(' + top[account-8].mmr + ')\n' +
 'Pos. ' + (account-7) +': ' + top[account-7].nick + ' ' + '(' + top[account-7].mmr + ')\n' +
@@ -1117,7 +1117,7 @@ channel.sendMessage('Tabla de posiciones Dota 2 In-House League: \n'+
 'Pos. 10: ' + top[9].nick + ' ' + '(' + top[9].mmr + ')')
 }
 else{
-  channel.sendMessage('Todavia no hay 10 personas para el top capo')
+  channel.sendMessage('Todavia no hay 10 personas para el top')
 }
 break
 
@@ -1221,7 +1221,7 @@ if (challenge == false){
         challengep.push({nick: nickname})
         challenge = true
         ctime()
-        channel.sendMessage('El usuario ' + base.usersC[fromUser].nick + ' ha retado a ' +
+        channel.sendMessage('El usuario ' + base.usersC[fromUser].nick + ' ha retado al usuario ' +
       nickname + ' a un challenge')
       break
       }
@@ -1231,13 +1231,13 @@ if (challenge == false){
       }
   }
   else{
-    msg.reply('Te falto algo, acordate que es .challenge nickdeloponente')
+    msg.reply('Le falto algo, recuerda que es .challenge nickdeloponente')
     break
   }
 
 }
 else{
-  msg.reply('Actualmente hay un challenge abierto, espera que termine o unete al pool')
+  msg.reply('Actualmente hay un challenge abierto, debe esperar que termine o unirse al pool')
   break
 }
 
@@ -1269,7 +1269,7 @@ if (flip == 2){
   break
   }
   else {
-    msg.reply('El challenge no fue hecho hacia vos')
+    msg.reply('El challenge no fue hecho hacia usted')
     break
   }
 
@@ -1324,7 +1324,7 @@ else{
 
 case 'pick':
 if (inLobby == true){
-  msg.reply('Se esta por mandar un lobby, espera que se mande para seguir con el challenge')
+  msg.reply('Se esta por mandar un lobby, debes esperar a que se mande para seguir con el challenge')
   break
 }
 if (challenge != true){
@@ -1344,7 +1344,7 @@ if (challengep[0].id == fromUser){
 
 
   if (radiantchallenge.length == 5){
-    msg.reply('Vos ya elegiste 4 jugadores')
+    msg.reply('Usted ya elegio 4 jugadores')
     break
   }
 
@@ -1367,7 +1367,7 @@ else {
 
     }
     else{
-      msg.reply('No hay player en el pool con ese nombre, revisa bien')
+      msg.reply('No se encuentra player en el pool con ese nombre')
       break
     }
   }
@@ -1392,7 +1392,7 @@ else {
 
     }
     else{
-      msg.reply('No hay player en el pool con ese nombre, revisa bien')
+      msg.reply('No se encuentra player en el pool con ese nombre')
       break
     }
   }
@@ -1403,14 +1403,14 @@ else {
 }
 if (challengep[1].id == fromUser){
   if (direchallenge.length == 5){
-    msg.reply('Vos ya elegiste 4 jugadores')
+    msg.reply('Usted ya elegiste 4 jugadores')
     break
   }
   if (flip == 1){
 
 
 if (radiantchallenge.length == (direchallenge.length)){
-  channel.sendMessage('Todavia no es tu turno de elegir')
+  channel.sendMessage('Todavia no es su turno de elegir')
   break
 }
 else {
@@ -1423,7 +1423,7 @@ else {
     channel.sendMessage('El team dire es: ' + get(direchallenge))
   }
   else{
-    msg.reply('No hay player en el pool con ese nombre, revisa bien')
+    msg.reply('No se encuentra player en el pool con ese nombre')
     break
   }
   }
@@ -1433,7 +1433,7 @@ else {
 
 
 if (radiantchallenge.length > (direchallenge.length)){
-  channel.sendMessage('Todavia no es tu turno de elegir')
+  channel.sendMessage('Todavia no es su turno de elegir')
 }
 else {
   let index = iob(challengep, nickname)
@@ -1447,7 +1447,7 @@ else {
 
   }
   else{
-    msg.reply('No hay player en el pool con ese nombre, revisa bien')
+    msg.reply('No se encuentra player en el pool con ese nombre')
     break
   }
   }
@@ -1588,7 +1588,7 @@ break
 
 
 else{
-  msg.reply('Te falto el nick del player que queres pickear')
+  msg.reply('Le falto el nick del player que quieres pickear')
   break
 }
 
@@ -1626,7 +1626,7 @@ else{
     channel.sendMessage('El usuario ' + nickname + ' no existe')
   }
 else {
-   msg.reply('Te falto algo, acordate que es .check nick')
+   msg.reply('Le falto algo, recuerda que es .up nick')
 }
 break
 }
@@ -1670,7 +1670,7 @@ else{
     channel.sendMessage('El usuario ' + nickname + ' no existe')
   }
 else {
-   msg.reply('Te falto algo, acordate que es .check nick')
+   msg.reply('Le falto algo, recuerda que es .down nick')
 }
 break
 }
@@ -1706,7 +1706,7 @@ else{
     channel.sendMessage('El usuario ' + nickname + ' no existe')
   }
 else {
-   msg.reply('Te falto algo, acordate que es .check nick')
+   msg.reply('Le falto algo, recuerda que es .check nick')
 }
 break
 }
@@ -1763,7 +1763,7 @@ if (input[1]){
   break
 }
 else {
-  channel.sendMessage('Te falto el nick')
+  channel.sendMessage('Le falto el steamID64')
   break
 }
   }
@@ -1778,7 +1778,7 @@ break;
 
 case 'reg':
 if (typeof(base.usersC[fromUser]) != 'undefined') {
-msg.reply('Vos ya estas registrado picaron')
+msg.reply('Usted ya esta registrado')
 break
 }
 else{
@@ -1806,7 +1806,7 @@ activa.splice(0,23)
         }
   }
   else{
-    msg.reply('Te falto algo, acordate que es .reg SteamID Nick')
+    msg.reply('Le falto algo, recuerda que es .reg SteamID Nick')
     break
   }
 
@@ -1846,14 +1846,14 @@ if (index > -1) {
 break
 }
 else {
-  channel.sendMessage('Vos no estabas en queue para jugar')
+  channel.sendMessage('Usted no estaba en queue para jugar')
   break
 }
 
 case 'q':
 case 'sign':
 if (typeof(base.usersC[fromUser]) == 'undefined') {
-  msg.reply('no estas registrado en la Dota 2 In-House League')
+  msg.reply('Usted no estas registrado en la Dota 2 In-House League')
 break
 }
 if (inLobby === true){
@@ -1871,7 +1871,7 @@ if (botInUse1 === true && botInUse2 === true && botInUse3 === true
   {
 
     if (ioa(ingame, fromUser) >= 0){
-          msg.reply('Vos estas ingame, no podes entrar en la cola')
+          msg.reply('Usted esta ingame, no puedes entrar en la cola')
           break
         }
     else if (ioa(players, fromUser) >= 0){
