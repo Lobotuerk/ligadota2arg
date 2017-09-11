@@ -135,8 +135,8 @@ bot4.connect();
 console.log('Bot4 Iniciado')
 bot4.on('connected', function() {
   botUser4.logOn({
-    account_name: CONFIG.username3,
-    password: CONFIG.password3
+    account_name: CONFIG.username7,
+    password: CONFIG.password7
   });
 });
 
@@ -443,6 +443,7 @@ dota2.on('practiceLobbyUpdate', function(lobby) {
 
 if (inLobby == true){
 time(dota2);
+playerslobby = [];
 lobbyp = lobby.members;
 let lobbyready = 0;
 for (var i = 1; i < lobbyp.length; i++){
@@ -594,6 +595,7 @@ dota3.on('practiceLobbyUpdate', function(lobby) {
 
 if (inLobby == true){
 time(dota3);
+playerslobby = [];
 lobbyp = lobby.members;
 let lobbyready = 0;
 for (var i = 1; i < lobbyp.length; i++){
@@ -1298,7 +1300,7 @@ else {
 case 'join':
 case 'pool':
 if (challenge == true){
-  if (base.usersC[fromUser].nick == challengep[0].nick){
+  if (base.usersC[fromUser].nick.toLowerCase() == challengep[0].nick.toLowerCase()){
     if (challengep.length >= 2){
       channel.sendMessage('Pool : \n' + poolp(challengep))
       break
@@ -1309,7 +1311,7 @@ if (challenge == true){
     }
   }
 
-  else if (base.usersC[fromUser].nick == challengep[1].nick){
+  else if (base.usersC[fromUser].nick.toLowerCase() == challengep[1].nick.toLowerCase()){
     if (challengep.length >= 2){
       channel.sendMessage('Pool : \n' + poolp(challengep))
       break
