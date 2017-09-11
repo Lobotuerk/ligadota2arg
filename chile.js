@@ -1019,15 +1019,58 @@ disc.on("message", function(msg) {
 
 
     case 'elobby':
-    if (base.usersC[fromUser].level >= 3) {
-      dota1.leavePracticeLobby();
-      dota2.leavePracticeLobby();
-      dota3.leavePracticeLobby();
-      dota4.leavePracticeLobby();
-      dota1.abandonCurrentGame()
-      dota2.abandonCurrentGame()
-      dota3.abandonCurrentGame()
-      dota4.abandonCurrentGame()
+    if (base.usersC[fromUser].level >= 3) {if (input[1] == 1){
+        dota1.leavePracticeLobby();
+        dota1.abandonCurrentGame()
+        for (var x = 0; x < 5; x++){
+          let index = contains(ingame, playersbot1.dire[x].name)
+          ingame.splice(index,1)
+          let index2 = contains(ingame, playersbot1.radiant[x].name)
+          ingame.splice(index2,1)
+    }
+    botInUse1 = false
+    }
+    if (input[1] == 2){
+        dota2.leavePracticeLobby();
+        dota2.abandonCurrentGame()
+        for (var x = 0; x < 5; x++){
+          let index = contains(ingame, playersbot2.dire[x].name)
+          ingame.splice(index,1)
+          let index2 = contains(ingame, playersbot2.radiant[x].name)
+          ingame.splice(index2,1)
+    }
+    botInUse2 = false
+    }
+    if (input[1] == 3){
+        dota3.leavePracticeLobby();
+        dota3.abandonCurrentGame()
+        for (var x = 0; x < 5; x++){
+          let index = contains(ingame, playersbot3.dire[x].name)
+          ingame.splice(index,1)
+          let index2 = contains(ingame, playersbot3.radiant[x].name)
+          ingame.splice(index2,1)
+    }
+    botInUse3 = false
+    }
+    if (input[1] == 4){
+        dota4.leavePracticeLobby();
+        dota4.abandonCurrentGame()
+        for (var x = 0; x < 5; x++){
+          let index = contains(ingame, playersbot4.dire[x].name)
+          ingame.splice(index,1)
+          let index2 = contains(ingame, playersbot4.radiant[x].name)
+          ingame.splice(index2,1)
+    }
+    botInUse4 = false
+  }
+
+
+
+
+
+
+      
+
       break;
 
   }
@@ -1051,7 +1094,7 @@ disc.on("message", function(msg) {
 
   case 'clobby':
   if (base.usersC[fromUser].level >= 3) {
-    if (input[0] && input[1] && input[2]) {
+    /*if (input[0] && input[1] && input[2]) {
 
       let acen = new BigNumber(base.usersC[fromUser].name).minus('76561197960265728')
       acen = acen.toNumber()
@@ -1075,7 +1118,12 @@ disc.on("message", function(msg) {
     else {
       msg.reply("Especifique Nombre y Contraseña del lobby");
       break;
-    }
+    }*/
+    dota1.launchPracticeLobby()
+    dota2.launchPracticeLobby()
+    dota3.launchPracticeLobby()
+    dota4.launchPracticeLobby()
+    break
 }
 else
 {
