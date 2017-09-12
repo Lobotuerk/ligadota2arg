@@ -641,8 +641,8 @@ for (var o = 0; o < 5; o++){
    ingame.push(playersbot3.radiant[o])
   }
 }
-
 clearTimeout(timer);
+
       antiafk = false;
      dota3.launchPracticeLobby();
 
@@ -686,8 +686,8 @@ ref2.update({
         channel.sendMessage('Game ' + match3.number +' terminado\n' +
         'Resultado: Radiant Wins\n'+
          'Replay ID ' + match3.id)
-        dota3.leavePracticeLobby();
-        dota3.abandonCurrentGame()
+         dota3.leavePracticeLobby();
+         dota3.abandonCurrentGame()
                botInUse3 = false
       }
 
@@ -704,7 +704,7 @@ ref2.update({
 }
   for (var o = 0; o < 5; o++){
 let ref2 = db.ref('usersC/'+ playersbot3.radiant[o].id)
-let nmmr = playersbot3.radiant[o].mmr - (Math.floor(((playersbot3.radiant[o].xp)*k)) + points)
+let nmmr = playersbot3.radiant[o].mmr - (Math.floor(((playersbot3.radiant[o].xp+1)*k)) + points)
 ref2.update({
   mmr: nmmr,
   matchs: base.usersC[playersbot3.radiant[o].id].matchs + 1
@@ -725,17 +725,18 @@ ref2.update({
     else {
       return
     }
-      for (var x = 0; x < 5; x++){
-        let index = contains(ingame, playersbot3.dire[x].name)
-        ingame.splice(index,1)
-        let index2 = contains(ingame, playersbot3.radiant[x].name)
-        ingame.splice(index2,1)
-    }
+    for (var x = 0; x < 5; x++){
+      let index = contains(ingame, playersbot3.dire[x].name)
+      ingame.splice(index,1)
+      let index2 = contains(ingame, playersbot3.radiant[x].name)
+      ingame.splice(index2,1)
+  }
 
 
   }
 }
 });
+
 
 dota4.on('practiceLobbyUpdate', function(lobby) {
   if (lobby.state == 2 && match4.id != lobby.server_id){
@@ -1063,14 +1064,6 @@ disc.on("message", function(msg) {
     }
     botInUse4 = false
   }
-
-
-
-
-
-
-      
-
       break;
 
   }
@@ -1079,6 +1072,37 @@ disc.on("message", function(msg) {
       msg.reply(DICT.ERRORS.err_not_admin);
     break;
   }
+
+  case 'patch':
+  if (base.usersC[fromUser].level >= 3)
+  {if (input[1] == 1){
+      dota1.leavePracticeLobby();
+      dota1.abandonCurrentGame()
+  botInUse1 = false
+  }
+  if (input[1] == 2){
+      dota2.leavePracticeLobby();
+      dota2.abandonCurrentGame()
+  botInUse2 = false
+  }
+  if (input[1] == 3){
+      dota3.leavePracticeLobby();
+      dota3.abandonCurrentGame()
+  botInUse3 = false
+  }
+  if (input[1] == 4){
+      dota4.leavePracticeLobby();
+      dota4.abandonCurrentGame()
+  botInUse4 = false
+}
+    break;
+
+}
+else
+{
+    msg.reply(DICT.ERRORS.err_not_admin);
+  break;
+}
 
 
   case 'me':
