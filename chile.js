@@ -1634,14 +1634,15 @@ for (var o = 0; o < direchallenge.length; o++){
 for (var o = 0; o < radiantchallenge.length; o++){
   dota3.inviteToLobby(radiantchallenge[o].invite)
 }
+
+playersbot3.dire = direchallenge;
+playersbot3.radiant = radiantchallenge;
+match3.number = number
 challengep = [];
 challenge = false
 direchallenge = [];
 radiantchallenge = [];
 inLobby = true
-playersbot3.dire = direchallenge;
-playersbot3.radiant = radiantchallenge;
-match3.number = number
 break;
 }
 
