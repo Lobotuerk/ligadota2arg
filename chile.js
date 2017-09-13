@@ -1274,7 +1274,7 @@ break;
 };
 
 case 'cancel':
-if (base.usersC[fromUser].level >= 2){
+if (base.usersC[fromUser].level >= 3){
   challenge = false
   challengep = [];
   radiantchallenge = [];
@@ -1342,7 +1342,7 @@ if (challenge == true){
     acen = acen.toNumber()
     acen = acen + ''
     channel.sendMessage('El usuario ' + challengep[1].nick + ' acepto el challenge de ' +
-  challengep[0].nick + ', aquellos que quieran jugar pueden entrar con .join')
+  challengep[0].nick + ', aquellos que quieran jugar pueden entrar con !join')
 if (flip == 1){
   channel.sendMessage('Empieza pickeando players el jugador ' + challengep[0].nick )
 }
@@ -1688,7 +1688,7 @@ else{
 }
 
 case 'up':
-if (base.usersC[fromUser].level >= 2) {
+if (base.usersC[fromUser].level >= 3) {
 if (toplist != true){
 top = [];
 for (var key in base.usersC) {
@@ -1733,7 +1733,7 @@ break;
 }
 
 case 'down':
-if (base.usersC[fromUser].level >= 2) {
+if (base.usersC[fromUser].level >= 3) {
 if (toplist != true){
 top = [];
 for (var key in base.usersC) {
@@ -1846,7 +1846,7 @@ break;
 };*/
 
 case 'vouch':
-if (base.usersC[fromUser].level >= 2) {
+if (base.usersC[fromUser].level >= 3) {
 if (input[1]){
   activa.splice(0,7)
   let nickname = activa.join('')
