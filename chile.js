@@ -287,7 +287,7 @@ bot4.on('logOnResponse', function() {
 
 
 dota1.on('practiceLobbyUpdate', function(lobby) {
-  if (lobby.state == 2 && match1.id != lobby.server_id){
+  if (lobby.state == 2 && match1.id != lobby.server_id && inLobby == true){
   match1.id = lobby.server_id
   let ref3 = db.ref('matchs/'+ match1.number)
   ref3.set({matchid: match1.id})
@@ -442,7 +442,7 @@ ref3.set({matchid: match1.id,
 });
 
 dota2.on('practiceLobbyUpdate', function(lobby) {
-  if (lobby.state == 2 && match2.id != lobby.server_id){
+  if (lobby.state == 2 && match2.id != lobby.server_id && inLobby == true){
   match2.id = lobby.server_id
   let ref3 = db.ref('matchs/'+ match2.number)
   ref3.set({matchid: match2.id})
@@ -601,7 +601,7 @@ ref2.update({
 });
 
 dota3.on('practiceLobbyUpdate', function(lobby) {
-  if (lobby.state == 2 && match3.id != lobby.server_id){
+  if (lobby.state == 2 && match3.id != lobby.server_id && inLobby == true){
   match3.id = lobby.server_id
   let ref3 = db.ref('matchs/'+ match3.number)
   ref3.set({matchid: match3.id})
@@ -761,7 +761,7 @@ ref2.update({
 
 
 dota4.on('practiceLobbyUpdate', function(lobby) {
-  if (lobby.state == 2 && match4.id != lobby.server_id){
+  if (lobby.state == 2 && match4.id != lobby.server_id && inLobby == true){
   match4.id = lobby.server_id
   let ref3 = db.ref('matchs/'+ match4.number)
   ref3.set({matchid: match4.id})
@@ -931,7 +931,7 @@ disc.on("message", function(msg) {
   let message = original.toLowerCase();
   let user = msg.author;
   let fromUser = user.id;
-
+  logger.log(original)
   if (fromUser === '294907553450688523') {
     return;
   }
@@ -1473,7 +1473,7 @@ if (input[1]){
 activa.splice(0,6)
   let nickname = activa.join('')
 if (challengep[0].id == fromUser){
-if (challengep.length < 10 || pickfase != true){
+if (challengep.length < 10 && pickfase != true){
   channel.sendMessage('Todavia no hay suficientes jugadores en el pool')
   break
 }
@@ -1537,7 +1537,7 @@ else {
 
 }
 if (challengep[1].id == fromUser){
-  if (challengep.length < 10 || pickfase != true){
+  if (challengep.length < 10 && pickfase != true){
     channel.sendMessage('Todavia no hay suficientes jugadores en el pool')
     break
   }
