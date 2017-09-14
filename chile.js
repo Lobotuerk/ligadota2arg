@@ -2265,7 +2265,7 @@ players.push(playerslobby[x])
     radiantval = 0;
     direplayers = [];
     radiantplayers = [];
-    if(challenge = true){
+    if(challenge == true){
       direchallenge = [];
       radiantchallenge = [];
       challenge = false
