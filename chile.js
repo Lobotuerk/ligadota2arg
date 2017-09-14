@@ -63,6 +63,7 @@ let challenge = false;
 let antic = false;
 let radiantchallenge = [];
 let direchallenge = [];
+let pickfase = false
 
 if (cluster.isMaster) {
   cluster.fork();
@@ -291,6 +292,13 @@ dota1.on('practiceLobbyUpdate', function(lobby) {
   let ref3 = db.ref('matchs/'+ match1.number)
   ref3.set({matchid: match1.id})
      inLobby = false
+     if(challenge == true){
+       direchallenge = [];
+       radiantchallenge = [];
+       challenge = false
+     }
+     direplayers = [];
+     radiantplayers = [];
   }
 
 if (inLobby == true){
@@ -439,6 +447,13 @@ dota2.on('practiceLobbyUpdate', function(lobby) {
   let ref3 = db.ref('matchs/'+ match2.number)
   ref3.set({matchid: match2.id})
    inLobby = false
+   if(challenge == true){
+     direchallenge = [];
+     radiantchallenge = [];
+     challenge = false
+   }
+   direplayers = [];
+   radiantplayers = [];
 }
 
 if (inLobby == true){
@@ -552,7 +567,7 @@ ref2.update({
 }
   for (var o = 0; o < 5; o++){
 let ref2 = db.ref('usersC/'+ playersbot2.radiant[o].id)
-let nmmr = playersbot2.radiant[o].mmr - (Math.floor(((playersbot2.radiant[o].xp+1)*k)) + points)
+let nmmr = playersbot2.radiant[o].mmr - (Math.floor(((playersbot2.radiant[o].xp)*k)) + points)
 ref2.update({
   mmr: nmmr,
   matchs: base.usersC[playersbot2.radiant[o].id].matchs + 1
@@ -591,6 +606,13 @@ dota3.on('practiceLobbyUpdate', function(lobby) {
   let ref3 = db.ref('matchs/'+ match3.number)
   ref3.set({matchid: match3.id})
    inLobby = false
+   if(challenge == true){
+     direchallenge = [];
+     radiantchallenge = [];
+     challenge = false
+   }
+   direplayers = [];
+   radiantplayers = [];
 }
 
 if (inLobby == true){
@@ -704,7 +726,7 @@ ref2.update({
 }
   for (var o = 0; o < 5; o++){
 let ref2 = db.ref('usersC/'+ playersbot3.radiant[o].id)
-let nmmr = playersbot3.radiant[o].mmr - (Math.floor(((playersbot3.radiant[o].xp+1)*k)) + points)
+let nmmr = playersbot3.radiant[o].mmr - (Math.floor(((playersbot3.radiant[o].xp)*k)) + points)
 ref2.update({
   mmr: nmmr,
   matchs: base.usersC[playersbot3.radiant[o].id].matchs + 1
@@ -744,6 +766,13 @@ dota4.on('practiceLobbyUpdate', function(lobby) {
   let ref3 = db.ref('matchs/'+ match4.number)
   ref3.set({matchid: match4.id})
      inLobby = false
+     if(challenge == true){
+       direchallenge = [];
+       radiantchallenge = [];
+       challenge = false
+     }
+     direplayers = [];
+     radiantplayers = [];
   }
 
 if (inLobby == true){
@@ -983,19 +1012,19 @@ disc.on("message", function(msg) {
     }
     else {
     if (botInUse1 == true){
-   channel.sendMessage('Game ' + match1.number +': \n' + 'Radiant: ' + get(playersbot1.radiant) + '\n'
+   channel.sendMessage('Game ' + match1.number +':(Bot 1) \n' + 'Radiant: ' + get(playersbot1.radiant) + '\n'
      + 'Dire: ' + get(playersbot1.dire) + '\n' + 'Dota2MatchID: ' + match1.id)
     }
     if (botInUse2 == true){
-      channel.sendMessage('Game ' + match2.number +': \n' + 'Radiant: ' + get(playersbot2.radiant) + '\n'
+      channel.sendMessage('Game ' + match2.number +':(Bot 2) \n' + 'Radiant: ' + get(playersbot2.radiant) + '\n'
      + 'Dire: ' + get(playersbot2.dire) + '\n' + 'Dota2MatchID: ' + match2.id )
     }
     if (botInUse3 == true){
-      channel.sendMessage('Game ' + match3.number +': \n' + 'Radiant: ' + get(playersbot3.radiant) + '\n'
+      channel.sendMessage('Game ' + match3.number +':(Bot 3) \n' + 'Radiant: ' + get(playersbot3.radiant) + '\n'
      + 'Dire: ' + get(playersbot3.dire) + '\n' + 'Dota2MatchID: ' + match3.id )
     }
     if (botInUse4 == true){
-      channel.sendMessage('Game ' + match4.number +': \n' + 'Radiant: ' + get(playersbot4.radiant) + '\n'
+      channel.sendMessage('Game ' + match4.number +':(Bot 4) \n' + 'Radiant: ' + get(playersbot4.radiant) + '\n'
      + 'Dire: ' + get(playersbot4.dire) + '\n' + 'Dota2MatchID: ' + match4.id )
     }
 
@@ -1111,7 +1140,7 @@ else
   break
   }
   else{
-  msg.reply('Tienes actualmente ' + base.usersC[fromUser].mmr + ' puntos de mmr y ' + ((base.usersC[fromUser].wins / base.usersC[fromUser].matchs) * 100 ) +
+  msg.reply('Tienes actualmente ' + base.usersC[fromUser].mmr + ' puntos de mmr (Pos.'+ (postop(top,base.usersC[fromUser].nick)+1) +') y ' + ((base.usersC[fromUser].wins / base.usersC[fromUser].matchs) * 100 ).toFixed(1) +
    '% de winrate en ' + base.usersC[fromUser].matchs + ' partidas.')
   break
   }
@@ -1279,6 +1308,7 @@ if (base.usersC[fromUser].level >= 3){
   challengep = [];
   radiantchallenge = [];
   direchallenge = [];
+  pickfase = false
   break
 }
 if (typeof(challengep[0]) != 'undefined' && typeof(challengep[1]) != 'undefined'){
@@ -1287,6 +1317,7 @@ if (base.usersC[fromUser].nick == challengep[0].nick || base.usersC[fromUser].ni
   challengep = [];
   direchallenge = []
   radiantchallenge = [];
+  pickfase = false
   break
 }
 break
@@ -1334,6 +1365,10 @@ else{
 
 case 'accept':
 if (challenge == true){
+  if (inLobby == true){
+    msg.reply('Se esta por mandar un lobby, debes esperar a que se mande para seguir con el challenge')
+    break
+  }
   if (challengep[1].nick.toLowerCase() == base.usersC[fromUser].nick.toLowerCase() && typeof(challengep[1].mmr) == 'undefined'){
           clearTimeout(timerc);
           ctime();
@@ -1371,30 +1406,36 @@ else {
 
 case 'join':
 case 'pool':
+if (inLobby == true){
+  break
+}
 if (challenge == true){
   if (base.usersC[fromUser].nick.toLowerCase() == challengep[0].nick.toLowerCase()){
     if (challengep.length >= 2){
-      channel.sendMessage('Pool : \n' + poolp(challengep))
+      channel.sendMessage('Capitanes: ' +challengep[0].nick +' '+ challengep[1].nick + ' Pool (' + challengep.length +' players): \n' + poolp(challengep))
       break
     }
     else{
-      msg.reply('Todavia no hay suficientes players en el pool')
+      msg.reply('Todavia no hay players en el pool')
       break
     }
   }
 
   else if (base.usersC[fromUser].nick.toLowerCase() == challengep[1].nick.toLowerCase()){
     if (challengep.length >= 2){
-      channel.sendMessage('Pool : \n' + poolp(challengep))
+      channel.sendMessage('Capitanes: ' +challengep[0].nick +' '+ challengep[1].nick + ' Pool (' + challengep.length +' players): \n' + poolp(challengep))
       break
     }
     else{
-      msg.reply('Todavia no hay suficientes players en el pool')
+      msg.reply('Todavia no hay players en el pool')
       break
     }
   }
   else {
-
+    if(pickfase == true){
+      channel.sendMessage('La fase de picks ya empezo, ya no te puedes unir')
+      break
+    }
     if (ioa(challengep, fromUser) >= 0 || ioa(radiantchallenge, fromUser) >= 0 || ioa(direchallenge, fromUser) >= 0){
       //msg.reply('Vos ya estas en cola')
       break
@@ -1413,11 +1454,12 @@ else{
 }
 
 case 'pick':
-if (inLobby == true){
-  msg.reply('Se esta por mandar un lobby, debes esperar a que se mande para seguir con el challenge')
+
+if (challenge != true){
   break
 }
-if (challenge != true){
+if (inLobby == true){
+  msg.reply('Se esta por mandar un lobby, debes esperar a que se mande para seguir con el challenge')
   break
 }
 if (botInUse1 === true && botInUse2 === true && botInUse3 === true
@@ -1431,7 +1473,10 @@ if (input[1]){
 activa.splice(0,6)
   let nickname = activa.join('')
 if (challengep[0].id == fromUser){
-
+if (challengep.length < 10 || pickfase != true){
+  channel.sendMessage('Todavia no hay suficientes jugadores en el pool')
+  break
+}
 
   if (radiantchallenge.length == 5){
     msg.reply('Usted ya elegio 4 jugadores')
@@ -1449,7 +1494,7 @@ else {
       let index = iob(challengep, nickname)
     if (index >= 0){
       channel.sendMessage('El jugador ' + challengep[index].nick + ' fue elegido por ' + base.usersC[fromUser].nick)
-
+      pickfase = true
       radiantchallenge.push(challengep[index])
       let index2 = contains(challengep, challengep[index].name)
       challengep.splice(index2,1)
@@ -1473,7 +1518,7 @@ else {
       let index = iob(challengep, nickname)
     if (index >= 0){
       channel.sendMessage('El jugador ' + challengep[index].nick + ' fue elegido por ' + base.usersC[fromUser].nick)
-
+      pickfase = true
       radiantchallenge.push(challengep[index])
       let index2 = contains(challengep, challengep[index].name)
       challengep.splice(index2,1)
@@ -1492,6 +1537,10 @@ else {
 
 }
 if (challengep[1].id == fromUser){
+  if (challengep.length < 10 || pickfase != true){
+    channel.sendMessage('Todavia no hay suficientes jugadores en el pool')
+    break
+  }
   if (direchallenge.length == 5){
     msg.reply('Usted ya elegiste 4 jugadores')
     break
@@ -1507,6 +1556,7 @@ else {
   let index = iob(challengep, nickname)
   if (index >= 0){
     channel.sendMessage('El jugador ' + challengep[index].nick + ' fue elegido por ' + base.usersC[fromUser].nick)
+    pickfase = true
     direchallenge.push(challengep[index])
     let index2 = contains(challengep, challengep[index].name)
     challengep.splice(index2,1)
@@ -1530,6 +1580,7 @@ else {
   if (index >= 0){
     channel.sendMessage('El jugador ' + challengep[index].nick + ' fue elegido por '
     + base.usersC[fromUser].nick)
+    pickfase = true
     direchallenge.push(challengep[index])
     let index2 = contains(challengep, challengep[index].name)
     challengep.splice(index2,1)
@@ -1549,7 +1600,7 @@ if (direchallenge.length == 5 && radiantchallenge.length == 5){
 'El team radiant es: ' + get(radiantchallenge) + '\n' +
 'El team dire es: ' + get(direchallenge))
    number = Object.keys(base.matchs).length
-
+   pickfase = false
      clearTimeout(timerc);
   if (botInUse1 == false){
     dota1.leavePracticeLobby();
@@ -1575,9 +1626,6 @@ for (var o = 0; o < radiantchallenge.length; o++){
   playersbot1.dire = direchallenge;
   playersbot1.radiant = radiantchallenge;
   challengep = [];
-  challenge = false
-  direchallenge = [];
-  radiantchallenge = [];
   inLobby = true
   break;
 }
@@ -1606,9 +1654,6 @@ playersbot2.dire = direchallenge;
 playersbot2.radiant = radiantchallenge;
 match2.number = number
 challengep = [];
-challenge = false
-direchallenge = [];
-radiantchallenge = [];
 inLobby = true
 break;
 }
@@ -1639,9 +1684,6 @@ playersbot3.dire = direchallenge;
 playersbot3.radiant = radiantchallenge;
 match3.number = number
 challengep = [];
-challenge = false
-direchallenge = [];
-radiantchallenge = [];
 inLobby = true
 break;
 }
@@ -1670,9 +1712,6 @@ match4.number = number
 playersbot4.dire = direchallenge;
 playersbot4.radiant = radiantchallenge;
 challengep = [];
-challenge = false
-direchallenge = [];
-radiantchallenge = [];
 inLobby = true
 break;
 }
@@ -1792,7 +1831,7 @@ let nickname = activa.join('')
 let indexn = iob(top, nickname)
 if (indexn > -1) {
 channel.sendMessage('El usuario ' + top[indexn].nick + ' tiene ' + top[indexn].mmr +
-' puntos de mmr y ' + ((top[indexn].wins / top[indexn].matchs) * 100 ) + '% de winrate en ' + top[indexn].matchs + ' partidas.')
+' puntos de mmr (Pos.'+ (postop(top,top[indexn].nick)+1) +') y ' + ((top[indexn].wins / top[indexn].matchs) * 100 ).toFixed(1) + '% de winrate en ' + top[indexn].matchs + ' partidas.')
 break
 }
 else{
@@ -2046,8 +2085,6 @@ channel.sendMessage('@here Lobby creado\n' + 'Team radiant = (C) ' + get(radiant
     lobbyp = [];
     direval = 0;
     radiantval = 0;
-    direplayers = [];
-    radiantplayers = [];
     queue = 0;
     inLobby = true;
     break;
@@ -2079,8 +2116,6 @@ playersbot2.radiant = radiantplayers;
  lobbyp = [];
  direval = 0;
  radiantval = 0;
- direplayers = [];
- radiantplayers = [];
  queue = 0;
 break;
 }
@@ -2111,8 +2146,6 @@ playersbot3.radiant = radiantplayers;
  lobbyp = [];
  direval = 0;
  radiantval = 0;
- direplayers = [];
- radiantplayers = [];
  queue = 0;
 break;
 }
@@ -2142,8 +2175,6 @@ dire = [];
 lobbyp = [];
 direval = 0;
 radiantval = 0;
-direplayers = [];
-radiantplayers = [];
 queue = 0;
 inLobby = true;
 break;
@@ -2206,7 +2237,7 @@ function time(b){
 if (antiafk != true){
 timer = setTimeout(function(){
     afk(b);
-}, 180000);
+}, 600000);
 antiafk = true
 }
 }
@@ -2279,7 +2310,14 @@ function contains(a, obj) {
     return -1;
 }
 
-
+function postop(a, obj) {
+    for (var i = 0; i < a.length; i++) {
+        if (a[i].nick.toLowerCase() === obj.toLowerCase()) {
+            return i;
+        }
+    }
+    return -1;
+}
 
 
 
