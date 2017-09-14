@@ -2265,6 +2265,11 @@ players.push(playerslobby[x])
     radiantval = 0;
     direplayers = [];
     radiantplayers = [];
+    if(challenge = true){
+      direchallenge = [];
+      radiantchallenge = [];
+      challenge = false
+    }
     antiafk = false
     inLobby = false
 }
