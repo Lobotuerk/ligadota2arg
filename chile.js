@@ -103,7 +103,7 @@ let botUser4 = new Steam.SteamUser(bot4);
 let botFriends4 = new Steam.SteamFriends(bot4);
 let dota4 = new Dota2.Dota2Client(bot4, true);
 
-logger.log('Attempting Steam login...');
+//logger.log('Attempting Steam login...');
 
 bot1.connect();
 console.log('Bot1 Iniciado')
@@ -189,7 +189,7 @@ bot1.on('logOnResponse', function() {
   botFriends1.setPersonaName(CONFIG.displayName1);
   dota1.launch();
   dota1.on('ready', function() {
-    logger.log('Bot 1 Seteado');
+    //logger.log('Bot 1 Seteado');
     bot1ready = true;
     if (bot1ready == true && bot2ready == true && bot3ready == true && bot4ready == true && toplist == false){
       account = 0
@@ -213,7 +213,7 @@ bot2.on('logOnResponse', function() {
   botFriends2.setPersonaName(CONFIG.displayName2);
    dota2.launch();
    dota2.on('ready', function() {
-      logger.log('Bot 2 Seteado');
+      //logger.log('Bot 2 Seteado');
       bot2ready = true;
       if (bot1ready == true && bot2ready == true && bot3ready == true && bot4ready == true && toplist == false){
         account = 0
@@ -237,7 +237,7 @@ bot3.on('logOnResponse', function() {
   botFriends3.setPersonaName(CONFIG.displayName3);
   dota3.launch();
   dota3.on('ready', function() {
-    logger.log('Bot 3 Seteado');
+    //logger.log('Bot 3 Seteado');
     bot3ready = true;
     if (bot1ready == true && bot2ready == true && bot3ready == true && bot4ready == true && toplist == false){
       account = 0
@@ -261,7 +261,7 @@ bot4.on('logOnResponse', function() {
   botFriends4.setPersonaName(CONFIG.displayName4);
   dota4.launch();
   dota4.on('ready', function() {
-    logger.log('Bot 4 Seteado');
+    //logger.log('Bot 4 Seteado');
     bot4ready = true;
     if (bot1ready == true && bot2ready == true && bot3ready == true && bot4ready == true && toplist == false){
       account = 0
@@ -931,7 +931,7 @@ disc.on("message", function(msg) {
   let message = original.toLowerCase();
   let user = msg.author;
   let fromUser = user.id;
-  logger.log(original)
+
   if (fromUser === '294907553450688523') {
     return;
   }
@@ -943,6 +943,7 @@ disc.on("message", function(msg) {
 
   if (activa[0] === '!') {
     //  msg.delete()
+    //  logger.log(original)
     if (ready === true){
       if (input[0] == 'help'){
         channel.sendMessage(DICT.help_message)
@@ -1303,6 +1304,10 @@ break;
 };
 
 case 'cancel':
+if(challenge == false){
+  break
+}
+
 if (base.usersC[fromUser].level >= 3){
   challenge = false
   challengep = [];
@@ -1325,6 +1330,10 @@ break
 break
 
 case 'challenge':
+if(challenge == true){
+  break
+}
+
 if (challenge == false){
   if (input[1]){
     if (input[1].toLowerCase() == base.usersC[fromUser].nick.toLowerCase()){
@@ -1614,7 +1623,7 @@ let gamename = 'In-HouseChallenge' + number
                                 "allow_spectating": true,
                                "allchat": false
                              });
-    logger.log("Lobby Creado");
+    //logger.log("Lobby Creado");
       dota1.joinPracticeLobbyTeam(2, 4);
 for (var o = 0; o < direchallenge.length; o++){
   dota1.inviteToLobby(direchallenge[o].invite)
@@ -1642,7 +1651,7 @@ let gamename = 'In-HouseLeague' + number
                             "allow_spectating": true,
                            "allchat": false
                          });
-logger.log("Lobby Creado");
+//logger.log("Lobby Creado");
     dota2.joinPracticeLobbyTeam(2, 4);
 for (var o = 0; o < direchallenge.length; o++){
   dota2.inviteToLobby(direchallenge[o].invite)
@@ -1670,7 +1679,7 @@ let gamename = 'In-HouseLeague' + number
                             "allow_spectating": true,
                            "allchat": false
                          });
-logger.log("Lobby Creado");
+//logger.log("Lobby Creado");
 dota3.joinPracticeLobbyTeam(2, 4);
 
 for (var o = 0; o < direchallenge.length; o++){
@@ -1700,7 +1709,7 @@ let gamename = 'In-HouseChallenge' + number
                               "allow_spectating": true,
                              "allchat": false
                            });
-  logger.log("Lobby Creado");
+  //logger.log("Lobby Creado");
     dota4.joinPracticeLobbyTeam(2, 4);
 for (var o = 0; o < direchallenge.length; o++){
 dota4.inviteToLobby(direchallenge[o].invite)
@@ -2061,6 +2070,8 @@ channel.sendMessage('@here Lobby creado\n' + 'Team radiant = (C) ' + get(radiant
 
 
     if (botInUse1 == false){
+      dota1.leavePracticeLobby();
+      dota1.abandonCurrentGame()
   let gamename = 'In-HouseLeague' + number
       dota1.createPracticeLobby({"game_name": gamename,
                                   "game_mode": 2,
@@ -2070,7 +2081,7 @@ channel.sendMessage('@here Lobby creado\n' + 'Team radiant = (C) ' + get(radiant
                                   "allow_spectating": true,
                                  "allchat": false
                                });
-      logger.log("Lobby Creado");
+      //logger.log("Lobby Creado");
         dota1.joinPracticeLobbyTeam(2, 4);
   for (var o = 0; o < players.length; o++){
     dota1.inviteToLobby(players[o].invite)
@@ -2091,6 +2102,8 @@ channel.sendMessage('@here Lobby creado\n' + 'Team radiant = (C) ' + get(radiant
 }
 
 if (botInUse2 == false){
+  dota2.leavePracticeLobby();
+  dota2.abandonCurrentGame()
   let gamename = 'In-HouseLeague' + number
       dota2.createPracticeLobby({"game_name": gamename,
                             "game_mode": 2,
@@ -2100,7 +2113,7 @@ if (botInUse2 == false){
                               "allow_spectating": true,
                              "allchat": false
                            });
-  logger.log("Lobby Creado");
+  //logger.log("Lobby Creado");
       dota2.joinPracticeLobbyTeam(2, 4);
 inLobby = true;
 for (var o = 0; o < players.length; o++){
@@ -2121,6 +2134,8 @@ break;
 }
 
 if (botInUse3 == false){
+  dota3.leavePracticeLobby();
+  dota3.abandonCurrentGame()
   let gamename = 'In-HouseLeague' + number
       dota3.createPracticeLobby({"game_name": gamename,
                               "game_mode": 2,
@@ -2130,7 +2145,7 @@ if (botInUse3 == false){
                               "allow_spectating": true,
                              "allchat": false
                            });
-  logger.log("Lobby Creado");
+  //logger.log("Lobby Creado");
   dota3.joinPracticeLobbyTeam(2, 4);
 
 for (var o = 0; o < players.length; o++){
@@ -2151,6 +2166,8 @@ break;
 }
 
 if (botInUse4 == false){
+  dota4.leavePracticeLobby();
+  dota4.abandonCurrentGame()
 let gamename = 'In-HouseLeague' + number
   dota4.createPracticeLobby({"game_name": gamename,
                               "game_mode": 2,
@@ -2160,7 +2177,7 @@ let gamename = 'In-HouseLeague' + number
                               "allow_spectating": true,
                              "allchat": false
                            });
-  logger.log("Lobby Creado");
+  //logger.log("Lobby Creado");
     dota4.joinPracticeLobbyTeam(2, 4);
 for (var o = 0; o < players.length; o++){
 dota4.inviteToLobby(players[o].invite)
@@ -2286,7 +2303,7 @@ function randomResponse() {
 
 
 function shutdown() {
-  logger.log('Shutting down Jankbot...');
+  //logger.log('Shutting down Jankbot...');
   process.exit();
   bot1ready = false;
   bot2ready = false;
