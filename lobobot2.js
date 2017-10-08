@@ -36,7 +36,7 @@ let playersbot4 = [];
 let playersbot5 = [];
 let playersbot6 = [];
 let playersbot7 = [];
-let server = 10
+let server = 14
 let channel;
 let lobbyp;
 let toplist = true;
@@ -73,7 +73,7 @@ let direchallenge = [];
 let account = 0;
 let flip = 0;
 let timerc;
-
+let pickfase = false
 
 if (cluster.isMaster) {
   cluster.fork();
@@ -90,10 +90,10 @@ if (cluster.isWorker) {
 
 let disc = new Discord.Client();
 
-disc.login(CONFIG.token3);
+disc.login(CONFIG.token5);
 
 disc.on("ready", function(msg) {
-channel = disc.channels.get(CONFIG.chid1)
+channel = disc.channels.get(CONFIG.chid5)
 })
 
 let bot7 = new Steam.SteamClient();
@@ -131,8 +131,8 @@ bot1.connect();
 console.log('Bot1 Iniciado')
 bot1.on('connected', function() {
   botUser1.logOn({
-    account_name: CONFIG.username7,
-    password: CONFIG.password7
+    account_name: CONFIG.username8,
+    password: CONFIG.password8
   });
 });
 
@@ -140,8 +140,8 @@ bot2.connect();
 console.log('Bot2 Iniciado')
 bot2.on('connected', function() {
   botUser2.logOn({
-    account_name: CONFIG.username6,
-    password: CONFIG.password6
+    account_name: CONFIG.username9,
+    password: CONFIG.password9
   });
 });
 
@@ -149,8 +149,8 @@ bot3.connect();
 console.log('Bot3 Iniciado')
 bot3.on('connected', function() {
   botUser3.logOn({
-    account_name: CONFIG.username5,
-    password: CONFIG.password5
+    account_name: CONFIG.username10,
+    password: CONFIG.password10
   });
 });
 
@@ -158,8 +158,8 @@ bot4.connect();
 console.log('Bot4 Iniciado')
 bot4.on('connected', function() {
   botUser4.logOn({
-    account_name: CONFIG.username4,
-    password: CONFIG.password4
+    account_name: CONFIG.username11,
+    password: CONFIG.password11
   });
 });
 
@@ -167,8 +167,8 @@ bot5.connect();
 console.log('Bot5 Iniciado')
 bot5.on('connected', function() {
   botUser5.logOn({
-    account_name: CONFIG.username3,
-    password: CONFIG.password3
+    account_name: CONFIG.username1,
+    password: CONFIG.password1
   });
 });
 
@@ -185,8 +185,8 @@ bot7.connect();
 console.log('Bot7 Iniciado')
 bot7.on('connected', function() {
   botUser7.logOn({
-    account_name: CONFIG.username1,
-    password: CONFIG.password1
+    account_name: CONFIG.username3,
+    password: CONFIG.password3
   });
 });
 
@@ -435,11 +435,18 @@ bot7.on('error', function() {
 
 
 dota1.on('practiceLobbyUpdate', function(lobby) {
-  if (lobby.state == 2 && match1.id != lobby.server_id){
+  if (lobby.state == 2 && match1.id != lobby.server_id && inLobby == true){
   match1.id = lobby.server_id
   let ref3 = db.ref('matchs/'+ match1.number)
   ref3.set({matchid: match1.id})
- inLobby = false
+     inLobby = false
+     if(challenge == true){
+       direchallenge = [];
+       radiantchallenge = [];
+       challenge = false
+     }
+     direplayers = [];
+     radiantplayers = [];
   }
 
 if (inLobby == true){
@@ -537,8 +544,9 @@ ref2.update({
         'Resultado: Radiant Wins\n'+
          'Replay ID ' + match1.id )
         dota1.leavePracticeLobby();
+        dota1.abandonCurrentGame()
                botInUse1 = false
-        }
+      }
 
     else if (lobby.match_outcome == 3){
         //dire wins
@@ -568,9 +576,9 @@ ref3.set({matchid: match1.id,
       'Resultado: Dire Wins\n'+
        'Replay ID ' + match1.id)
        dota1.leavePracticeLobby();
+       dota2.abandonCurrentGame()
              botInUse1 = false
     }
-
     for (var x = 0; x < 5; x++){
       let index = contains(ingame, playersbot1.dire[x].name)
       ingame.splice(index,1)
@@ -582,15 +590,23 @@ ref3.set({matchid: match1.id,
 });
 
 dota2.on('practiceLobbyUpdate', function(lobby) {
-  if (lobby.state == 2 && match2.id != lobby.server_id){
+  if (lobby.state == 2 && match2.id != lobby.server_id && inLobby == true){
   match2.id = lobby.server_id
   let ref3 = db.ref('matchs/'+ match2.number)
   ref3.set({matchid: match2.id})
    inLobby = false
+   if(challenge == true){
+     direchallenge = [];
+     radiantchallenge = [];
+     challenge = false
+   }
+   direplayers = [];
+   radiantplayers = [];
 }
 
 if (inLobby == true){
 time(dota2);
+playerslobby = [];
 lobbyp = lobby.members;
 let lobbyready = 0;
 for (var i = 1; i < lobbyp.length; i++){
@@ -636,7 +652,6 @@ for (var o = 0; o < 5; o++){
    ingame.push(playersbot2.radiant[o])
   }
 }
-
 clearTimeout(timer);
 
       antiafk = false;
@@ -653,94 +668,104 @@ continue;
 
 }
 
-else {
-  if (lobby.state == 3){
-    if (lobby.match_outcome == 2){
-      //radiant wins
-      for (var o = 0; o < 5; o++){
+  else {
+    if (lobby.state == 3){
+      if (lobby.match_outcome == 2){
+        //radiant wins
+        for (var o = 0; o < 5; o++){
 let ref2 = db.ref('users/'+ playersbot2.radiant[o].id)
 let nmmr = playersbot2.radiant[o].mmr + (Math.floor(((playersbot2.radiant[o].xp)*k)) + points)
 ref2.update({
-mmr: nmmr,
-wins: base.users[playersbot2.radiant[o].id].wins + 1,
-matchs: base.users[playersbot2.radiant[o].id].matchs + 1
+  mmr: nmmr,
+  wins: base.users[playersbot2.radiant[o].id].wins + 1,
+  matchs: base.users[playersbot2.radiant[o].id].matchs + 1
 });
 };
 for (var o = 0; o < 5; o++){
 let ref2 = db.ref('users/'+ playersbot2.dire[o].id)
 let nmmr = playersbot2.dire[o].mmr - (Math.floor(((playersbot2.dire[o].xp)*k)) + points)
 ref2.update({
-mmr: nmmr,
-matchs: base.users[playersbot2.dire[o].id].matchs + 1
+  mmr: nmmr,
+  matchs: base.users[playersbot2.dire[o].id].matchs + 1
 });
-      };
+        };
+        let ref3 = db.ref('matchs/'+ match2.number)
+        ref3.set({matchid: match2.id,
+                radiant: playersbot2.radiant,
+                dire: playersbot2.dire,
+                winner: 'radiant'})
+        channel.sendMessage('Game ' + match2.number +' terminado\n' +
+        'Resultado: Radiant Wins\n'+
+         'Replay ID ' + match2.id)
+         dota2.leavePracticeLobby();
+         dota2.abandonCurrentGame()
+               botInUse2 = false
+      }
+
+    else if (lobby.match_outcome == 3){
+        //dire wins
+        for (var o = 0; o < 5; o++){
+  let ref2 = db.ref('users/'+ playersbot2.dire[o].id)
+  let nmmr = playersbot2.dire[o].mmr + (Math.floor(((playersbot2.dire[o].xp)*k)) + points)
+  ref2.update({
+    mmr: nmmr,
+    wins: base.users[playersbot2.dire[o].id].wins + 1,
+    matchs: base.users[playersbot2.dire[o].id].matchs + 1
+});
+}
+  for (var o = 0; o < 5; o++){
+let ref2 = db.ref('users/'+ playersbot2.radiant[o].id)
+let nmmr = playersbot2.radiant[o].mmr - (Math.floor(((playersbot2.radiant[o].xp)*k)) + points)
+ref2.update({
+  mmr: nmmr,
+  matchs: base.users[playersbot2.radiant[o].id].matchs + 1
+});
+      }
       let ref3 = db.ref('matchs/'+ match2.number)
       ref3.set({matchid: match2.id,
               radiant: playersbot2.radiant,
               dire: playersbot2.dire,
-              winner: 'radiant'})
+              winner: 'dire'})
       channel.sendMessage('Game ' + match2.number +' terminado\n' +
-      'Resultado: Radiant Wins\n'+
+      'Resultado: Dire Wins\n'+
        'Replay ID ' + match2.id)
-       dota2.leavePracticeLobby();
+      dota2.leavePracticeLobby();
+      dota2.abandonCurrentGame()
              botInUse2 = false
     }
-
-  else if (lobby.match_outcome == 3){
-      //dire wins
-      for (var o = 0; o < 5; o++){
-let ref2 = db.ref('users/'+ playersbot2.dire[o].id)
-let nmmr = playersbot2.dire[o].mmr + (Math.floor(((playersbot2.dire[o].xp)*k)) + points)
-ref2.update({
-  mmr: nmmr,
-  wins: base.users[playersbot2.dire[o].id].wins + 1,
-  matchs: base.users[playersbot2.dire[o].id].matchs + 1
-});
-}
-for (var o = 0; o < 5; o++){
-let ref2 = db.ref('users/'+ playersbot2.radiant[o].id)
-let nmmr = playersbot2.radiant[o].mmr - (Math.floor(((playersbot2.radiant[o].xp+1)*k)) + points)
-ref2.update({
-mmr: nmmr,
-matchs: base.users[playersbot2.radiant[o].id].matchs + 1
-});
+    else {
+      return
     }
-    let ref3 = db.ref('matchs/'+ match2.number)
-    ref3.set({matchid: match2.id,
-            radiant: playersbot2.radiant,
-            dire: playersbot2.dire,
-            winner: 'dire'})
-    channel.sendMessage('Game ' + match2.number +' terminado\n' +
-    'Resultado: Dire Wins\n'+
-     'Replay ID ' + match2.id)
-    dota2.leavePracticeLobby();
-           botInUse2 = false
+    for (var x = 0; x < 5; x++){
+      let index = contains(ingame, playersbot2.dire[x].name)
+      ingame.splice(index,1)
+      let index2 = contains(ingame, playersbot2.radiant[x].name)
+      ingame.splice(index2,1)
   }
-  else {
-    return
-  }
-  for (var x = 0; x < 5; x++){
-    let index = contains(ingame, playersbot2.dire[x].name)
-    ingame.splice(index,1)
-    let index2 = contains(ingame, playersbot2.radiant[x].name)
-    ingame.splice(index2,1)
-}
 
 
-}
+  }
 }
 });
 
 dota3.on('practiceLobbyUpdate', function(lobby) {
-  if (lobby.state == 2 && match3.id != lobby.server_id){
+  if (lobby.state == 2 && match3.id != lobby.server_id && inLobby == true){
   match3.id = lobby.server_id
   let ref3 = db.ref('matchs/'+ match3.number)
   ref3.set({matchid: match3.id})
    inLobby = false
+   if(challenge == true){
+     direchallenge = [];
+     radiantchallenge = [];
+     challenge = false
+   }
+   direplayers = [];
+   radiantplayers = [];
 }
 
 if (inLobby == true){
 time(dota3);
+playerslobby = [];
 lobbyp = lobby.members;
 let lobbyready = 0;
 for (var i = 1; i < lobbyp.length; i++){
@@ -786,8 +811,8 @@ for (var o = 0; o < 5; o++){
    ingame.push(playersbot3.radiant[o])
   }
 }
-
 clearTimeout(timer);
+
       antiafk = false;
      dota3.launchPracticeLobby();
 
@@ -802,72 +827,74 @@ continue;
 
 }
 
-else {
-  if (lobby.state == 3){
-    if (lobby.match_outcome == 2){
-      //radiant wins
-      for (var o = 0; o < 5; o++){
+  else {
+    if (lobby.state == 3){
+      if (lobby.match_outcome == 2){
+        //radiant wins
+        for (var o = 0; o < 5; o++){
 let ref2 = db.ref('users/'+ playersbot3.radiant[o].id)
 let nmmr = playersbot3.radiant[o].mmr + (Math.floor(((playersbot3.radiant[o].xp)*k)) + points)
 ref2.update({
-mmr: nmmr,
-wins: base.users[playersbot3.radiant[o].id].wins + 1,
-matchs: base.users[playersbot3.radiant[o].id].matchs + 1
+  mmr: nmmr,
+  wins: base.users[playersbot3.radiant[o].id].wins + 1,
+  matchs: base.users[playersbot3.radiant[o].id].matchs + 1
 });
 };
 for (var o = 0; o < 5; o++){
 let ref2 = db.ref('users/'+ playersbot3.dire[o].id)
 let nmmr = playersbot3.dire[o].mmr - (Math.floor(((playersbot3.dire[o].xp)*k)) + points)
 ref2.update({
-mmr: nmmr,
-matchs: base.users[playersbot3.dire[o].id].matchs + 1
+  mmr: nmmr,
+  matchs: base.users[playersbot3.dire[o].id].matchs + 1
 });
-      };
+        };
+        let ref3 = db.ref('matchs/'+ match3.number)
+        ref3.set({matchid: match3.id,
+                radiant: playersbot3.radiant,
+                dire: playersbot3.dire,
+                winner: 'radiant'})
+        channel.sendMessage('Game ' + match3.number +' terminado\n' +
+        'Resultado: Radiant Wins\n'+
+         'Replay ID ' + match3.id)
+         dota3.leavePracticeLobby();
+         dota3.abandonCurrentGame()
+               botInUse3 = false
+      }
+
+    else if (lobby.match_outcome == 3){
+        //dire wins
+        for (var o = 0; o < 5; o++){
+  let ref2 = db.ref('users/'+ playersbot3.dire[o].id)
+  let nmmr = playersbot3.dire[o].mmr + (Math.floor(((playersbot3.dire[o].xp)*k)) + points)
+  ref2.update({
+    mmr: nmmr,
+    wins: base.users[playersbot3.dire[o].id].wins + 1,
+    matchs: base.users[playersbot3.dire[o].id].matchs + 1
+});
+}
+  for (var o = 0; o < 5; o++){
+let ref2 = db.ref('users/'+ playersbot3.radiant[o].id)
+let nmmr = playersbot3.radiant[o].mmr - (Math.floor(((playersbot3.radiant[o].xp)*k)) + points)
+ref2.update({
+  mmr: nmmr,
+  matchs: base.users[playersbot3.radiant[o].id].matchs + 1
+});
+      }
       let ref3 = db.ref('matchs/'+ match3.number)
       ref3.set({matchid: match3.id,
               radiant: playersbot3.radiant,
               dire: playersbot3.dire,
-              winner: 'radiant'})
+              winner: 'dire'})
       channel.sendMessage('Game ' + match3.number +' terminado\n' +
-      'Resultado: Radiant Wins\n'+
+      'Resultado: Dire Wins\n'+
        'Replay ID ' + match3.id)
       dota3.leavePracticeLobby();
+      dota3.abandonCurrentGame()
              botInUse3 = false
     }
-
-  else if (lobby.match_outcome == 3){
-      //dire wins
-      for (var o = 0; o < 5; o++){
-let ref2 = db.ref('users/'+ playersbot3.dire[o].id)
-let nmmr = playersbot3.dire[o].mmr + (Math.floor(((playersbot3.dire[o].xp)*k)) + points)
-ref2.update({
-  mmr: nmmr,
-  wins: base.users[playersbot3.dire[o].id].wins + 1,
-  matchs: base.users[playersbot3.dire[o].id].matchs + 1
-});
-}
-for (var o = 0; o < 5; o++){
-let ref2 = db.ref('users/'+ playersbot3.radiant[o].id)
-let nmmr = playersbot3.radiant[o].mmr - (Math.floor(((playersbot3.radiant[o].xp)*k)) + points)
-ref2.update({
-mmr: nmmr,
-matchs: base.users[playersbot3.radiant[o].id].matchs + 1
-});
+    else {
+      return
     }
-    let ref3 = db.ref('matchs/'+ match3.number)
-    ref3.set({matchid: match3.id,
-            radiant: playersbot3.radiant,
-            dire: playersbot3.dire,
-            winner: 'dire'})
-    channel.sendMessage('Game ' + match3.number +' terminado\n' +
-    'Resultado: Dire Wins\n'+
-     'Replay ID ' + match3.id)
-    dota3.leavePracticeLobby();
-           botInUse3 = false
-  }
-  else {
-    return
-  }
     for (var x = 0; x < 5; x++){
       let index = contains(ingame, playersbot3.dire[x].name)
       ingame.splice(index,1)
@@ -876,16 +903,24 @@ matchs: base.users[playersbot3.radiant[o].id].matchs + 1
   }
 
 
-}
+  }
 }
 });
 
+
 dota4.on('practiceLobbyUpdate', function(lobby) {
-  if (lobby.state == 2 && match4.id != lobby.server_id){
+  if (lobby.state == 2 && match4.id != lobby.server_id && inLobby == true){
   match4.id = lobby.server_id
   let ref3 = db.ref('matchs/'+ match4.number)
   ref3.set({matchid: match4.id})
      inLobby = false
+     if(challenge == true){
+       direchallenge = [];
+       radiantchallenge = [];
+       challenge = false
+     }
+     direplayers = [];
+     radiantplayers = [];
   }
 
 if (inLobby == true){
@@ -953,85 +988,94 @@ continue;
 
 }
 
-else {
-  if (lobby.state == 3){
-    if (lobby.match_outcome == 2){
-      //radiant wins
-      for (var o = 0; o < 5; o++){
+  else {
+    if (lobby.state == 3){
+      if (lobby.match_outcome == 2){
+        //radiant wins
+        for (var o = 0; o < 5; o++){
 let ref2 = db.ref('users/'+ playersbot4.radiant[o].id)
 let nmmr = playersbot4.radiant[o].mmr + (Math.floor(((playersbot4.radiant[o].xp)*k)) + points)
 ref2.update({
-mmr: nmmr,
-wins: base.users[playersbot4.radiant[o].id].wins + 1,
-matchs: base.users[playersbot4.radiant[o].id].matchs + 1
+  mmr: nmmr,
+  wins: base.users[playersbot4.radiant[o].id].wins + 1,
+  matchs: base.users[playersbot4.radiant[o].id].matchs + 1
 });
 };
 for (var o = 0; o < 5; o++){
 let ref2 = db.ref('users/'+ playersbot4.dire[o].id)
 let nmmr = playersbot4.dire[o].mmr - (Math.floor(((playersbot4.dire[o].xp)*k)) + points)
 ref2.update({
-mmr: nmmr,
-matchs: base.users[playersbot4.dire[o].id].matchs + 1
-});
-      };
-      let ref3 = db.ref('matchs/'+ match4.number)
-      ref3.set({matchid: match4.id,
-              radiant: playersbot4.radiant,
-              dire: playersbot4.dire,
-              winner: 'radiant'})
-      channel.sendMessage('Game ' + match4.number +' terminado\n' +
-      'Resultado: Radiant Wins\n'+
-       'Replay ID ' + match4.id )
-      dota4.leavePracticeLobby();
-             botInUse4 = false
-    }
-
-  else if (lobby.match_outcome == 3){
-      //dire wins
-      for (var o = 0; o < 5; o++){
-let ref2 = db.ref('users/'+ playersbot4.dire[o].id)
-let nmmr = playersbot4.dire[o].mmr + (Math.floor(((playersbot4.dire[o].xp)*k)) + points)
-ref2.update({
   mmr: nmmr,
-  wins: base.users[playersbot4.dire[o].id].wins + 1,
   matchs: base.users[playersbot4.dire[o].id].matchs + 1
 });
+        };
+        let ref3 = db.ref('matchs/'+ match4.number)
+        ref3.set({matchid: match4.id,
+                radiant: playersbot4.radiant,
+                dire: playersbot4.dire,
+                winner: 'radiant'})
+        channel.sendMessage('Game ' + match4.number +' terminado\n' +
+        'Resultado: Radiant Wins\n'+
+         'Replay ID ' + match4.id )
+        dota4.leavePracticeLobby();
+        dota4.abandonCurrentGame()
+               botInUse4 = false
+      }
+
+    else if (lobby.match_outcome == 3){
+        //dire wins
+        for (var o = 0; o < 5; o++){
+  let ref2 = db.ref('users/'+ playersbot4.dire[o].id)
+  let nmmr = playersbot4.dire[o].mmr + (Math.floor(((playersbot4.dire[o].xp)*k)) + points)
+  ref2.update({
+    mmr: nmmr,
+    wins: base.users[playersbot4.dire[o].id].wins + 1,
+    matchs: base.users[playersbot4.dire[o].id].matchs + 1
+});
 }
-for (var o = 0; o < 5; o++){
+  for (var o = 0; o < 5; o++){
 let ref2 = db.ref('users/'+ playersbot4.radiant[o].id)
 let nmmr = playersbot4.radiant[o].mmr - (Math.floor(((playersbot4.radiant[o].xp)*k)) + points)
 ref2.update({
-mmr: nmmr,
-matchs: base.users[playersbot4.radiant[o].id].matchs + 1
+  mmr: nmmr,
+  matchs: base.users[playersbot4.radiant[o].id].matchs + 1
 });
-    }
+      }
 let ref3 = db.ref('matchs/'+ match4.number)
 ref3.set({matchid: match4.id,
-      radiant: playersbot4.radiant,
-      dire: playersbot4.dire,
-      winner: 'dire'})
-    channel.sendMessage('Game ' + match4.number +' terminado\n' +
-    'Resultado: Dire Wins\n'+
-     'Replay ID ' + match4.id)
-     dota4.leavePracticeLobby();
-           botInUse4 = false
+        radiant: playersbot4.radiant,
+        dire: playersbot4.dire,
+        winner: 'dire'})
+      channel.sendMessage('Game ' + match4.number +' terminado\n' +
+      'Resultado: Dire Wins\n'+
+       'Replay ID ' + match4.id)
+       dota4.leavePracticeLobby();
+       dota4.abandonCurrentGame()
+             botInUse4 = false
+    }
+    for (var x = 0; x < 5; x++){
+      let index = contains(ingame, playersbot4.dire[x].name)
+      ingame.splice(index,1)
+      let index2 = contains(ingame, playersbot4.radiant[x].name)
+      ingame.splice(index2,1)
+}
   }
-  for (var x = 0; x < 5; x++){
-    let index = contains(ingame, playersbot4.dire[x].name)
-    ingame.splice(index,1)
-    let index2 = contains(ingame, playersbot4.radiant[x].name)
-    ingame.splice(index2,1)
-}
-}
 }
 });
 
 dota5.on('practiceLobbyUpdate', function(lobby) {
-  if (lobby.state == 2 && match5.id != lobby.server_id){
+  if (lobby.state == 2 && match5.id != lobby.server_id && inLobby == true){
   match5.id = lobby.server_id
   let ref3 = db.ref('matchs/'+ match5.number)
   ref3.set({matchid: match5.id})
      inLobby = false
+     if(challenge == true){
+       direchallenge = [];
+       radiantchallenge = [];
+       challenge = false
+     }
+     direplayers = [];
+     radiantplayers = [];
   }
 
 if (inLobby == true){
@@ -1099,85 +1143,94 @@ continue;
 
 }
 
-else {
-  if (lobby.state == 3){
-    if (lobby.match_outcome == 2){
-      //radiant wins
-      for (var o = 0; o < 5; o++){
+  else {
+    if (lobby.state == 3){
+      if (lobby.match_outcome == 2){
+        //radiant wins
+        for (var o = 0; o < 5; o++){
 let ref2 = db.ref('users/'+ playersbot5.radiant[o].id)
 let nmmr = playersbot5.radiant[o].mmr + (Math.floor(((playersbot5.radiant[o].xp)*k)) + points)
 ref2.update({
-mmr: nmmr,
-wins: base.users[playersbot5.radiant[o].id].wins + 1,
-matchs: base.users[playersbot5.radiant[o].id].matchs + 1
+  mmr: nmmr,
+  wins: base.users[playersbot5.radiant[o].id].wins + 1,
+  matchs: base.users[playersbot5.radiant[o].id].matchs + 1
 });
 };
 for (var o = 0; o < 5; o++){
 let ref2 = db.ref('users/'+ playersbot5.dire[o].id)
 let nmmr = playersbot5.dire[o].mmr - (Math.floor(((playersbot5.dire[o].xp)*k)) + points)
 ref2.update({
-mmr: nmmr,
-matchs: base.users[playersbot5.dire[o].id].matchs + 1
-});
-      };
-      let ref3 = db.ref('matchs/'+ match5.number)
-      ref3.set({matchid: match5.id,
-              radiant: playersbot5.radiant,
-              dire: playersbot5.dire,
-              winner: 'radiant'})
-      channel.sendMessage('Game ' + match5.number +' terminado\n' +
-      'Resultado: Radiant Wins\n'+
-       'Replay ID ' + match5.id )
-      dota5.leavePracticeLobby();
-             botInUse5 = false
-    }
-
-  else if (lobby.match_outcome == 3){
-      //dire wins
-      for (var o = 0; o < 5; o++){
-let ref2 = db.ref('users/'+ playersbot5.dire[o].id)
-let nmmr = playersbot5.dire[o].mmr + (Math.floor(((playersbot5.dire[o].xp)*k)) + points)
-ref2.update({
   mmr: nmmr,
-  wins: base.users[playersbot5.dire[o].id].wins + 1,
   matchs: base.users[playersbot5.dire[o].id].matchs + 1
 });
+        };
+        let ref3 = db.ref('matchs/'+ match5.number)
+        ref3.set({matchid: match5.id,
+                radiant: playersbot5.radiant,
+                dire: playersbot5.dire,
+                winner: 'radiant'})
+        channel.sendMessage('Game ' + match5.number +' terminado\n' +
+        'Resultado: Radiant Wins\n'+
+         'Replay ID ' + match5.id )
+        dota5.leavePracticeLobby();
+        dota5.abandonCurrentGame()
+               botInUse5 = false
+      }
+
+    else if (lobby.match_outcome == 3){
+        //dire wins
+        for (var o = 0; o < 5; o++){
+  let ref2 = db.ref('users/'+ playersbot5.dire[o].id)
+  let nmmr = playersbot5.dire[o].mmr + (Math.floor(((playersbot5.dire[o].xp)*k)) + points)
+  ref2.update({
+    mmr: nmmr,
+    wins: base.users[playersbot5.dire[o].id].wins + 1,
+    matchs: base.users[playersbot5.dire[o].id].matchs + 1
+});
 }
-for (var o = 0; o < 5; o++){
+  for (var o = 0; o < 5; o++){
 let ref2 = db.ref('users/'+ playersbot5.radiant[o].id)
 let nmmr = playersbot5.radiant[o].mmr - (Math.floor(((playersbot5.radiant[o].xp)*k)) + points)
 ref2.update({
-mmr: nmmr,
-matchs: base.users[playersbot5.radiant[o].id].matchs + 1
+  mmr: nmmr,
+  matchs: base.users[playersbot5.radiant[o].id].matchs + 1
 });
-    }
+      }
 let ref3 = db.ref('matchs/'+ match5.number)
 ref3.set({matchid: match5.id,
-      radiant: playersbot5.radiant,
-      dire: playersbot5.dire,
-      winner: 'dire'})
-    channel.sendMessage('Game ' + match5.number +' terminado\n' +
-    'Resultado: Dire Wins\n'+
-     'Replay ID ' + match5.id)
-     dota5.leavePracticeLobby();
-           botInUse5 = false
+        radiant: playersbot5.radiant,
+        dire: playersbot5.dire,
+        winner: 'dire'})
+      channel.sendMessage('Game ' + match5.number +' terminado\n' +
+      'Resultado: Dire Wins\n'+
+       'Replay ID ' + match5.id)
+       dota5.leavePracticeLobby();
+       dota5.abandonCurrentGame()
+             botInUse5 = false
+    }
+    for (var x = 0; x < 5; x++){
+      let index = contains(ingame, playersbot5.dire[x].name)
+      ingame.splice(index,1)
+      let index2 = contains(ingame, playersbot5.radiant[x].name)
+      ingame.splice(index2,1)
+}
   }
-  for (var x = 0; x < 5; x++){
-    let index = contains(ingame, playersbot5.dire[x].name)
-    ingame.splice(index,1)
-    let index2 = contains(ingame, playersbot5.radiant[x].name)
-    ingame.splice(index2,1)
-}
-}
 }
 });
 
 dota6.on('practiceLobbyUpdate', function(lobby) {
-  if (lobby.state == 2 && match6.id != lobby.server_id){
+  if (lobby.state == 2 && match6.id != lobby.server_id && inLobby == true){
   match6.id = lobby.server_id
   let ref3 = db.ref('matchs/'+ match6.number)
   ref3.set({matchid: match6.id})
      inLobby = false
+     if(challenge == true){
+       direchallenge = [];
+       radiantchallenge = [];
+       challenge = false
+     }
+     direplayers = [];
+     radiantplayers = [];
   }
 
 if (inLobby == true){
@@ -1245,85 +1298,94 @@ continue;
 
 }
 
-else {
-  if (lobby.state == 3){
-    if (lobby.match_outcome == 2){
-      //radiant wins
-      for (var o = 0; o < 5; o++){
+  else {
+    if (lobby.state == 3){
+      if (lobby.match_outcome == 2){
+        //radiant wins
+        for (var o = 0; o < 5; o++){
 let ref2 = db.ref('users/'+ playersbot6.radiant[o].id)
 let nmmr = playersbot6.radiant[o].mmr + (Math.floor(((playersbot6.radiant[o].xp)*k)) + points)
 ref2.update({
-mmr: nmmr,
-wins: base.users[playersbot6.radiant[o].id].wins + 1,
-matchs: base.users[playersbot6.radiant[o].id].matchs + 1
+  mmr: nmmr,
+  wins: base.users[playersbot6.radiant[o].id].wins + 1,
+  matchs: base.users[playersbot6.radiant[o].id].matchs + 1
 });
 };
 for (var o = 0; o < 5; o++){
 let ref2 = db.ref('users/'+ playersbot6.dire[o].id)
 let nmmr = playersbot6.dire[o].mmr - (Math.floor(((playersbot6.dire[o].xp)*k)) + points)
 ref2.update({
-mmr: nmmr,
-matchs: base.users[playersbot6.dire[o].id].matchs + 1
-});
-      };
-      let ref3 = db.ref('matchs/'+ match6.number)
-      ref3.set({matchid: match6.id,
-              radiant: playersbot6.radiant,
-              dire: playersbot6.dire,
-              winner: 'radiant'})
-      channel.sendMessage('Game ' + match6.number +' terminado\n' +
-      'Resultado: Radiant Wins\n'+
-       'Replay ID ' + match6.id )
-      dota6.leavePracticeLobby();
-             botInUse6 = false
-    }
-
-  else if (lobby.match_outcome == 3){
-      //dire wins
-      for (var o = 0; o < 5; o++){
-let ref2 = db.ref('users/'+ playersbot6.dire[o].id)
-let nmmr = playersbot6.dire[o].mmr + (Math.floor(((playersbot6.dire[o].xp)*k)) + points)
-ref2.update({
   mmr: nmmr,
-  wins: base.users[playersbot6.dire[o].id].wins + 1,
   matchs: base.users[playersbot6.dire[o].id].matchs + 1
 });
+        };
+        let ref3 = db.ref('matchs/'+ match6.number)
+        ref3.set({matchid: match6.id,
+                radiant: playersbot6.radiant,
+                dire: playersbot6.dire,
+                winner: 'radiant'})
+        channel.sendMessage('Game ' + match6.number +' terminado\n' +
+        'Resultado: Radiant Wins\n'+
+         'Replay ID ' + match6.id )
+        dota6.leavePracticeLobby();
+        dota6.abandonCurrentGame()
+               botInUse6 = false
+      }
+
+    else if (lobby.match_outcome == 3){
+        //dire wins
+        for (var o = 0; o < 5; o++){
+  let ref2 = db.ref('users/'+ playersbot6.dire[o].id)
+  let nmmr = playersbot6.dire[o].mmr + (Math.floor(((playersbot6.dire[o].xp)*k)) + points)
+  ref2.update({
+    mmr: nmmr,
+    wins: base.users[playersbot6.dire[o].id].wins + 1,
+    matchs: base.users[playersbot6.dire[o].id].matchs + 1
+});
 }
-for (var o = 0; o < 5; o++){
+  for (var o = 0; o < 5; o++){
 let ref2 = db.ref('users/'+ playersbot6.radiant[o].id)
 let nmmr = playersbot6.radiant[o].mmr - (Math.floor(((playersbot6.radiant[o].xp)*k)) + points)
 ref2.update({
-mmr: nmmr,
-matchs: base.users[playersbot6.radiant[o].id].matchs + 1
+  mmr: nmmr,
+  matchs: base.users[playersbot6.radiant[o].id].matchs + 1
 });
-    }
+      }
 let ref3 = db.ref('matchs/'+ match6.number)
 ref3.set({matchid: match6.id,
-      radiant: playersbot6.radiant,
-      dire: playersbot6.dire,
-      winner: 'dire'})
-    channel.sendMessage('Game ' + match6.number +' terminado\n' +
-    'Resultado: Dire Wins\n'+
-     'Replay ID ' + match6.id)
-     dota6.leavePracticeLobby();
-           botInUse6 = false
+        radiant: playersbot6.radiant,
+        dire: playersbot6.dire,
+        winner: 'dire'})
+      channel.sendMessage('Game ' + match6.number +' terminado\n' +
+      'Resultado: Dire Wins\n'+
+       'Replay ID ' + match6.id)
+       dota6.leavePracticeLobby();
+       dota6.abandonCurrentGame()
+             botInUse6 = false
+    }
+    for (var x = 0; x < 5; x++){
+      let index = contains(ingame, playersbot6.dire[x].name)
+      ingame.splice(index,1)
+      let index2 = contains(ingame, playersbot6.radiant[x].name)
+      ingame.splice(index2,1)
+}
   }
-  for (var x = 0; x < 5; x++){
-    let index = contains(ingame, playersbot6.dire[x].name)
-    ingame.splice(index,1)
-    let index2 = contains(ingame, playersbot6.radiant[x].name)
-    ingame.splice(index2,1)
-}
-}
 }
 });
 
 dota7.on('practiceLobbyUpdate', function(lobby) {
-  if (lobby.state == 2 && match7.id != lobby.server_id){
+  if (lobby.state == 2 && match7.id != lobby.server_id && inLobby == true){
   match7.id = lobby.server_id
   let ref3 = db.ref('matchs/'+ match7.number)
   ref3.set({matchid: match7.id})
      inLobby = false
+     if(challenge == true){
+       direchallenge = [];
+       radiantchallenge = [];
+       challenge = false
+     }
+     direplayers = [];
+     radiantplayers = [];
   }
 
 if (inLobby == true){
@@ -1391,85 +1453,82 @@ continue;
 
 }
 
-else {
-  if (lobby.state == 3){
-    if (lobby.match_outcome == 2){
-      //radiant wins
-      for (var o = 0; o < 5; o++){
+  else {
+    if (lobby.state == 3){
+      if (lobby.match_outcome == 2){
+        //radiant wins
+        for (var o = 0; o < 5; o++){
 let ref2 = db.ref('users/'+ playersbot7.radiant[o].id)
 let nmmr = playersbot7.radiant[o].mmr + (Math.floor(((playersbot7.radiant[o].xp)*k)) + points)
 ref2.update({
-mmr: nmmr,
-wins: base.users[playersbot7.radiant[o].id].wins + 1,
-matchs: base.users[playersbot7.radiant[o].id].matchs + 1
+  mmr: nmmr,
+  wins: base.users[playersbot7.radiant[o].id].wins + 1,
+  matchs: base.users[playersbot7.radiant[o].id].matchs + 1
 });
 };
 for (var o = 0; o < 5; o++){
 let ref2 = db.ref('users/'+ playersbot7.dire[o].id)
 let nmmr = playersbot7.dire[o].mmr - (Math.floor(((playersbot7.dire[o].xp)*k)) + points)
 ref2.update({
-mmr: nmmr,
-matchs: base.users[playersbot7.dire[o].id].matchs + 1
-});
-      };
-      let ref3 = db.ref('matchs/'+ match7.number)
-      ref3.set({matchid: match7.id,
-              radiant: playersbot7.radiant,
-              dire: playersbot7.dire,
-              winner: 'radiant'})
-      channel.sendMessage('Game ' + match7.number +' terminado\n' +
-      'Resultado: Radiant Wins\n'+
-       'Replay ID ' + match7.id )
-      dota7.leavePracticeLobby();
-             botInUse7 = false
-    }
-
-  else if (lobby.match_outcome == 3){
-      //dire wins
-      for (var o = 0; o < 5; o++){
-let ref2 = db.ref('users/'+ playersbot7.dire[o].id)
-let nmmr = playersbot7.dire[o].mmr + (Math.floor(((playersbot7.dire[o].xp)*k)) + points)
-ref2.update({
   mmr: nmmr,
-  wins: base.users[playersbot7.dire[o].id].wins + 1,
   matchs: base.users[playersbot7.dire[o].id].matchs + 1
 });
+        };
+        let ref3 = db.ref('matchs/'+ match7.number)
+        ref3.set({matchid: match7.id,
+                radiant: playersbot7.radiant,
+                dire: playersbot7.dire,
+                winner: 'radiant'})
+        channel.sendMessage('Game ' + match7.number +' terminado\n' +
+        'Resultado: Radiant Wins\n'+
+         'Replay ID ' + match7.id )
+        dota7.leavePracticeLobby();
+        dota7.abandonCurrentGame()
+               botInUse7 = false
+      }
+
+    else if (lobby.match_outcome == 3){
+        //dire wins
+        for (var o = 0; o < 5; o++){
+  let ref2 = db.ref('users/'+ playersbot7.dire[o].id)
+  let nmmr = playersbot7.dire[o].mmr + (Math.floor(((playersbot7.dire[o].xp)*k)) + points)
+  ref2.update({
+    mmr: nmmr,
+    wins: base.users[playersbot7.dire[o].id].wins + 1,
+    matchs: base.users[playersbot7.dire[o].id].matchs + 1
+});
 }
-for (var o = 0; o < 5; o++){
+  for (var o = 0; o < 5; o++){
 let ref2 = db.ref('users/'+ playersbot7.radiant[o].id)
 let nmmr = playersbot7.radiant[o].mmr - (Math.floor(((playersbot7.radiant[o].xp)*k)) + points)
 ref2.update({
-mmr: nmmr,
-matchs: base.users[playersbot7.radiant[o].id].matchs + 1
+  mmr: nmmr,
+  matchs: base.users[playersbot7.radiant[o].id].matchs + 1
 });
-    }
+      }
 let ref3 = db.ref('matchs/'+ match7.number)
 ref3.set({matchid: match7.id,
-      radiant: playersbot7.radiant,
-      dire: playersbot7.dire,
-      winner: 'dire'})
-    channel.sendMessage('Game ' + match7.number +' terminado\n' +
-    'Resultado: Dire Wins\n'+
-     'Replay ID ' + match7.id)
-     dota7.leavePracticeLobby();
-           botInUse7 = false
+        radiant: playersbot7.radiant,
+        dire: playersbot7.dire,
+        winner: 'dire'})
+      channel.sendMessage('Game ' + match7.number +' terminado\n' +
+      'Resultado: Dire Wins\n'+
+       'Replay ID ' + match7.id)
+       dota7.leavePracticeLobby();
+       dota7.abandonCurrentGame()
+             botInUse7 = false
+    }
+    for (var x = 0; x < 5; x++){
+      let index = contains(ingame, playersbot7.dire[x].name)
+      ingame.splice(index,1)
+      let index2 = contains(ingame, playersbot7.radiant[x].name)
+      ingame.splice(index2,1)
+}
   }
-  for (var x = 0; x < 5; x++){
-    let index = contains(ingame, playersbot7.dire[x].name)
-    ingame.splice(index,1)
-    let index2 = contains(ingame, playersbot7.radiant[x].name)
-    ingame.splice(index2,1)
-}
-}
 }
 });
 
-
-
-
-//
 disc.on("message", function(msg) {
-  // If the message is blank, do nothing (blank messages are received from 'is typing').
   if (msg === '') {
     return;
   }
@@ -1478,7 +1537,7 @@ disc.on("message", function(msg) {
   let user = msg.author;
   let fromUser = user.id;
 
-  if (fromUser === '276822969986731137') {
+  if (fromUser === '366726972077768704') {
     return;
   }
   let activa = message.split("");
@@ -1488,7 +1547,6 @@ disc.on("message", function(msg) {
   input = input.split(' ')
 
   if (activa[0] === '.') {
-    //  msg.delete()
     if (ready === true){
       if (input[0] == 'help'){
         channel.sendMessage(DICT.help_message)
@@ -1496,8 +1554,8 @@ disc.on("message", function(msg) {
     }
 
     if (input[0] == 'reg'){
-      if (typeof(base.users[fromUser]) != 'undefined') {
-      msg.reply('Vos ya estas registrado picaron')
+      if (typeof(base.usersC[fromUser]) != 'undefined') {
+      msg.reply('Tu ya te encuentras registrado')
       return
     }
       else{
@@ -1529,14 +1587,14 @@ disc.on("message", function(msg) {
               }
         }
         else{
-          msg.reply('Te falto algo, acordate que es .reg SteamID Nick')
+          msg.reply('Te falto algo, recuerda que el comando es .reg SteamID')
           return
         }
 
       }
     }
         if (typeof(base.users[fromUser]) == 'undefined') {
-        msg.reply('No estas registrado en la Dota 2 ARG League')
+          msg.reply('Tu no estas registrado en el bot')
       return
       }
 
@@ -1544,39 +1602,40 @@ disc.on("message", function(msg) {
   {
 
     case 'games':
-    if (botInUse1 == false && botInUse2 == false && botInUse3 == false){
+    if (botInUse1 == false && botInUse2 == false && botInUse3 == false
+    && botInUse4 == false && botInUse5 == false && botInUse6 == false && botInUse7 == false){
       channel.sendMessage('Actualmente no hay games hosteados')
       break
     }
     else {
-    if (botInUse1 == true){
-   channel.sendMessage('Game ' + match1.number +': \n' + 'Radiant: ' + get(playersbot1.radiant) + '\n'
-     + 'Dire: ' + get(playersbot1.dire) + '\n' + 'Dota2MatchID: ' + match1.id)
-    }
-    if (botInUse2 == true){
-      channel.sendMessage('Game ' + match2.number +': \n' + 'Radiant: ' + get(playersbot2.radiant) + '\n'
-     + 'Dire: ' + get(playersbot2.dire) + '\n' + 'Dota2MatchID: ' + match2.id )
-    }
-    if (botInUse3 == true){
-      channel.sendMessage('Game ' + match3.number +': \n' + 'Radiant: ' + get(playersbot3.radiant) + '\n'
-     + 'Dire: ' + get(playersbot3.dire) + '\n' + 'Dota2MatchID: ' + match3.id )
-    }
-    if (botInUse4 == true){
-      channel.sendMessage('Game ' + match4.number +': \n' + 'Radiant: ' + get(playersbot4.radiant) + '\n'
-     + 'Dire: ' + get(playersbot4.dire) + '\n' + 'Dota2MatchID: ' + match4.id )
-    }
-    if (botInUse5 == true){
-      channel.sendMessage('Game ' + match5.number +': \n' + 'Radiant: ' + get(playersbot5.radiant) + '\n'
-     + 'Dire: ' + get(playersbot5.dire) + '\n' + 'Dota2MatchID: ' + match5.id )
-    }
-    if (botInUse6 == true){
-      channel.sendMessage('Game ' + match6.number +': \n' + 'Radiant: ' + get(playersbot6.radiant) + '\n'
-     + 'Dire: ' + get(playersbot6.dire) + '\n' + 'Dota2MatchID: ' + match6.id )
-    }
-    if (botInUse7 == true){
-      channel.sendMessage('Game ' + match7.number +': \n' + 'Radiant: ' + get(playersbot7.radiant) + '\n'
-     + 'Dire: ' + get(playersbot7.dire) + '\n' + 'Dota2MatchID: ' + match7.id )
-    }
+      if (botInUse1 == true){
+      channel.sendMessage('Game ' + match1.number +':(Bot 1) \n' + 'Radiant: ' + get(playersbot1.radiant) + '\n'
+       + 'Dire: ' + get(playersbot1.dire) + '\n' + 'Dota2MatchID: ' + match1.id)
+      }
+      if (botInUse2 == true){
+        channel.sendMessage('Game ' + match2.number +':(Bot 2) \n' + 'Radiant: ' + get(playersbot2.radiant) + '\n'
+       + 'Dire: ' + get(playersbot2.dire) + '\n' + 'Dota2MatchID: ' + match2.id )
+      }
+      if (botInUse3 == true){
+        channel.sendMessage('Game ' + match3.number +':(Bot 3) \n' + 'Radiant: ' + get(playersbot3.radiant) + '\n'
+       + 'Dire: ' + get(playersbot3.dire) + '\n' + 'Dota2MatchID: ' + match3.id )
+      }
+      if (botInUse4 == true){
+        channel.sendMessage('Game ' + match4.number +':(Bot 4) \n' + 'Radiant: ' + get(playersbot4.radiant) + '\n'
+       + 'Dire: ' + get(playersbot4.dire) + '\n' + 'Dota2MatchID: ' + match4.id )
+      }
+      if (botInUse5 == true){
+        channel.sendMessage('Game ' + match5.number +':(Bot 5) \n' + 'Radiant: ' + get(playersbot5.radiant) + '\n'
+       + 'Dire: ' + get(playersbot5.dire) + '\n' + 'Dota2MatchID: ' + match5.id )
+      }
+      if (botInUse4 == true){
+        channel.sendMessage('Game ' + match4.number +':(Bot 4) \n' + 'Radiant: ' + get(playersbot4.radiant) + '\n'
+       + 'Dire: ' + get(playersbot4.dire) + '\n' + 'Dota2MatchID: ' + match6.id )
+      }
+      if (botInUse7 == true){
+        channel.sendMessage('Game ' + match7.number +':(Bot 7) \n' + 'Radiant: ' + get(playersbot7.radiant) + '\n'
+       + 'Dire: ' + get(playersbot7.dire) + '\n' + 'Dota2MatchID: ' + match7.id )
+      }
     break
     }
 
@@ -1598,14 +1657,83 @@ disc.on("message", function(msg) {
 
 
     case 'elobby':
-    if (base.users[fromUser].level >= 3) {
-      dota1.leavePracticeLobby();
-      dota2.leavePracticeLobby();
-      dota3.leavePracticeLobby();
-      dota4.leavePracticeLobby();
+    if (base.usersC[fromUser].level >= 3) {if (input[1] == 1){
+        dota1.leavePracticeLobby();
+        dota1.abandonCurrentGame()
+        for (var x = 0; x < 5; x++){
+          let index = contains(ingame, playersbot1.dire[x].name)
+          ingame.splice(index,1)
+          let index2 = contains(ingame, playersbot1.radiant[x].name)
+          ingame.splice(index2,1)
+    }
+    botInUse1 = false
+    }
+    if (input[1] == 2){
+        dota2.leavePracticeLobby();
+        dota2.abandonCurrentGame()
+        for (var x = 0; x < 5; x++){
+          let index = contains(ingame, playersbot2.dire[x].name)
+          ingame.splice(index,1)
+          let index2 = contains(ingame, playersbot2.radiant[x].name)
+          ingame.splice(index2,1)
+    }
+    botInUse2 = false
+    }
+    if (input[1] == 3){
+        dota3.leavePracticeLobby();
+        dota3.abandonCurrentGame()
+        for (var x = 0; x < 5; x++){
+          let index = contains(ingame, playersbot3.dire[x].name)
+          ingame.splice(index,1)
+          let index2 = contains(ingame, playersbot3.radiant[x].name)
+          ingame.splice(index2,1)
+    }
+    botInUse3 = false
+    }
+    if (input[1] == 4){
+        dota4.leavePracticeLobby();
+        dota4.abandonCurrentGame()
+        for (var x = 0; x < 5; x++){
+          let index = contains(ingame, playersbot4.dire[x].name)
+          ingame.splice(index,1)
+          let index2 = contains(ingame, playersbot4.radiant[x].name)
+          ingame.splice(index2,1)
+    }
+    botInUse4 = false
+  }
+  if (input[1] == 5){
       dota5.leavePracticeLobby();
-      dota6.leavePracticeLobby();
-      dota7.leavePracticeLobby();
+      dota5.abandonCurrentGame()
+      for (var x = 0; x < 5; x++){
+        let index = contains(ingame, playersbot5.dire[x].name)
+        ingame.splice(index,1)
+        let index2 = contains(ingame, playersbot5.radiant[x].name)
+        ingame.splice(index2,1)
+  }
+  botInUse5 = false
+}
+if (input[1] == 6){
+    dota6.leavePracticeLobby();
+    dota6.abandonCurrentGame()
+    for (var x = 0; x < 5; x++){
+      let index = contains(ingame, playersbot6.dire[x].name)
+      ingame.splice(index,1)
+      let index2 = contains(ingame, playersbot6.radiant[x].name)
+      ingame.splice(index2,1)
+}
+botInUse6 = false
+}
+if (input[1] == 7){
+    dota7.leavePracticeLobby();
+    dota7.abandonCurrentGame()
+    for (var x = 0; x < 5; x++){
+      let index = contains(ingame, playersbot7.dire[x].name)
+      ingame.splice(index,1)
+      let index2 = contains(ingame, playersbot7.radiant[x].name)
+      ingame.splice(index2,1)
+}
+botInUse7 = false
+}
       break;
 
   }
@@ -1613,48 +1741,32 @@ disc.on("message", function(msg) {
   {
       msg.reply(DICT.ERRORS.err_not_admin);
     break;
-  };
+  }
 
   case 'help':
   channel.sendMessage(DICT.help_message)
   break
 
   case 'me':
-  if (typeof(base.users[fromUser]) == 'undefined') {
-    msg.reply('No estas registrado en la Dota 2 In-House League')
+  if (typeof(base.usersC[fromUser]) == 'undefined') {
+    msg.reply('Tu no estas registrado en la Dota 2 In-House League')
   break
   }
   else{
-    msg.reply('Tenes actualmente ' + base.users[fromUser].mmr + ' puntos de mmr y ' + ((base.users[fromUser].wins / base.users[fromUser].matchs) * 100 ) +
-     '% de winrate en ' + base.users[fromUser].matchs + ' partidas.')
-    break
+  msg.reply('Tienes actualmente ' + base.usersC[fromUser].mmr + ' puntos de mmr (Pos.'+ (postop(top,base.usersC[fromUser].nick)+1) +') y ' + ((base.usersC[fromUser].wins / base.usersC[fromUser].matchs) * 100 ).toFixed(1) +
+   '% de winrate en ' + base.usersC[fromUser].matchs + ' partidas.')
+  break
   }
 
   case 'clobby':
   if (base.users[fromUser].level >= 3) {
-/*if (typeof(base.users[amount]) == 'undefined')
-
-    db.ref('users/'+ playersbot1.radiant[o].id).update({
-      mmr: nmmr
-    });*/
-    /*if (input[0] && input[1] && input[2]) {
-    dota6.createPracticeLobby('',
-                                {"game_name": input[1],
-                              "server_region": server,
-                               "game_mode": 2,
-                                "allow_cheats": false,
-                                "fill_with_bots": false,
-                                "allow_spectating": true,
-                               "allchat": false
-                             });
-    logger.log("Lobby Creado");
-    dota6.joinPracticeLobbyTeam(2, 6);
-    break;
-    }
-    else {
-      msg.reply("Especifique Nombre y Contraseña del lobby");
-      break;
-    }*/
+    dota1.launchPracticeLobby()
+    dota2.launchPracticeLobby()
+    dota3.launchPracticeLobby()
+    dota4.launchPracticeLobby()
+    dota5.launchPracticeLobby()
+    dota6.launchPracticeLobby()
+    dota7.launchPracticeLobby()
 }
 else
 {
@@ -1662,20 +1774,66 @@ else
   break;
 }
 
+case 'patch':
+if (base.usersC[fromUser].level >= 3)
+{if (input[1] == 1){
+    dota1.leavePracticeLobby();
+    dota1.abandonCurrentGame()
+botInUse1 = false
+}
+if (input[1] == 2){
+    dota2.leavePracticeLobby();
+    dota2.abandonCurrentGame()
+botInUse2 = false
+}
+if (input[1] == 3){
+    dota3.leavePracticeLobby();
+    dota3.abandonCurrentGame()
+botInUse3 = false
+}
+if (input[1] == 4){
+    dota4.leavePracticeLobby();
+    dota4.abandonCurrentGame()
+botInUse4 = false
+}
+if (input[1] == 5){
+    dota5.leavePracticeLobby();
+    dota5.abandonCurrentGame()
+botInUse5 = false
+}
+if (input[1] == 6){
+    dota6.leavePracticeLobby();
+    dota6.abandonCurrentGame()
+botInUse6 = false
+}
+if (input[1] == 7){
+    dota7.leavePracticeLobby();
+    dota7.abandonCurrentGame()
+botInUse7 = false
+}
+  break;
+
+}
+else
+{
+  msg.reply(DICT.ERRORS.err_not_admin);
+break;
+}
+
 case 'noobs':
 if (toplist != true){
 top = [];
-for (var key in base.users) {
-    if (typeof(base.users[key].mmr) != 'undefined'){
-      top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs});
+for (var key in base.usersC) {
+    if (typeof(base.usersC[key].mmr) != 'undefined'){
+      top.push({mmr: base.usersC[key].mmr, nick: base.usersC[key].nick, id: key, wins: base.usersC[key].wins, matchs: base.usersC[key].matchs});
 }
     }
     top.sort(function(a, b){return b.mmr - a.mmr});
     toplist = true;
 
 }
-account = Object.keys(base.users).length - 2
-channel.sendMessage('Tabla de posiciones Dota 2 In-House League: \n'+
+account = Object.keys(base.usersC).length - 2
+channel.sendMessage('Tabla de noobs Dota 2 In-House League: \n'+
 'Pos. ' + (account-9) +': ' + top[account-9].nick + ' ' + '(' + top[account-9].mmr + ')\n' +
 'Pos. ' + (account-8) +': ' + top[account-8].nick + ' ' + '(' + top[account-8].mmr + ')\n' +
 'Pos. ' + (account-7) +': ' + top[account-7].nick + ' ' + '(' + top[account-7].mmr + ')\n' +
@@ -1690,11 +1848,12 @@ break
 
 
 case 'top':
-if (toplist != true){
+if (account >= 11){
+  if (toplist != true){
 top = [];
-for (var key in base.users) {
-    if (typeof(base.users[key].mmr) != 'undefined'){
-      top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs});
+for (var key in base.usersC) {
+    if (typeof(base.usersC[key].mmr) != 'undefined'){
+      top.push({mmr: base.usersC[key].mmr, nick: base.usersC[key].nick, id: key, wins: base.usersC[key].wins, matchs: base.usersC[key].matchs});
 }
     }
     top.sort(function(a, b){return b.mmr - a.mmr});
@@ -1712,22 +1871,16 @@ channel.sendMessage('Tabla de posiciones Dota 2 In-House League: \n'+
 'Pos. 8: ' + top[7].nick + ' ' + '(' + top[7].mmr + ')\n' +
 'Pos. 9: ' + top[8].nick + ' ' + '(' + top[8].mmr + ')\n' +
 'Pos. 10: ' + top[9].nick + ' ' + '(' + top[9].mmr + ')')
+}
+else{
+  channel.sendMessage('Todavia no hay 10 personas para el top')
+}
 break
 
 
 
 case 'obs':
 if (base.users[fromUser].level >= 2) {
-  /*for (var key in base.users) {
-    if (typeof(base.users[key].level) == 'undefined'){
-      let refx = db.ref('users/'+ key)
-      refx.update({level: 1})
-    }
-    else {
-      continue
-    }
-
-  }*/
   if (input[1] == 1){
       dota1.inviteToLobby(base.users[fromUser].name)
   }
@@ -1758,17 +1911,6 @@ else
 break;
 }
 
-case 'patch':
-if (base.users[fromUser].level >= 3) {
-  shutdown()
-break
-}
-else
-{
-  channel.sendMessage(DICT.ERRORS.err_not_admin);
-break;
-};
-
 case 'server':
 if (base.users[fromUser].level >= 3) {
   if (input[1] == 'sa'){
@@ -1788,19 +1930,25 @@ break;
 };
 
 case 'cancel':
-if (base.users[fromUser].level >= 2){
+if(challenge == false){
+  break
+}
+
+if (base.usersC[fromUser].level >= 3){
   challenge = false
   challengep = [];
   radiantchallenge = [];
   direchallenge = [];
+  pickfase = false
   break
 }
 if (typeof(challengep[0]) != 'undefined' && typeof(challengep[1]) != 'undefined'){
-if (base.users[fromUser].nick == challengep[0].nick || base.users[fromUser].nick == challengep[1].nick){
+if (base.usersC[fromUser].nick == challengep[0].nick || base.usersC[fromUser].nick == challengep[1].nick){
   challenge = false
   challengep = [];
   direchallenge = []
   radiantchallenge = [];
+  pickfase = false
   break
 }
 break
@@ -1808,24 +1956,28 @@ break
 break
 
 case 'challenge':
+if(challenge == true){
+  break
+}
+
 if (challenge == false){
   if (input[1]){
-    if (input[1].toLowerCase() == base.users[fromUser].nick.toLowerCase()){
+    if (input[1].toLowerCase() == base.usersC[fromUser].nick.toLowerCase()){
       break
     }
     activa.splice(0,11)
       let nickname = activa.join('')
       let i = iob(top,nickname)
       if (i >= 0){
-        let acen = new BigNumber(base.users[fromUser].name).minus('76561197960265728')
+        let acen = new BigNumber(base.usersC[fromUser].name).minus('76561197960265728')
         acen = acen.toNumber()
         acen = acen + ''
-        challengep.push({id: fromUser, mmr: base.users[fromUser].mmr,
-           nick: base.users[fromUser].nick, name: acen, invite: base.users[fromUser].name, xp: 1})
+        challengep.push({id: fromUser, mmr: base.usersC[fromUser].mmr,
+           nick: base.usersC[fromUser].nick, name: acen, invite: base.usersC[fromUser].name, xp: 1})
         challengep.push({nick: nickname})
         challenge = true
         ctime()
-        channel.sendMessage('El usuario ' + base.users[fromUser].nick + ' ha retado a ' +
+        channel.sendMessage('El usuario ' + base.usersC[fromUser].nick + ' ha retado al usuario ' +
       nickname + ' a un challenge')
       break
       }
@@ -1835,28 +1987,32 @@ if (challenge == false){
       }
   }
   else{
-    msg.reply('Te falto algo, acordate que es .challenge nickdeloponente')
+    msg.reply('Le falto algo, recuerda que es .challenge nickdeloponente')
     break
   }
 
 }
 else{
-  msg.reply('Actualmente hay un challenge abierto, espera que termine o unete al pool')
+  msg.reply('Actualmente hay un challenge abierto, debe esperar que termine o unirse al pool')
   break
 }
 
 
 case 'accept':
 if (challenge == true){
-  if (challengep[1].nick.toLowerCase() == base.users[fromUser].nick.toLowerCase() && typeof(challengep[1].mmr) == 'undefined'){
+  if (inLobby == true){
+    msg.reply('Se esta por mandar un lobby, debes esperar a que se mande para seguir con el challenge')
+    break
+  }
+  if (challengep[1].nick.toLowerCase() == base.usersC[fromUser].nick.toLowerCase() && typeof(challengep[1].mmr) == 'undefined'){
           clearTimeout(timerc);
           ctime();
     flip =   Math.floor((Math.random() * 1.99) + 1);
-    let acen = new BigNumber(base.users[fromUser].name).minus('76561197960265728')
+    let acen = new BigNumber(base.usersC[fromUser].name).minus('76561197960265728')
     acen = acen.toNumber()
     acen = acen + ''
     channel.sendMessage('El usuario ' + challengep[1].nick + ' acepto el challenge de ' +
-  challengep[0].nick + ', aquellos que quieran jugar pueden entrar con .join')
+  challengep[0].nick + ', aquellos que quieran jugar pueden entrar con !join')
 if (flip == 1){
   channel.sendMessage('Empieza pickeando players el jugador ' + challengep[0].nick )
 }
@@ -1864,16 +2020,16 @@ if (flip == 2){
   channel.sendMessage('Empieza pickeando players el jugador ' + challengep[1].nick )
 }
   challengep[1].id = fromUser
-  challengep[1].mmr =  base.users[fromUser].mmr
+  challengep[1].mmr =  base.usersC[fromUser].mmr
   challengep[1].name =  acen
-  challengep[1].invite = base.users[fromUser].name
+  challengep[1].invite = base.usersC[fromUser].name
   challengep[1].xp = 1
   radiantchallenge.push(challengep[0])
   direchallenge.push(challengep[1])
   break
   }
   else {
-    msg.reply('El challenge no fue hecho hacia vos')
+    msg.reply('El challenge no fue hecho hacia usted')
     break
   }
 
@@ -1885,39 +2041,45 @@ else {
 
 case 'join':
 case 'pool':
+if (inLobby == true){
+  break
+}
 if (challenge == true){
-  if (base.users[fromUser].nick == challengep[0].nick){
+  if (base.usersC[fromUser].nick.toLowerCase() == challengep[0].nick.toLowerCase()){
     if (challengep.length >= 2){
-      channel.sendMessage('Pool : \n' + poolp(challengep))
+      channel.sendMessage('Capitanes: ' +challengep[0].nick +' '+ challengep[1].nick + ' Pool (' + challengep.length +' players): \n' + poolp(challengep))
       break
     }
     else{
-      msg.reply('Todavia no hay suficientes players en el pool')
+      msg.reply('Todavia no hay players en el pool')
       break
     }
   }
 
-  else if (base.users[fromUser].nick == challengep[1].nick){
+  else if (base.usersC[fromUser].nick.toLowerCase() == challengep[1].nick.toLowerCase()){
     if (challengep.length >= 2){
-      channel.sendMessage('Pool : \n' + poolp(challengep))
+      channel.sendMessage('Capitanes: ' +challengep[0].nick +' '+ challengep[1].nick + ' Pool (' + challengep.length +' players): \n' + poolp(challengep))
       break
     }
     else{
-      msg.reply('Todavia no hay suficientes players en el pool')
+      msg.reply('Todavia no hay players en el pool')
       break
     }
   }
   else {
-
+    if(pickfase == true){
+      channel.sendMessage('La fase de picks ya empezo, ya no te puedes unir')
+      break
+    }
     if (ioa(challengep, fromUser) >= 0 || ioa(radiantchallenge, fromUser) >= 0 || ioa(direchallenge, fromUser) >= 0){
       //msg.reply('Vos ya estas en cola')
       break
     }
-    let acen = new BigNumber(base.users[fromUser].name).minus('76561197960265728')
+    let acen = new BigNumber(base.usersC[fromUser].name).minus('76561197960265728')
     acen = acen.toNumber()
     acen = acen + ''
-    challengep.push({id: fromUser, mmr: base.users[fromUser].mmr,
-       nick: base.users[fromUser].nick, name: acen, invite: base.users[fromUser].name, xp: 1})
+    challengep.push({id: fromUser, mmr: base.usersC[fromUser].mmr,
+       nick: base.usersC[fromUser].nick, name: acen, invite: base.usersC[fromUser].name, xp: 1})
        break
   }
 }
@@ -1927,15 +2089,16 @@ else{
 }
 
 case 'pick':
-if (inLobby == true){
-  msg.reply('Se esta por mandar un lobby, espera que se mande para seguir con el challenge')
-  break
-}
+
 if (challenge != true){
   break
 }
+if (inLobby == true){
+  msg.reply('Se esta por mandar un lobby, debes esperar a que se mande para seguir con el challenge')
+  break
+}
 if (botInUse1 === true && botInUse2 === true && botInUse3 === true
-&& botInUse4 === true && botInUse5 === true && botInUse6 === true && botInUse7 === true){
+&& botInUse4 === true){
   channel.sendMessage('Actualmente no hay bots, espera que un game termine')
   break
 }
@@ -1945,10 +2108,13 @@ if (input[1]){
 activa.splice(0,6)
   let nickname = activa.join('')
 if (challengep[0].id == fromUser){
-
+if (challengep.length < 10 && pickfase != true){
+  channel.sendMessage('Todavia no hay suficientes jugadores en el pool')
+  break
+}
 
   if (radiantchallenge.length == 5){
-    msg.reply('Vos ya elegiste 4 jugadores')
+    msg.reply('Usted ya elegio 4 jugadores')
     break
   }
 
@@ -1962,8 +2128,8 @@ if (radiantchallenge.length > (direchallenge.length)){
 else {
       let index = iob(challengep, nickname)
     if (index >= 0){
-      channel.sendMessage('El jugador ' + challengep[index].nick + ' fue elegido por ' + base.users[fromUser].nick)
-
+      channel.sendMessage('El jugador ' + challengep[index].nick + ' fue elegido por ' + base.usersC[fromUser].nick)
+      pickfase = true
       radiantchallenge.push(challengep[index])
       let index2 = contains(challengep, challengep[index].name)
       challengep.splice(index2,1)
@@ -1971,7 +2137,7 @@ else {
 
     }
     else{
-      msg.reply('No hay player en el pool con ese nombre, revisa bien')
+      msg.reply('No se encuentra player en el pool con ese nombre')
       break
     }
   }
@@ -1986,8 +2152,8 @@ if (radiantchallenge.length == (direchallenge.length)){
 else {
       let index = iob(challengep, nickname)
     if (index >= 0){
-      channel.sendMessage('El jugador ' + challengep[index].nick + ' fue elegido por ' + base.users[fromUser].nick)
-
+      channel.sendMessage('El jugador ' + challengep[index].nick + ' fue elegido por ' + base.usersC[fromUser].nick)
+      pickfase = true
       radiantchallenge.push(challengep[index])
       let index2 = contains(challengep, challengep[index].name)
       challengep.splice(index2,1)
@@ -1996,7 +2162,7 @@ else {
 
     }
     else{
-      msg.reply('No hay player en el pool con ese nombre, revisa bien')
+      msg.reply('No se encuentra player en el pool con ese nombre')
       break
     }
   }
@@ -2006,28 +2172,33 @@ else {
 
 }
 if (challengep[1].id == fromUser){
+  if (challengep.length < 10 && pickfase != true){
+    channel.sendMessage('Todavia no hay suficientes jugadores en el pool')
+    break
+  }
   if (direchallenge.length == 5){
-    msg.reply('Vos ya elegiste 4 jugadores')
+    msg.reply('Usted ya elegiste 4 jugadores')
     break
   }
   if (flip == 1){
 
 
 if (radiantchallenge.length == (direchallenge.length)){
-  channel.sendMessage('Todavia no es tu turno de elegir')
+  channel.sendMessage('Todavia no es su turno de elegir')
   break
 }
 else {
   let index = iob(challengep, nickname)
   if (index >= 0){
-    channel.sendMessage('El jugador ' + challengep[index].nick + ' fue elegido por ' + base.users[fromUser].nick)
+    channel.sendMessage('El jugador ' + challengep[index].nick + ' fue elegido por ' + base.usersC[fromUser].nick)
+    pickfase = true
     direchallenge.push(challengep[index])
     let index2 = contains(challengep, challengep[index].name)
     challengep.splice(index2,1)
     channel.sendMessage('El team dire es: ' + get(direchallenge))
   }
   else{
-    msg.reply('No hay player en el pool con ese nombre, revisa bien')
+    msg.reply('No se encuentra player en el pool con ese nombre')
     break
   }
   }
@@ -2037,13 +2208,14 @@ else {
 
 
 if (radiantchallenge.length > (direchallenge.length)){
-  channel.sendMessage('Todavia no es tu turno de elegir')
+  channel.sendMessage('Todavia no es su turno de elegir')
 }
 else {
   let index = iob(challengep, nickname)
   if (index >= 0){
     channel.sendMessage('El jugador ' + challengep[index].nick + ' fue elegido por '
-    + base.users[fromUser].nick)
+    + base.usersC[fromUser].nick)
+    pickfase = true
     direchallenge.push(challengep[index])
     let index2 = contains(challengep, challengep[index].name)
     challengep.splice(index2,1)
@@ -2051,7 +2223,7 @@ else {
 
   }
   else{
-    msg.reply('No hay player en el pool con ese nombre, revisa bien')
+    msg.reply('No se encuentra player en el pool con ese nombre')
     break
   }
   }
@@ -2059,12 +2231,17 @@ else {
 }
 
 if (direchallenge.length == 5 && radiantchallenge.length == 5){
+  channel.sendMessage('@here Lobby creado: \n' +
+'El team radiant es: ' + get(radiantchallenge) + '\n' +
+'El team dire es: ' + get(direchallenge))
    number = Object.keys(base.matchs).length
-
+   pickfase = false
      clearTimeout(timerc);
   if (botInUse1 == false){
-let gamename = 'In-HouseChallenge' + number
-    dota1.createPracticeLobby('',{"game_name": gamename,
+      dota1.leavePracticeLobby();
+      dota1.abandonCurrentGame()
+let gamename = 'SakumiLobby' + number
+    dota1.createPracticeLobby({"game_name": gamename,
                               "server_region": server,
                                "game_mode": 2,
                                 "allow_cheats": false,
@@ -2072,7 +2249,6 @@ let gamename = 'In-HouseChallenge' + number
                                 "allow_spectating": true,
                                "allchat": false
                              });
-    logger.log("Lobby Creado");
       dota1.joinPracticeLobbyTeam(2, 4);
 for (var o = 0; o < direchallenge.length; o++){
   dota1.inviteToLobby(direchallenge[o].invite)
@@ -2080,20 +2256,19 @@ for (var o = 0; o < direchallenge.length; o++){
 for (var o = 0; o < radiantchallenge.length; o++){
   dota1.inviteToLobby(radiantchallenge[o].invite)
 }
- match1.number = number
-  playersbot1.dire = direchallenge;
-  playersbot1.radiant = radiantchallenge;
-  challengep = [];
-  challenge = false
-  direchallenge = [];
-  radiantchallenge = [];
-  inLobby = true
-  break;
+match1.number = number
+ playersbot1.dire = direchallenge;
+ playersbot1.radiant = radiantchallenge;
+ challengep = [];
+ inLobby = true
+ break;
 }
 
 if (botInUse2 == false){
+  dota2.leavePracticeLobby();
+  dota2.abandonCurrentGame()
 let gamename = 'In-HouseLeague' + number
-    dota2.createPracticeLobby('',{"game_name": gamename,
+    dota2.createPracticeLobby({"game_name": gamename,
                           "server_region": server,
                            "game_mode": 2,
                             "allow_cheats": false,
@@ -2101,7 +2276,6 @@ let gamename = 'In-HouseLeague' + number
                             "allow_spectating": true,
                            "allchat": false
                          });
-logger.log("Lobby Creado");
     dota2.joinPracticeLobbyTeam(2, 4);
 for (var o = 0; o < direchallenge.length; o++){
   dota2.inviteToLobby(direchallenge[o].invite)
@@ -2113,16 +2287,15 @@ playersbot2.dire = direchallenge;
 playersbot2.radiant = radiantchallenge;
 match2.number = number
 challengep = [];
-challenge = false
-direchallenge = [];
-radiantchallenge = [];
 inLobby = true
 break;
 }
 
 if (botInUse3 == false){
+  dota3.leavePracticeLobby();
+  dota3.abandonCurrentGame()
 let gamename = 'In-HouseLeague' + number
-    dota3.createPracticeLobby('',{"game_name": gamename,
+    dota3.createPracticeLobby({"game_name": gamename,
                           "server_region": server,
                            "game_mode": 2,
                             "allow_cheats": false,
@@ -2130,7 +2303,6 @@ let gamename = 'In-HouseLeague' + number
                             "allow_spectating": true,
                            "allchat": false
                          });
-logger.log("Lobby Creado");
 dota3.joinPracticeLobbyTeam(2, 4);
 
 for (var o = 0; o < direchallenge.length; o++){
@@ -2139,28 +2311,27 @@ for (var o = 0; o < direchallenge.length; o++){
 for (var o = 0; o < radiantchallenge.length; o++){
   dota3.inviteToLobby(radiantchallenge[o].invite)
 }
-challengep = [];
-challenge = false
-direchallenge = [];
-radiantchallenge = [];
-inLobby = true
 playersbot3.dire = direchallenge;
 playersbot3.radiant = radiantchallenge;
 match3.number = number
+challengep = [];
+inLobby = true
 break;
 }
 
 if (botInUse4 == false){
-let gamename = 'In-HouseChallenge' + number
-  dota4.createPracticeLobby('',{"game_name": gamename,
+  dota4.leavePracticeLobby();
+  dota4.abandonCurrentGame()
+let gamename = 'SakumiLobby' + number
+  dota4.createPracticeLobby({"game_name": gamename,
+                            "game_mode": 2,
                             "server_region": server,
-                             "game_mode": 2,
                               "allow_cheats": false,
                               "fill_with_bots": false,
                               "allow_spectating": true,
                              "allchat": false
                            });
-  logger.log("Lobby Creado");
+  //logger.log("Lobby Creado");
     dota4.joinPracticeLobbyTeam(2, 4);
 for (var o = 0; o < direchallenge.length; o++){
 dota4.inviteToLobby(direchallenge[o].invite)
@@ -2172,16 +2343,15 @@ match4.number = number
 playersbot4.dire = direchallenge;
 playersbot4.radiant = radiantchallenge;
 challengep = [];
-challenge = false
-direchallenge = [];
-radiantchallenge = [];
 inLobby = true
 break;
 }
 
 if (botInUse5 == false){
-let gamename = 'In-HouseChallenge' + number
-  dota5.createPracticeLobby('',{"game_name": gamename,
+  dota5.leavePracticeLobby();
+  dota5.abandonCurrentGame()
+let gamename = 'SakumiLobby' + number
+  dota5.createPracticeLobby({"game_name": gamename,
                             "server_region": server,
                              "game_mode": 2,
                               "allow_cheats": false,
@@ -2201,16 +2371,15 @@ match5.number = number
 playersbot5.dire = direchallenge;
 playersbot5.radiant = radiantchallenge;
 challengep = [];
-challenge = false
-direchallenge = [];
-radiantchallenge = [];
 inLobby = true
 break;
 }
 
 if (botInUse6 == false){
-let gamename = 'In-HouseChallenge' + number
-  dota6.createPracticeLobby('',{"game_name": gamename,
+  dota6.leavePracticeLobby();
+  dota6.abandonCurrentGame()
+let gamename = 'SakumiLobby' + number
+  dota6.createPracticeLobby({"game_name": gamename,
                             "server_region": server,
                              "game_mode": 2,
                               "allow_cheats": false,
@@ -2218,7 +2387,6 @@ let gamename = 'In-HouseChallenge' + number
                               "allow_spectating": true,
                              "allchat": false
                            });
-  logger.log("Lobby Creado");
     dota6.joinPracticeLobbyTeam(2, 4);
 for (var o = 0; o < direchallenge.length; o++){
 dota6.inviteToLobby(direchallenge[o].invite)
@@ -2230,16 +2398,15 @@ match6.number = number
 playersbot6.dire = direchallenge;
 playersbot6.radiant = radiantchallenge;
 challengep = [];
-challenge = false
-direchallenge = [];
-radiantchallenge = [];
 inLobby = true
 break;
 }
 
 if (botInUse7 == false){
-let gamename = 'In-HouseChallenge' + number
-  dota7.createPracticeLobby('',{"game_name": gamename,
+  dota7.leavePracticeLobby();
+  dota7.abandonCurrentGame()
+let gamename = 'SakumiLobby' + number
+  dota7.createPracticeLobby({"game_name": gamename,
                             "server_region": server,
                              "game_mode": 2,
                               "allow_cheats": false,
@@ -2259,9 +2426,6 @@ match7.number = number
 playersbot7.dire = direchallenge;
 playersbot7.radiant = radiantchallenge;
 challengep = [];
-challenge = false
-direchallenge = [];
-radiantchallenge = [];
 inLobby = true
 break;
 }
@@ -2276,12 +2440,12 @@ else{
 }
 
 case 'up':
-if (base.users[fromUser].level >= 2) {
+if (base.usersC[fromUser].level >= 3) {
 if (toplist != true){
 top = [];
-for (var key in base.users) {
-    if (typeof(base.users[key].mmr) != 'undefined'){
-      top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs});
+for (var key in base.usersC) {
+    if (typeof(base.usersC[key].mmr) != 'undefined'){
+      top.push({mmr: base.usersC[key].mmr, nick: base.usersC[key].nick, id: key, wins: base.usersC[key].wins, matchs: base.usersC[key].matchs});
 }
     }
     top.sort(function(a, b){return b.mmr - a.mmr});
@@ -2291,7 +2455,7 @@ activa.splice(0,4)
 let nickname = activa.join('')
 let indexn = iob(top, nickname)
 if (indexn > -1) {
-  let ref2 = db.ref('users/'+ top[indexn].id)
+  let ref2 = db.ref('usersC/'+ top[indexn].id)
   let nmmr = top[indexn].mmr + 25
   ref2.update({
   mmr: nmmr,
@@ -2309,7 +2473,7 @@ else{
     channel.sendMessage('El usuario ' + nickname + ' no existe')
   }
 else {
-   msg.reply('Te falto algo, acordate que es .check nick')
+   msg.reply('Le falto algo, recuerda que es .up nick')
 }
 break
 }
@@ -2321,12 +2485,12 @@ break;
 }
 
 case 'down':
-if (base.users[fromUser].level >= 3) {
+if (base.usersC[fromUser].level >= 3) {
 if (toplist != true){
 top = [];
-for (var key in base.users) {
-    if (typeof(base.users[key].mmr) != 'undefined'){
-      top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs});
+for (var key in base.usersC) {
+    if (typeof(base.usersC[key].mmr) != 'undefined'){
+      top.push({mmr: base.usersC[key].mmr, nick: base.usersC[key].nick, id: key, wins: base.usersC[key].wins, matchs: base.usersC[key].matchs});
 }
     }
     top.sort(function(a, b){return b.mmr - a.mmr});
@@ -2336,7 +2500,7 @@ activa.splice(0,6)
 let nickname = activa.join('')
 let indexn = iob(top, nickname)
 if (indexn > -1) {
-  let ref2 = db.ref('users/'+ top[indexn].id)
+  let ref2 = db.ref('usersC/'+ top[indexn].id)
   let nmmr = top[indexn].mmr - 25
   ref2.update({
     mmr: nmmr,
@@ -2353,7 +2517,7 @@ else{
     channel.sendMessage('El usuario ' + nickname + ' no existe')
   }
 else {
-   msg.reply('Te falto algo, acordate que es .check nick')
+   msg.reply('Le falto algo, recuerda que es .down nick')
 }
 break
 }
@@ -2364,12 +2528,13 @@ else
 break;
 }
 
+
 case 'check':
 if (toplist != true){
 top = [];
-for (var key in base.users) {
-    if (typeof(base.users[key].mmr) != 'undefined'){
-      top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs});
+for (var key in base.usersC) {
+    if (typeof(base.usersC[key].mmr) != 'undefined'){
+      top.push({mmr: base.usersC[key].mmr, nick: base.usersC[key].nick, id: key, wins: base.usersC[key].wins, matchs: base.usersC[key].matchs});
 }
     }
     top.sort(function(a, b){return b.mmr - a.mmr});
@@ -2380,7 +2545,7 @@ let nickname = activa.join('')
 let indexn = iob(top, nickname)
 if (indexn > -1) {
 channel.sendMessage('El usuario ' + top[indexn].nick + ' tiene ' + top[indexn].mmr +
-' puntos de mmr y ' + ((top[indexn].wins / top[indexn].matchs) * 100 ) + '% de winrate en ' + top[indexn].matchs + ' partidas.')
+' puntos de mmr (Pos.'+ (postop(top,top[indexn].nick)+1) +') y ' + ((top[indexn].wins / top[indexn].matchs) * 100 ).toFixed(1) + '% de winrate en ' + top[indexn].matchs + ' partidas.')
 break
 }
 else{
@@ -2389,41 +2554,14 @@ else{
     channel.sendMessage('El usuario ' + nickname + ' no existe')
   }
 else {
-   msg.reply('Te falto algo, acordate que es .check nick')
+   msg.reply('Le falto algo, recuerda que es .check nick')
 }
 break
 }
-
-case 'unreg':
-if (base.users[fromUser].level >= 3) {
-  let ref3 = db.ref('matchs/0')
-  ref3.set({matchid: "inicio"})
-
-  for (var key in base.users) {
-    if (typeof(base.users[key].mmr) != 2000){
-      let refx = db.ref('users/'+ key)
-      refx.update({mmr: 2000})
-    }
-    else {
-      continue
-    }
-
-  }
-  channel.sendMessage('Se resetearon los mmr')
-break
-
-
-
-}
-else
-{
-  channel.sendMessage(DICT.ERRORS.err_not_admin);
-break;
-};
 
 case 'reg':
-if (typeof(base.users[fromUser]) != 'undefined') {
-msg.reply('Vos ya estas registrado picaron')
+if (typeof(base.usersC[fromUser]) != 'undefined') {
+msg.reply('Usted ya esta registrado')
 break
 }
 else{
@@ -2431,7 +2569,7 @@ else{
   if (input[1]){
     if (input[1].length == 17){
 
-  let ref = db.ref('users/'+ fromUser)
+  let ref = db.ref('usersC/'+ fromUser)
 activa.splice(0,23)
   let nickname = activa.join('')
   ref.set({mmr: 2000,
@@ -2451,7 +2589,7 @@ activa.splice(0,23)
         }
   }
   else{
-    msg.reply('Te falto algo, acordate que es .reg SteamID Nick')
+    msg.reply('Le falto algo, recuerda que es .reg SteamID Nick')
     break
   }
 
@@ -2491,15 +2629,15 @@ if (index > -1) {
 break
 }
 else {
-  channel.sendMessage('Vos no estabas en queue para jugar')
+  channel.sendMessage('Usted no estaba en queue para jugar')
   break
 }
 
 
 case 'q':
 case 'sign':
-if (typeof(base.users[fromUser]) == 'undefined') {
-  msg.reply('no estas registrado en la Dota 2 In-House League')
+if (typeof(base.usersC[fromUser]) == 'undefined') {
+  msg.reply('Usted no estas registrado en la Dota 2 In-House League')
 break
 }
 if (inLobby === true){
@@ -2507,7 +2645,7 @@ if (inLobby === true){
   break
 }
 if (botInUse1 === true && botInUse2 === true && botInUse3 === true
-&& botInUse4 === true && botInUse5 === true && botInUse6 === true && botInUse7 === true){
+&& botInUse4 === true){
   channel.sendMessage('Actualmente no hay bots, espera que un game termine')
   break
 }
@@ -2517,7 +2655,7 @@ if (botInUse1 === true && botInUse2 === true && botInUse3 === true
   {
 
     if (ioa(ingame, fromUser) >= 0){
-          msg.reply('Vos estas ingame, no podes entrar en la cola')
+          msg.reply('Usted esta ingame, no puedes entrar en la cola')
           break
         }
     else if (ioa(players, fromUser) >= 0){
@@ -2528,12 +2666,12 @@ if (botInUse1 === true && botInUse2 === true && botInUse3 === true
     else{
       clearTimeout(timerq);
       qtime();
-let acen = new BigNumber(base.users[fromUser].name).minus('76561197960265728')
+let acen = new BigNumber(base.usersC[fromUser].name).minus('76561197960265728')
 acen = acen.toNumber()
 acen = acen + ''
     queue = queue + 1
-    players.push({id: fromUser, mmr: base.users[fromUser].mmr,
-       nick: base.users[fromUser].nick, name: acen, invite: base.users[fromUser].name});
+    players.push({id: fromUser, mmr: base.usersC[fromUser].mmr,
+       nick: base.usersC[fromUser].nick, name: acen, invite: base.usersC[fromUser].name});
     channel.sendMessage('Hay ' + queue + ' persona(s) listas para jugar');
 
   }
@@ -2550,8 +2688,8 @@ players.sort(function(a, b){return b.mmr - a.mmr});
 
 for (var j = 0; j < players.length; j++){
 
- xplayer[j] = primex(players[j].mmr, players[0].mmr, players[9].mmr);
-
+ //xplayer[j] = primex(players[j].mmr, players[0].mmr, players[9].mmr);
+xplayer[j] = 1
 
 
      if ((direval <= radiantval || radiantplayers.length == 5)&& direplayers.length != 5 ){
@@ -2567,12 +2705,11 @@ for (var j = 0; j < players.length; j++){
      direval = dire.reduce(add,0)
      radiantval = radiant.reduce(add,0)
 }
-channel.sendMessage('Lobby creado\n' + 'Team radiant = (C) ' + get(radiantplayers) + '\n' + 'Team dire = (C) ' + get(direplayers))
-
-
-
+channel.sendMessage('@here Lobby creado\n' + 'Team radiant = (C) ' + get(radiantplayers) + '\n' + 'Team dire = (C) ' + get(direplayers))
 
     if (botInUse1 == false){
+        dota1.leavePracticeLobby();
+        dota1.abandonCurrentGame()
   let gamename = 'In-HouseLeague' + number
       dota1.createPracticeLobby('',{"game_name": gamename,
                                 "server_region": server,
@@ -2582,39 +2719,38 @@ channel.sendMessage('Lobby creado\n' + 'Team radiant = (C) ' + get(radiantplayer
                                   "allow_spectating": true,
                                  "allchat": false
                                });
-      logger.log("Lobby Creado");
         dota1.joinPracticeLobbyTeam(2, 4);
   for (var o = 0; o < players.length; o++){
     dota1.inviteToLobby(players[o].invite)
   }
-   match1.number = number
-    playersbot1.dire = direplayers;
-    playersbot1.radiant = radiantplayers;
-    players = [];
-    xplayer = [];
-    radiant = [];
-    dire = [];
-    lobbyp = [];
-    direval = 0;
-    radiantval = 0;
-    direplayers = [];
-    radiantplayers = [];
-    queue = 0;
-    inLobby = true;
-    break;
+  match1.number = number
+   playersbot1.dire = direplayers;
+   playersbot1.radiant = radiantplayers;
+   players = [];
+   xplayer = [];
+   radiant = [];
+   dire = [];
+   lobbyp = [];
+   direval = 0;
+   radiantval = 0;
+   queue = 0;
+   inLobby = true;
+   break;
 }
 
 if (botInUse2 == false){
+  dota2.leavePracticeLobby();
+  dota2.abandonCurrentGame()
   let gamename = 'In-HouseLeague' + number
-      dota2.createPracticeLobby('',{"game_name": gamename,
+      dota2.createPracticeLobby({"game_name": gamename,
+                            "game_mode": 2,
                             "server_region": server,
-                             "game_mode": 2,
                               "allow_cheats": false,
                               "fill_with_bots": false,
                               "allow_spectating": true,
                              "allchat": false
                            });
-  logger.log("Lobby Creado");
+  //logger.log("Lobby Creado");
       dota2.joinPracticeLobbyTeam(2, 4);
 inLobby = true;
 for (var o = 0; o < players.length; o++){
@@ -2630,23 +2766,23 @@ playersbot2.radiant = radiantplayers;
  lobbyp = [];
  direval = 0;
  radiantval = 0;
- direplayers = [];
- radiantplayers = [];
  queue = 0;
 break;
 }
 
 if (botInUse3 == false){
+  dota3.leavePracticeLobby();
+  dota3.abandonCurrentGame()
   let gamename = 'In-HouseLeague' + number
-      dota3.createPracticeLobby('',{"game_name": gamename,
+      dota3.createPracticeLobby({"game_name": gamename,
+                              "game_mode": 2,
                             "server_region": server,
-                             "game_mode": 2,
                               "allow_cheats": false,
                               "fill_with_bots": false,
                               "allow_spectating": true,
                              "allchat": false
                            });
-  logger.log("Lobby Creado");
+  //logger.log("Lobby Creado");
   dota3.joinPracticeLobbyTeam(2, 4);
 
 for (var o = 0; o < players.length; o++){
@@ -2662,23 +2798,23 @@ playersbot3.radiant = radiantplayers;
  lobbyp = [];
  direval = 0;
  radiantval = 0;
- direplayers = [];
- radiantplayers = [];
  queue = 0;
 break;
 }
 
 if (botInUse4 == false){
+  dota4.leavePracticeLobby();
+  dota4.abandonCurrentGame()
 let gamename = 'In-HouseLeague' + number
-  dota4.createPracticeLobby('',{"game_name": gamename,
+  dota4.createPracticeLobby({"game_name": gamename,
+                              "game_mode": 2,
                             "server_region": server,
-                             "game_mode": 2,
                               "allow_cheats": false,
                               "fill_with_bots": false,
                               "allow_spectating": true,
                              "allchat": false
                            });
-  logger.log("Lobby Creado");
+  //logger.log("Lobby Creado");
     dota4.joinPracticeLobbyTeam(2, 4);
 for (var o = 0; o < players.length; o++){
 dota4.inviteToLobby(players[o].invite)
@@ -2693,25 +2829,25 @@ dire = [];
 lobbyp = [];
 direval = 0;
 radiantval = 0;
-direplayers = [];
-radiantplayers = [];
 queue = 0;
 inLobby = true;
 break;
 }
 
 if (botInUse5 == false){
+  dota5.leavePracticeLobby();
+  dota5.abandonCurrentGame()
 let gamename = 'In-HouseLeague' + number
-  dota5.createPracticeLobby('',{"game_name": gamename,
+  dota5.createPracticeLobby({"game_name": gamename,
+                              "game_mode": 2,
                             "server_region": server,
-                             "game_mode": 2,
                               "allow_cheats": false,
                               "fill_with_bots": false,
                               "allow_spectating": true,
                              "allchat": false
                            });
-  logger.log("Lobby Creado");
-    dota5.joinPracticeLobbyTeam(2, 4);
+  //logger.log("Lobby Creado");
+    dota5.joinPracticeLobbyTeam(2, 5);
 for (var o = 0; o < players.length; o++){
 dota5.inviteToLobby(players[o].invite)
 }
@@ -2725,25 +2861,25 @@ dire = [];
 lobbyp = [];
 direval = 0;
 radiantval = 0;
-direplayers = [];
-radiantplayers = [];
 queue = 0;
 inLobby = true;
 break;
 }
 
 if (botInUse6 == false){
+  dota6.leavePracticeLobby();
+  dota6.abandonCurrentGame()
 let gamename = 'In-HouseLeague' + number
-  dota6.createPracticeLobby('',{"game_name": gamename,
+  dota6.createPracticeLobby({"game_name": gamename,
+                              "game_mode": 2,
                             "server_region": server,
-                             "game_mode": 2,
                               "allow_cheats": false,
                               "fill_with_bots": false,
                               "allow_spectating": true,
                              "allchat": false
                            });
-  logger.log("Lobby Creado");
-    dota6.joinPracticeLobbyTeam(2, 4);
+  //logger.log("Lobby Creado");
+    dota6.joinPracticeLobbyTeam(2, 6);
 for (var o = 0; o < players.length; o++){
 dota6.inviteToLobby(players[o].invite)
 }
@@ -2757,25 +2893,25 @@ dire = [];
 lobbyp = [];
 direval = 0;
 radiantval = 0;
-direplayers = [];
-radiantplayers = [];
 queue = 0;
 inLobby = true;
 break;
 }
 
 if (botInUse7 == false){
+  dota7.leavePracticeLobby();
+  dota7.abandonCurrentGame()
 let gamename = 'In-HouseLeague' + number
-  dota7.createPracticeLobby('',{"game_name": gamename,
+  dota7.createPracticeLobby({"game_name": gamename,
+                              "game_mode": 2,
                             "server_region": server,
-                             "game_mode": 2,
                               "allow_cheats": false,
                               "fill_with_bots": false,
                               "allow_spectating": true,
                              "allchat": false
                            });
-  logger.log("Lobby Creado");
-    dota7.joinPracticeLobbyTeam(2, 4);
+  //logger.log("Lobby Creado");
+    dota7.joinPracticeLobbyTeam(2, 7);
 for (var o = 0; o < players.length; o++){
 dota7.inviteToLobby(players[o].invite)
 }
@@ -2789,8 +2925,6 @@ dire = [];
 lobbyp = [];
 direval = 0;
 radiantval = 0;
-direplayers = [];
-radiantplayers = [];
 queue = 0;
 inLobby = true;
 break;
@@ -2798,13 +2932,6 @@ break;
 
   }
 }
-
-
-/*  else {
-    channel.sendMessage(randomResponse());
-    return;
-  }*/
-
 
 }
 else{
@@ -2853,7 +2980,7 @@ function time(b){
 if (antiafk != true){
 timer = setTimeout(function(){
     afk(b);
-}, 90000);
+}, 200000);
 antiafk = true
 }
 }
@@ -2869,6 +2996,7 @@ players.push(playerslobby[x])
   }
 
     b.leavePracticeLobby();
+    b.abandonCurrentGame()
     queue = players.length
     channel.sendMessage('El lobby se cancelo porque alguien fallo en aceptar, volviendo a la cola de emparejamiento')
     qtime()
@@ -2880,6 +3008,11 @@ players.push(playerslobby[x])
     radiantval = 0;
     direplayers = [];
     radiantplayers = [];
+    if(challenge == true){
+      direchallenge = [];
+      radiantchallenge = [];
+      challenge = false
+    }
     antiafk = false
     inLobby = false
 }
@@ -2896,8 +3029,6 @@ function randomResponse() {
 
 
 function shutdown() {
-  logger.log('Shutting down Jankbot...');
-  process.exit();
   bot1ready = false;
   bot2ready = false;
   bot3ready = false;
@@ -2905,6 +3036,7 @@ function shutdown() {
   bot5ready = false;
   bot6ready = false;
   bot7ready = false;
+  process.exit();
 }
 
 function primex(x, max, min)
@@ -2927,6 +3059,15 @@ function contains(a, obj) {
     return -1;
 }
 
+function postop(a, obj) {
+    for (var i = 0; i < a.length; i++) {
+        if (a[i].nick.toLowerCase() === obj.toLowerCase()) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 
 
 
@@ -2942,8 +3083,17 @@ function ioa(a, obj) {
 
 function iob(a, obj) {
     for (var i = 0; i < a.length; i++) {
-        if (a[i].nick.toLowerCase() === obj) {
+        if (a[i].nick.toLowerCase() === obj.toLowerCase()) {
             return i;
+        }
+    }
+    return -1;
+}
+
+function iov(a, obj) {
+    for (var key in a) {
+        if (a[key].id === obj) {
+            return 1;
         }
     }
     return -1;
