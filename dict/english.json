@@ -21,7 +21,7 @@
     "whois": "whois"
   },
 
-  "help_message" : "Soy lobobot, el bot oficial del canal Lobbys\nLos comandos que se pueden utilizar son:\n!inq / inqueue: Muestra las personas en cola para un game.\n!sign / !q: Le posiciona en la cola para jugar.\n!leave: Le elimina de la cola para jugar.\n!me: Le muestra cuantos puntos tenes actualmente\n!reg steamID: Le registra en la Dota 2 In-House League.\n!top: Muestra el TOP 10 actual de la liga\n!check nick: Muestra los stats de la persona con ese nick\n!games: Le muestra los games que se estan jugando\n!challenge nickdeloponente: Inicia un challenge contra ese jugador\n!accept: Acepta un challenge a tu nombre.\n!pool / !join : Le agrega a la pool, si sos capitan te muestra el pool\n!pick nick: Elije un jugador de la pool para tu equipo\n!cancel: Cancela el challenge, puede ser usado por los capitanes o un moderador",
+  "help_message" : "Soy lobobot, el bot oficial del canal Lobbys\nLos comandos que se pueden utilizar son:\n.inq / inqueue: Muestra las personas en cola para un game.\n.sign / .q: Le posiciona en la cola para jugar.\n.leave: Le elimina de la cola para jugar.\n.me: Le muestra cuantos puntos tenes actualmente\n.reg steamID: Le registra en la Dota 2 In-House League.\n.top: Muestra el TOP 10 actual de la liga\n.check nick: Muestra los stats de la persona con ese nick\n.games: Le muestra los games que se estan jugando\n.challenge nickdeloponente: Inicia un challenge contra ese jugador\n.accept: Acepta un challenge a tu nombre.\n.pool / .join : Le agrega a la pool, si sos capitan te muestra el pool\n.pick nick: Elije un jugador de la pool para tu equipo\n.cancel: Cancela el challenge, puede ser usado por los capitanes o un moderador",
 
   "CMD_HELP" : {
     "lfg" : "Avisarle a mis amigos que quiero jugar.",
@@ -49,7 +49,7 @@
 
   "ping_response" : "Tu ID es {userid}",
 
-  "greeting_response" : "Hola {user}!",
+  "greeting_response" : "Hola {user}.",
 
   "ADMIN" : {
     "quit" : "Saliendo....",
