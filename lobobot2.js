@@ -2621,7 +2621,7 @@ break
 
 
 case 'nick':
-let ref2 = db.ref('users/'+ base.users[fromUser])
+let ref2 = db.ref('users/'+ fromUser)
 activa.splice(0,6)
 let nnick = activa.join('')
   ref2.update({
