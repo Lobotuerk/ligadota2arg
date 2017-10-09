@@ -2503,6 +2503,90 @@ else
 break;
 }
 
+case 'lvlup':
+if (base.users[fromUser].level >= 3) {
+if (toplist != true){
+top = [];
+for (var key in base.users) {
+    if (typeof(base.users[key].mmr) != 'undefined'){
+      top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs});
+}
+    }
+    top.sort(function(a, b){return b.mmr - a.mmr});
+    toplist = true;
+}
+activa.splice(0,4)
+let nickname = activa.join('')
+let indexn = iob(top, nickname)
+if (indexn > -1) {
+  let ref2 = db.ref('users/'+ top[indexn].id)
+  let nmmr = top[indexn].level + 1
+  ref2.update({
+  level: nmmr
+  });
+
+channel.sendMessage('El usuario ' + top[indexn].nick + ' ahora es nivel ' + nmmr)
+top = false
+break
+}
+else{
+  if (input[1]){
+    channel.sendMessage('El usuario ' + nickname + ' no existe')
+  }
+else {
+   msg.reply('Le falto algo, recuerda que es .lvlup nick')
+}
+break
+}
+}
+else
+{
+  channel.sendMessage(DICT.ERRORS.err_not_admin);
+break;
+}
+
+case 'lvldown':
+if (base.users[fromUser].level >= 3) {
+if (toplist != true){
+top = [];
+for (var key in base.users) {
+    if (typeof(base.users[key].mmr) != 'undefined'){
+      top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs});
+}
+    }
+    top.sort(function(a, b){return b.mmr - a.mmr});
+    toplist = true;
+}
+activa.splice(0,6)
+let nickname = activa.join('')
+let indexn = iob(top, nickname)
+if (indexn > -1) {
+  let ref2 = db.ref('users/'+ top[indexn].id)
+  let nmmr = top[indexn].level - 1
+  ref2.update({
+    level: nmmr
+  });
+
+channel.sendMessage('El usuario ' + top[indexn].nick +  ' ahora es nivel ' + nmmr)
+  top = false
+break
+}
+else{
+  if (input[1]){
+    channel.sendMessage('El usuario ' + nickname + ' no existe')
+  }
+else {
+   msg.reply('Le falto algo, recuerda que es .lvldown nick')
+}
+break
+}
+}
+else
+{
+  channel.sendMessage(DICT.ERRORS.err_not_admin);
+break;
+}
+
 
 case 'check':
 if (toplist != true){
