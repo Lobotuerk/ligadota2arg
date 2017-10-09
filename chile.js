@@ -142,23 +142,19 @@ bot4.on('connected', function() {
 });
 
 bot1.on('error', function() {
-  logger.error('Bot1 has been logged off of the Steam network.');
 //  cluster.worker.kill()
 shutdown()
 
 });
 bot2.on('error', function() {
-  logger.error('Bot2 has been logged off of the Steam network.');
 //  cluster.worker.kill()
 shutdown()
 });
 bot3.on('error', function() {
-  logger.error('Bot3 has been logged off of the Steam network.');
 //  cluster.worker.kill()
 shutdown()
 });
 bot4.on('error', function() {
-  logger.error('Bot4 has been logged off of the Steam network.');
   //cluster.worker.kill()
 shutdown()
 });
