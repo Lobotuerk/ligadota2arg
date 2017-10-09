@@ -223,7 +223,7 @@ bot1.on('logOnResponse', function() {
 
         account = Object.keys(base.users).length;
         if (typeof(base.users[key].mmr) != 'undefined'){
-              top.push({mmr: base.users[key].mmr, nick: base.users[key].nick});
+              top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs,level : base.users[key].level});
         }
           }
           top.sort(function(a, b){return b.mmr - a.mmr});
@@ -247,7 +247,7 @@ bot2.on('logOnResponse', function() {
 
           account = Object.keys(base.users).length;
           if (typeof(base.users[key].mmr) != 'undefined'){
-                top.push({mmr: base.users[key].mmr, nick: base.users[key].nick});
+                top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs,level : base.users[key].level});
           }
             }
             top.sort(function(a, b){return b.mmr - a.mmr});
@@ -271,7 +271,7 @@ bot3.on('logOnResponse', function() {
 
         account = Object.keys(base.users).length;
         if (typeof(base.users[key].mmr) != 'undefined'){
-              top.push({mmr: base.users[key].mmr, nick: base.users[key].nick});
+              top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs,level : base.users[key].level});
         }
           }
           top.sort(function(a, b){return b.mmr - a.mmr});
@@ -295,7 +295,7 @@ bot4.on('logOnResponse', function() {
 
         account = Object.keys(base.users).length;
         if (typeof(base.users[key].mmr) != 'undefined'){
-              top.push({mmr: base.users[key].mmr, nick: base.users[key].nick});
+              top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs,level : base.users[key].level});
         }
           }
           top.sort(function(a, b){return b.mmr - a.mmr});
@@ -319,7 +319,7 @@ bot5.on('logOnResponse', function() {
 
         account = Object.keys(base.users).length;
         if (typeof(base.users[key].mmr) != 'undefined'){
-              top.push({mmr: base.users[key].mmr, nick: base.users[key].nick});
+              top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs,level : base.users[key].level});
         }
           }
           top.sort(function(a, b){return b.mmr - a.mmr});
@@ -343,7 +343,7 @@ bot6.on('logOnResponse', function() {
 
         account = Object.keys(base.users).length;
         if (typeof(base.users[key].mmr) != 'undefined'){
-              top.push({mmr: base.users[key].mmr, nick: base.users[key].nick});
+              top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs,level : base.users[key].level});
         }
           }
           top.sort(function(a, b){return b.mmr - a.mmr});
@@ -367,7 +367,7 @@ bot7.on('logOnResponse', function() {
 
         account = Object.keys(base.users).length;
         if (typeof(base.users[key].mmr) != 'undefined'){
-              top.push({mmr: base.users[key].mmr, nick: base.users[key].nick});
+              top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs,level : base.users[key].level});
         }
           }
           top.sort(function(a, b){return b.mmr - a.mmr});
@@ -1736,6 +1736,7 @@ botInUse7 = false
   break
   }
 
+
   case 'clobby':
   if (base.users[fromUser].level >= 3) {
     dota1.launchPracticeLobby()
@@ -1803,7 +1804,7 @@ if (toplist != true){
 top = [];
 for (var key in base.users) {
     if (typeof(base.users[key].mmr) != 'undefined'){
-      top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs});
+      top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs,level : base.users[key].level});
 }
     }
     top.sort(function(a, b){return b.mmr - a.mmr});
@@ -1831,7 +1832,7 @@ if (account >= 11){
 top = [];
 for (var key in base.users) {
     if (typeof(base.users[key].mmr) != 'undefined'){
-      top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs});
+      top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs,level : base.users[key].level});
 }
     }
     top.sort(function(a, b){return b.mmr - a.mmr});
@@ -1990,7 +1991,7 @@ if (challenge == true){
     acen = acen.toNumber()
     acen = acen + ''
     channel.sendMessage('El usuario ' + challengep[1].nick + ' acepto el challenge de ' +
-  challengep[0].nick + ', aquellos que quieran jugar pueden entrar con !join')
+  challengep[0].nick + ', aquellos que quieran jugar pueden entrar con .join')
 if (flip == 1){
   channel.sendMessage('Empieza pickeando players el jugador ' + challengep[0].nick )
 }
@@ -2420,7 +2421,7 @@ if (toplist != true){
 top = [];
 for (var key in base.users) {
     if (typeof(base.users[key].mmr) != 'undefined'){
-      top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs});
+      top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs,level : base.users[key].level});
 }
     }
     top.sort(function(a, b){return b.mmr - a.mmr});
@@ -2465,7 +2466,7 @@ if (toplist != true){
 top = [];
 for (var key in base.users) {
     if (typeof(base.users[key].mmr) != 'undefined'){
-      top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs});
+      top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs,level : base.users[key].level});
 }
     }
     top.sort(function(a, b){return b.mmr - a.mmr});
@@ -2509,13 +2510,13 @@ if (toplist != true){
 top = [];
 for (var key in base.users) {
     if (typeof(base.users[key].mmr) != 'undefined'){
-      top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs});
+      top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs,level : base.users[key].level});
 }
     }
     top.sort(function(a, b){return b.mmr - a.mmr});
     toplist = true;
 }
-activa.splice(0,4)
+activa.splice(0,7)
 let nickname = activa.join('')
 let indexn = iob(top, nickname)
 if (indexn > -1) {
@@ -2551,13 +2552,13 @@ if (toplist != true){
 top = [];
 for (var key in base.users) {
     if (typeof(base.users[key].mmr) != 'undefined'){
-      top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs});
+      top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs,level : base.users[key].level});
 }
     }
     top.sort(function(a, b){return b.mmr - a.mmr});
     toplist = true;
 }
-activa.splice(0,6)
+activa.splice(0,9)
 let nickname = activa.join('')
 let indexn = iob(top, nickname)
 if (indexn > -1) {
@@ -2593,7 +2594,7 @@ if (toplist != true){
 top = [];
 for (var key in base.users) {
     if (typeof(base.users[key].mmr) != 'undefined'){
-      top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs});
+      top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs,level : base.users[key].level});
 }
     }
     top.sort(function(a, b){return b.mmr - a.mmr});
@@ -2617,6 +2618,17 @@ else {
 }
 break
 }
+
+
+case 'nick':
+let ref2 = db.ref('users/'+ base.users[fromUser].id)
+activa.splice(0,6)
+let nnick = activa.join('')
+  ref2.update({
+    nick: nnick
+  });
+msg.reply('Tu nuevo nick es ' + nnick)
+break
 
 case 'reg':
 if (typeof(base.users[fromUser]) != 'undefined') {
