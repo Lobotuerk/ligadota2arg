@@ -1532,7 +1532,7 @@ disc.on("message", function(msg) {
     }
 
     if (input[0] == 'reg'){
-      if (typeof(base.usersC[fromUser]) != 'undefined') {
+      if (typeof(base.users[fromUser]) != 'undefined') {
       msg.reply('Tu ya te encuentras registrado')
       return
     }
@@ -1635,7 +1635,7 @@ disc.on("message", function(msg) {
 
 
     case 'elobby':
-    if (base.usersC[fromUser].level >= 3) {if (input[1] == 1){
+    if (base.users[fromUser].level >= 3) {if (input[1] == 1){
         dota1.leavePracticeLobby();
         dota1.abandonCurrentGame()
         for (var x = 0; x < 5; x++){
@@ -1726,13 +1726,13 @@ botInUse7 = false
   break
 
   case 'me':
-  if (typeof(base.usersC[fromUser]) == 'undefined') {
+  if (typeof(base.users[fromUser]) == 'undefined') {
     msg.reply('Tu no estas registrado en la Dota 2 In-House League')
   break
   }
   else{
-  msg.reply('Tienes actualmente ' + base.usersC[fromUser].mmr + ' puntos de mmr (Pos.'+ (postop(top,base.usersC[fromUser].nick)+1) +') y ' + ((base.usersC[fromUser].wins / base.usersC[fromUser].matchs) * 100 ).toFixed(1) +
-   '% de winrate en ' + base.usersC[fromUser].matchs + ' partidas.')
+  msg.reply('Tienes actualmente ' + base.users[fromUser].mmr + ' puntos de mmr (Pos.'+ (postop(top,base.users[fromUser].nick)+1) +') y ' + ((base.users[fromUser].wins / base.users[fromUser].matchs) * 100 ).toFixed(1) +
+   '% de winrate en ' + base.users[fromUser].matchs + ' partidas.')
   break
   }
 
@@ -1753,7 +1753,7 @@ else
 }
 
 case 'patch':
-if (base.usersC[fromUser].level >= 3)
+if (base.users[fromUser].level >= 3)
 {if (input[1] == 1){
     dota1.leavePracticeLobby();
     dota1.abandonCurrentGame()
@@ -1801,16 +1801,16 @@ break;
 case 'noobs':
 if (toplist != true){
 top = [];
-for (var key in base.usersC) {
-    if (typeof(base.usersC[key].mmr) != 'undefined'){
-      top.push({mmr: base.usersC[key].mmr, nick: base.usersC[key].nick, id: key, wins: base.usersC[key].wins, matchs: base.usersC[key].matchs});
+for (var key in base.users) {
+    if (typeof(base.users[key].mmr) != 'undefined'){
+      top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs});
 }
     }
     top.sort(function(a, b){return b.mmr - a.mmr});
     toplist = true;
 
 }
-account = Object.keys(base.usersC).length - 2
+account = Object.keys(base.users).length - 2
 channel.sendMessage('Tabla de noobs Dota 2 In-House League: \n'+
 'Pos. ' + (account-9) +': ' + top[account-9].nick + ' ' + '(' + top[account-9].mmr + ')\n' +
 'Pos. ' + (account-8) +': ' + top[account-8].nick + ' ' + '(' + top[account-8].mmr + ')\n' +
@@ -1829,9 +1829,9 @@ case 'top':
 if (account >= 11){
   if (toplist != true){
 top = [];
-for (var key in base.usersC) {
-    if (typeof(base.usersC[key].mmr) != 'undefined'){
-      top.push({mmr: base.usersC[key].mmr, nick: base.usersC[key].nick, id: key, wins: base.usersC[key].wins, matchs: base.usersC[key].matchs});
+for (var key in base.users) {
+    if (typeof(base.users[key].mmr) != 'undefined'){
+      top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs});
 }
     }
     top.sort(function(a, b){return b.mmr - a.mmr});
@@ -1912,7 +1912,7 @@ if(challenge == false){
   break
 }
 
-if (base.usersC[fromUser].level >= 3){
+if (base.users[fromUser].level >= 3){
   challenge = false
   challengep = [];
   radiantchallenge = [];
@@ -1921,7 +1921,7 @@ if (base.usersC[fromUser].level >= 3){
   break
 }
 if (typeof(challengep[0]) != 'undefined' && typeof(challengep[1]) != 'undefined'){
-if (base.usersC[fromUser].nick == challengep[0].nick || base.usersC[fromUser].nick == challengep[1].nick){
+if (base.users[fromUser].nick == challengep[0].nick || base.users[fromUser].nick == challengep[1].nick){
   challenge = false
   challengep = [];
   direchallenge = []
@@ -1940,22 +1940,22 @@ if(challenge == true){
 
 if (challenge == false){
   if (input[1]){
-    if (input[1].toLowerCase() == base.usersC[fromUser].nick.toLowerCase()){
+    if (input[1].toLowerCase() == base.users[fromUser].nick.toLowerCase()){
       break
     }
     activa.splice(0,11)
       let nickname = activa.join('')
       let i = iob(top,nickname)
       if (i >= 0){
-        let acen = new BigNumber(base.usersC[fromUser].name).minus('76561197960265728')
+        let acen = new BigNumber(base.users[fromUser].name).minus('76561197960265728')
         acen = acen.toNumber()
         acen = acen + ''
-        challengep.push({id: fromUser, mmr: base.usersC[fromUser].mmr,
-           nick: base.usersC[fromUser].nick, name: acen, invite: base.usersC[fromUser].name, xp: 1})
+        challengep.push({id: fromUser, mmr: base.users[fromUser].mmr,
+           nick: base.users[fromUser].nick, name: acen, invite: base.users[fromUser].name, xp: 1})
         challengep.push({nick: nickname})
         challenge = true
         ctime()
-        channel.sendMessage('El usuario ' + base.usersC[fromUser].nick + ' ha retado al usuario ' +
+        channel.sendMessage('El usuario ' + base.users[fromUser].nick + ' ha retado al usuario ' +
       nickname + ' a un challenge')
       break
       }
@@ -1982,11 +1982,11 @@ if (challenge == true){
     msg.reply('Se esta por mandar un lobby, debes esperar a que se mande para seguir con el challenge')
     break
   }
-  if (challengep[1].nick.toLowerCase() == base.usersC[fromUser].nick.toLowerCase() && typeof(challengep[1].mmr) == 'undefined'){
+  if (challengep[1].nick.toLowerCase() == base.users[fromUser].nick.toLowerCase() && typeof(challengep[1].mmr) == 'undefined'){
           clearTimeout(timerc);
           ctime();
     flip =   Math.floor((Math.random() * 1.99) + 1);
-    let acen = new BigNumber(base.usersC[fromUser].name).minus('76561197960265728')
+    let acen = new BigNumber(base.users[fromUser].name).minus('76561197960265728')
     acen = acen.toNumber()
     acen = acen + ''
     channel.sendMessage('El usuario ' + challengep[1].nick + ' acepto el challenge de ' +
@@ -1998,9 +1998,9 @@ if (flip == 2){
   channel.sendMessage('Empieza pickeando players el jugador ' + challengep[1].nick )
 }
   challengep[1].id = fromUser
-  challengep[1].mmr =  base.usersC[fromUser].mmr
+  challengep[1].mmr =  base.users[fromUser].mmr
   challengep[1].name =  acen
-  challengep[1].invite = base.usersC[fromUser].name
+  challengep[1].invite = base.users[fromUser].name
   challengep[1].xp = 1
   radiantchallenge.push(challengep[0])
   direchallenge.push(challengep[1])
@@ -2023,7 +2023,7 @@ if (inLobby == true){
   break
 }
 if (challenge == true){
-  if (base.usersC[fromUser].nick.toLowerCase() == challengep[0].nick.toLowerCase()){
+  if (base.users[fromUser].nick.toLowerCase() == challengep[0].nick.toLowerCase()){
     if (challengep.length >= 2){
       channel.sendMessage('Capitanes: ' +challengep[0].nick +' '+ challengep[1].nick + ' Pool (' + challengep.length +' players): \n' + poolp(challengep))
       break
@@ -2034,7 +2034,7 @@ if (challenge == true){
     }
   }
 
-  else if (base.usersC[fromUser].nick.toLowerCase() == challengep[1].nick.toLowerCase()){
+  else if (base.users[fromUser].nick.toLowerCase() == challengep[1].nick.toLowerCase()){
     if (challengep.length >= 2){
       channel.sendMessage('Capitanes: ' +challengep[0].nick +' '+ challengep[1].nick + ' Pool (' + challengep.length +' players): \n' + poolp(challengep))
       break
@@ -2053,11 +2053,11 @@ if (challenge == true){
       //msg.reply('Vos ya estas en cola')
       break
     }
-    let acen = new BigNumber(base.usersC[fromUser].name).minus('76561197960265728')
+    let acen = new BigNumber(base.users[fromUser].name).minus('76561197960265728')
     acen = acen.toNumber()
     acen = acen + ''
-    challengep.push({id: fromUser, mmr: base.usersC[fromUser].mmr,
-       nick: base.usersC[fromUser].nick, name: acen, invite: base.usersC[fromUser].name, xp: 1})
+    challengep.push({id: fromUser, mmr: base.users[fromUser].mmr,
+       nick: base.users[fromUser].nick, name: acen, invite: base.users[fromUser].name, xp: 1})
        break
   }
 }
@@ -2106,7 +2106,7 @@ if (radiantchallenge.length > (direchallenge.length)){
 else {
       let index = iob(challengep, nickname)
     if (index >= 0){
-      channel.sendMessage('El jugador ' + challengep[index].nick + ' fue elegido por ' + base.usersC[fromUser].nick)
+      channel.sendMessage('El jugador ' + challengep[index].nick + ' fue elegido por ' + base.users[fromUser].nick)
       pickfase = true
       radiantchallenge.push(challengep[index])
       let index2 = contains(challengep, challengep[index].name)
@@ -2130,7 +2130,7 @@ if (radiantchallenge.length == (direchallenge.length)){
 else {
       let index = iob(challengep, nickname)
     if (index >= 0){
-      channel.sendMessage('El jugador ' + challengep[index].nick + ' fue elegido por ' + base.usersC[fromUser].nick)
+      channel.sendMessage('El jugador ' + challengep[index].nick + ' fue elegido por ' + base.users[fromUser].nick)
       pickfase = true
       radiantchallenge.push(challengep[index])
       let index2 = contains(challengep, challengep[index].name)
@@ -2168,7 +2168,7 @@ if (radiantchallenge.length == (direchallenge.length)){
 else {
   let index = iob(challengep, nickname)
   if (index >= 0){
-    channel.sendMessage('El jugador ' + challengep[index].nick + ' fue elegido por ' + base.usersC[fromUser].nick)
+    channel.sendMessage('El jugador ' + challengep[index].nick + ' fue elegido por ' + base.users[fromUser].nick)
     pickfase = true
     direchallenge.push(challengep[index])
     let index2 = contains(challengep, challengep[index].name)
@@ -2192,7 +2192,7 @@ else {
   let index = iob(challengep, nickname)
   if (index >= 0){
     channel.sendMessage('El jugador ' + challengep[index].nick + ' fue elegido por '
-    + base.usersC[fromUser].nick)
+    + base.users[fromUser].nick)
     pickfase = true
     direchallenge.push(challengep[index])
     let index2 = contains(challengep, challengep[index].name)
@@ -2415,12 +2415,12 @@ else{
 }
 
 case 'up':
-if (base.usersC[fromUser].level >= 3) {
+if (base.users[fromUser].level >= 3) {
 if (toplist != true){
 top = [];
-for (var key in base.usersC) {
-    if (typeof(base.usersC[key].mmr) != 'undefined'){
-      top.push({mmr: base.usersC[key].mmr, nick: base.usersC[key].nick, id: key, wins: base.usersC[key].wins, matchs: base.usersC[key].matchs});
+for (var key in base.users) {
+    if (typeof(base.users[key].mmr) != 'undefined'){
+      top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs});
 }
     }
     top.sort(function(a, b){return b.mmr - a.mmr});
@@ -2430,7 +2430,7 @@ activa.splice(0,4)
 let nickname = activa.join('')
 let indexn = iob(top, nickname)
 if (indexn > -1) {
-  let ref2 = db.ref('usersC/'+ top[indexn].id)
+  let ref2 = db.ref('users/'+ top[indexn].id)
   let nmmr = top[indexn].mmr + 25
   ref2.update({
   mmr: nmmr,
@@ -2460,12 +2460,12 @@ break;
 }
 
 case 'down':
-if (base.usersC[fromUser].level >= 3) {
+if (base.users[fromUser].level >= 3) {
 if (toplist != true){
 top = [];
-for (var key in base.usersC) {
-    if (typeof(base.usersC[key].mmr) != 'undefined'){
-      top.push({mmr: base.usersC[key].mmr, nick: base.usersC[key].nick, id: key, wins: base.usersC[key].wins, matchs: base.usersC[key].matchs});
+for (var key in base.users) {
+    if (typeof(base.users[key].mmr) != 'undefined'){
+      top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs});
 }
     }
     top.sort(function(a, b){return b.mmr - a.mmr});
@@ -2475,7 +2475,7 @@ activa.splice(0,6)
 let nickname = activa.join('')
 let indexn = iob(top, nickname)
 if (indexn > -1) {
-  let ref2 = db.ref('usersC/'+ top[indexn].id)
+  let ref2 = db.ref('users/'+ top[indexn].id)
   let nmmr = top[indexn].mmr - 25
   ref2.update({
     mmr: nmmr,
@@ -2507,9 +2507,9 @@ break;
 case 'check':
 if (toplist != true){
 top = [];
-for (var key in base.usersC) {
-    if (typeof(base.usersC[key].mmr) != 'undefined'){
-      top.push({mmr: base.usersC[key].mmr, nick: base.usersC[key].nick, id: key, wins: base.usersC[key].wins, matchs: base.usersC[key].matchs});
+for (var key in base.users) {
+    if (typeof(base.users[key].mmr) != 'undefined'){
+      top.push({mmr: base.users[key].mmr, nick: base.users[key].nick, id: key, wins: base.users[key].wins, matchs: base.users[key].matchs});
 }
     }
     top.sort(function(a, b){return b.mmr - a.mmr});
@@ -2535,7 +2535,7 @@ break
 }
 
 case 'reg':
-if (typeof(base.usersC[fromUser]) != 'undefined') {
+if (typeof(base.users[fromUser]) != 'undefined') {
 msg.reply('Usted ya esta registrado')
 break
 }
@@ -2544,7 +2544,7 @@ else{
   if (input[1]){
     if (input[1].length == 17){
 
-  let ref = db.ref('usersC/'+ fromUser)
+  let ref = db.ref('users/'+ fromUser)
 activa.splice(0,23)
   let nickname = activa.join('')
   ref.set({mmr: 2000,
@@ -2611,7 +2611,7 @@ else {
 
 case 'q':
 case 'sign':
-if (typeof(base.usersC[fromUser]) == 'undefined') {
+if (typeof(base.users[fromUser]) == 'undefined') {
   msg.reply('Usted no estas registrado en la Dota 2 In-House League')
 break
 }
@@ -2641,12 +2641,12 @@ if (botInUse1 === true && botInUse2 === true && botInUse3 === true
     else{
       clearTimeout(timerq);
       qtime();
-let acen = new BigNumber(base.usersC[fromUser].name).minus('76561197960265728')
+let acen = new BigNumber(base.users[fromUser].name).minus('76561197960265728')
 acen = acen.toNumber()
 acen = acen + ''
     queue = queue + 1
-    players.push({id: fromUser, mmr: base.usersC[fromUser].mmr,
-       nick: base.usersC[fromUser].nick, name: acen, invite: base.usersC[fromUser].name});
+    players.push({id: fromUser, mmr: base.users[fromUser].mmr,
+       nick: base.users[fromUser].nick, name: acen, invite: base.users[fromUser].name});
     channel.sendMessage('Hay ' + queue + ' persona(s) listas para jugar');
 
   }
