@@ -118,8 +118,8 @@ bot2.connect();
 console.log('Bot2 Iniciado')
 bot2.on('connected', function() {
   botUser2.logOn({
-    account_name: CONFIG.username5,
-    password: CONFIG.password5
+    account_name: CONFIG.username8,
+    password: CONFIG.password8
   });
 });
 
@@ -180,12 +180,12 @@ account = Object.keys(base.usersC).length;
 
 
 bot1.on('logOnResponse', function() {
-  //logger.log('Bot 1' + DICT.SYSTEM.system_loggedin);
+  console.log('Bot 1' + DICT.SYSTEM.system_loggedin);
   botFriends1.setPersonaState(Steam.EPersonaState.Online);
   botFriends1.setPersonaName(CONFIG.displayName1);
   dota1.launch();
   dota1.on('ready', function() {
-    //logger.log('Bot 1 Seteado');
+    console.log('Bot 1 Seteado');
     bot1ready = true;
     if (bot1ready == true && bot2ready == true && bot3ready == true && bot4ready == true && toplist == false){
       account = 0
@@ -198,18 +198,18 @@ bot1.on('logOnResponse', function() {
           top.sort(function(a, b){return b.mmr - a.mmr});
           toplist = true;
 
-      //channel.sendMessage('Bot Ready, v.' + CONFIG.version)
+      channel.sendMessage('Bot Ready, v.' + CONFIG.version)
     }
   });
 });
 
 bot2.on('logOnResponse', function() {
-  //logger.log('Bot 2' + DICT.SYSTEM.system_loggedin);
+  console.log('Bot 2' + DICT.SYSTEM.system_loggedin);
   botFriends2.setPersonaState(Steam.EPersonaState.Online);
   botFriends2.setPersonaName(CONFIG.displayName2);
    dota2.launch();
    dota2.on('ready', function() {
-      //logger.log('Bot 2 Seteado');
+      console.log('Bot 2 Seteado');
       bot2ready = true;
       if (bot1ready == true && bot2ready == true && bot3ready == true && bot4ready == true && toplist == false){
         account = 0
@@ -222,18 +222,18 @@ bot2.on('logOnResponse', function() {
             top.sort(function(a, b){return b.mmr - a.mmr});
             toplist = true;
 
-        //channel.sendMessage('Bot Ready, v.' + CONFIG.version)
+        channel.sendMessage('Bot Ready, v.' + CONFIG.version)
       }
     });
 });
 
 bot3.on('logOnResponse', function() {
-  //logger.log('Bot 3' + DICT.SYSTEM.system_loggedin);
+  console.log('Bot 3' + DICT.SYSTEM.system_loggedin);
   botFriends3.setPersonaState(Steam.EPersonaState.Online);
   botFriends3.setPersonaName(CONFIG.displayName3);
   dota3.launch();
   dota3.on('ready', function() {
-    //logger.log('Bot 3 Seteado');
+    console.log('Bot 3 Seteado');
     bot3ready = true;
     if (bot1ready == true && bot2ready == true && bot3ready == true && bot4ready == true && toplist == false){
       account = 0
@@ -246,18 +246,18 @@ bot3.on('logOnResponse', function() {
           top.sort(function(a, b){return b.mmr - a.mmr});
           toplist = true;
 
-      //channel.sendMessage('Bot Ready, v.' + CONFIG.version)
+      channel.sendMessage('Bot Ready, v.' + CONFIG.version)
     }
   });
 });
 
 bot4.on('logOnResponse', function() {
-  //logger.log('Bot 3' + DICT.SYSTEM.system_loggedin);
+  console.log('Bot 3' + DICT.SYSTEM.system_loggedin);
   botFriends4.setPersonaState(Steam.EPersonaState.Online);
   botFriends4.setPersonaName(CONFIG.displayName4);
   dota4.launch();
   dota4.on('ready', function() {
-    //logger.log('Bot 4 Seteado');
+    console.log('Bot 4 Seteado');
     bot4ready = true;
     if (bot1ready == true && bot2ready == true && bot3ready == true && bot4ready == true && toplist == false){
       account = 0
@@ -270,7 +270,7 @@ bot4.on('logOnResponse', function() {
           top.sort(function(a, b){return b.mmr - a.mmr});
           toplist = true;
 
-      //channel.sendMessage('Bot Ready, v.' + CONFIG.version)
+      channel.sendMessage('Bot Ready, v.' + CONFIG.version)
     }
   });
 });
@@ -283,6 +283,7 @@ bot4.on('logOnResponse', function() {
 
 
 dota1.on('practiceLobbyUpdate', function(lobby) {
+  //logger.log(lobby);
   if (lobby.state == 2 && match1.id != lobby.server_id && inLobby == true){
   match1.id = lobby.server_id
   let ref3 = db.ref('matchs/'+ match1.number)
@@ -1823,7 +1824,7 @@ if (base.usersC[fromUser].level >= 3) {
   for (var key in base.usersC) {
     if (typeof(base.usersC[key].mmr) != 2000){
       let refx = db.ref('usersC/'+ key)
-      refx.update({mmr: 2000})
+      refx.update({mmr: 2000, matchs: 0, wins: 0})
     }
     else {
       continue
@@ -1846,14 +1847,14 @@ activa.splice(0,23)
 
 break
 
-
+break;
 }
 else
 {
   channel.sendMessage(DICT.ERRORS.err_not_admin);
 break;
-};*/
-
+};
+*/
 case 'vouch':
 if (base.usersC[fromUser].level >= 3) {
 if (input[1]){
