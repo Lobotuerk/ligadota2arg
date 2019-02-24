@@ -181,7 +181,7 @@ account = Object.keys(base.usersC).length;
 
 
 bot1.on('logOnResponse', function() {
-  console.log('Bot 1' + DICT.SYSTEM.system_loggedin);
+  console.log('Bot 1 ' + DICT.SYSTEM.system_loggedin);
   botFriends1.setPersonaState(Steam.EPersonaState.Online);
   botFriends1.setPersonaName(CONFIG.displayName1);
   dota1.launch();
@@ -205,7 +205,7 @@ bot1.on('logOnResponse', function() {
 });
 
 bot2.on('logOnResponse', function() {
-  console.log('Bot 2' + DICT.SYSTEM.system_loggedin);
+  console.log('Bot 2 ' + DICT.SYSTEM.system_loggedin);
   botFriends2.setPersonaState(Steam.EPersonaState.Online);
   botFriends2.setPersonaName(CONFIG.displayName2);
    dota2.launch();
@@ -229,7 +229,7 @@ bot2.on('logOnResponse', function() {
 });
 
 bot3.on('logOnResponse', function() {
-  console.log('Bot 3' + DICT.SYSTEM.system_loggedin);
+  console.log('Bot 3 ' + DICT.SYSTEM.system_loggedin);
   botFriends3.setPersonaState(Steam.EPersonaState.Online);
   botFriends3.setPersonaName(CONFIG.displayName3);
   dota3.launch();
@@ -253,7 +253,7 @@ bot3.on('logOnResponse', function() {
 });
 
 bot4.on('logOnResponse', function() {
-  console.log('Bot 3' + DICT.SYSTEM.system_loggedin);
+  console.log('Bot 4 ' + DICT.SYSTEM.system_loggedin);
   botFriends4.setPersonaState(Steam.EPersonaState.Online);
   botFriends4.setPersonaName(CONFIG.displayName4);
   dota4.launch();
